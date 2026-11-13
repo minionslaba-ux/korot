@@ -314,6 +314,45 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 :root[data-season="spring"] body::after{background:radial-gradient(60% 100% at 20% 100%,#97e070 60%,transparent 61%),radial-gradient(70% 100% at 85% 100%,#7ccf5a 60%,transparent 61%)}
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
+.coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
+img[src*="pets/bunny"]{filter:var(--tisha,saturate(1)) drop-shadow(0 3px 2px #0003)!important}
+.lv:disabled .face[src*="pets/bunny"],.stampc.locked .sp[src*="pets/bunny"]{filter:brightness(0) opacity(.2)!important}
+.walletrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wallet{font-family:var(--display);font-weight:700;font-size:20px;color:var(--ink);display:inline-flex;align-items:center;gap:6px;background:#fff7d6;border-radius:999px;padding:4px 14px 4px 8px;box-shadow:inset 0 0 0 2px #ffe08a}
+.btn.shopbtn{border-image-source:url(assets/btn_green.png);color:#fff;text-shadow:0 1px 0 #2a7a2a}
+.shophead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border-radius:999px;padding:7px 12px;font:700 13px var(--display);background:#eef4fb;color:var(--ink)}
+.tab.on{background:#2f7fd6;color:#fff}
+.shopbody{max-height:min(58vh,520px);overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:2px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sitem{background:#f6f9fd;border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;box-shadow:inset 0 0 0 2px #e3ecf6}
+.sitem.on{box-shadow:inset 0 0 0 3px #4cbf4c;background:#f0fbef}
+.sitem.wide{grid-column:1/-1}
+.sitem b{font-family:var(--display);font-size:15px;color:var(--ink)}
+.sitem .sd{font-size:12px;color:var(--ink-dim);line-height:1.3}
+.sitem .have{font-size:12px;font-weight:800;color:var(--ink-dim)}
+.sitem .btn{margin-top:auto;min-height:40px;font-size:15px;width:100%}
+.bi{font-size:34px;line-height:1.1}
+.tprev{width:84px;height:84px;object-fit:contain}
+.fprev{width:100%;max-width:320px;height:auto;border-radius:10px}
+.deal{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#fff3c4,#ffe08a);border-radius:16px;padding:12px 14px;position:relative}
+.dealtag{position:absolute;top:-9px;left:12px;background:#ff5a5a;color:#fff;font:700 11px var(--display);border-radius:999px;padding:2px 9px}
+.deal .dtxt{flex:1;min-width:140px;display:flex;flex-direction:column;font-size:12px;color:var(--ink-dim)}
+.deal .dtxt b{font-family:var(--display);font-size:16px;color:var(--ink)}
+.deal .btn{min-width:120px}
+.deal s{opacity:.6;font-size:13px}
+.adv{flex-direction:row;flex-wrap:wrap;justify-content:center;text-align:left}
+.adv .btn{width:auto;min-width:140px}
+.boosts{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.boosts .bl{font:700 13px var(--display);color:var(--ink-dim)}
+.bchip{position:relative;width:52px;height:52px;border-radius:14px;background:#eef4fb;font-size:26px;box-shadow:inset 0 0 0 2px #d5e2f0}
+.bchip small{position:absolute;right:-4px;top:-6px;background:#2f7fd6;color:#fff;font:700 11px var(--body);border-radius:999px;padding:1px 6px}
+.bchip[data-buy] small{background:#4cbf4c}
+.bchip.on{background:#fff3c4;box-shadow:inset 0 0 0 3px #ffc83d;transform:scale(1.06)}
+.card .btn.buy5{border-image-source:url(assets/btn_green.png);color:#fff;text-shadow:0 1px 0 #2a7a2a}
+.card .btn.buy5 small{font-size:11px;opacity:.9}
+.frames{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font:700 13px var(--display);color:var(--ink-dim)}
 .chap{font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink-dim);margin:4px 0 -4px}
 
 /* ---------- вступительный ролик ---------- */
@@ -537,7 +576,7 @@ const ITEMS=[
  {id:'store',name:'Склад посылок',cost:7,ch:2},
  {id:'lookout',name:'Смотровая скала',cost:8,ch:2},
 ];
-let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2};
+let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2,coins:150,inv:{},owned:['tisha:classic','frame:classic'],tisha:'classic',frame:'classic'};
 function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
 function save(){try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}}
 const totalStars=()=>P.stars.reduce((a,b)=>a+b,0);
@@ -565,6 +604,7 @@ function renderHome(){
       <div class="panel">
         <div class="bank"><div><div class="story" style="font-size:12px">Звёзды на ремонт</div><b>${STAR_IMG} ${avail}</b> <span class="story">из ${totalStars()} заработанных</span></div>
         <button class="btn main" id="bPlay">${done?'Переиграть уровень':'Уровень '+(nl+1)} ▶</button></div>
+        <div class="walletrow"><span class="wallet">${COIN} <b>${P.coins}</b></span><button class="btn shopbtn" id="bShop">🛒 Магазин</button></div>
         <div class="next">${petImg(LEVELS[nl].pet,"nextpet")}<div class="story">Следующее письмо:<br><b style="color:var(--ink)">${LEVELS[nl].to}</b></div></div>
       </div>
       <div class="panel daily">${(()=>{const st=dailyState(),D=makeDaily();return `<div class="dhead">${petImg(D.pet,'dpet')}<div><h2>Письмо дня</h2><div class="story">Сегодня пишет: <b style="color:var(--ink)">${D.name}</b>${st.streak?`<br>🔥 ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд`:''}</div></div></div>
@@ -578,6 +618,7 @@ function renderHome(){
   const sc=$('home').querySelector('.scene');if(sc)seasonFx(sc,SEASON==='summer'?10:22,true);
   if($('bDaily'))$('bDaily').onclick=()=>{ac();showIntro(-1)};
   $('bAlbum').onclick=showAlbum;
+  $('bShop').onclick=()=>showShop('boosters',null);
   if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>{toast(n.name+' теперь живёт у почты!');sfx('friend',.8)},500)}
   $('home').querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{ac();showIntro(+b.dataset.lv)});
   $('home').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
@@ -640,8 +681,8 @@ function startLevel(i){
     return {t:g[0],need,have:0};
   });
   bindBoard();updateHUD();
-  $('tHammer').onclick=()=>{if(busy||P.hammers<=0)return;tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
-  $('tShuffle').onclick=async()=>{if(busy||P.shuffles<=0)return;P.shuffles--;save();busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
+  $('tHammer').onclick=()=>{if(busy)return;if(P.hammers<=0)return quickBuy('hammer');tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
+  $('tShuffle').onclick=async()=>{if(busy)return;if(P.shuffles<=0)return quickBuy('shuffle');P.shuffles--;save();busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
   $('tMenu').onclick=()=>{if(!busy)renderHome()};
   armHint();
 }
@@ -692,7 +733,7 @@ function updateHUD(){
   $('sc').textContent=score.toLocaleString('ru-RU');
   $('nH').textContent=P.hammers;$('nS').textContent=P.shuffles;
   $('tHammer').classList.toggle('on',tool==='hammer');
-  $('tHammer').disabled=P.hammers<=0;$('tShuffle').disabled=P.shuffles<=0;
+  $('nH').textContent=P.hammers||'+';$('nS').textContent=P.shuffles||'+';
 }
 
 /* ---------- поиск совпадений ---------- */
@@ -974,10 +1015,11 @@ function showIntro(i){
   const L=i<0?DAILY:LEVELS[i];
   const map=L.map||Array(N).fill('........');
   const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLx'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++;if(g[0]==='p'&&ch==='p')need++;if(g[0]==='h'&&ch==='h')need++}return {t:g[0],need}});
-  $('card').innerHTML=`<div class="stamp">✉</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
+  $('card').innerHTML=`<div class="stamp">✉</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}${boostChips()}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
-  $('bGo').onclick=()=>{ac();sfx('start',.7);startLevel(i)};
+  bindBoostChips();
+  $('bGo').onclick=()=>{ac();sfx('start',.7);startLevel(i);applyBoosts()};
   openOv();
 }
 function win(){
@@ -989,11 +1031,12 @@ function win(){
   const moved=!before&&LV.pet&&!!SLOTS[LI];if(moved)P.newPet=LI;
   const gained=P.stars[LI]-before;
   if(stars===3)P.hammers++;
+  const coinGain=15+moves*2+(stars===3?20:0)+(!before?25:0);P.coins=(P.coins||0)+coinGain;
   save();duck(2600);fanfare();
   if(!SPEED)return;
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
-    <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''}${!before?' Новая марка в альбоме!':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
+    <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''} Монеты: <b>+${coinGain} ${COIN}</b>.${!before?' Новая марка в альбоме!':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
     ${newStampsNote()}
     <div class="row"><button class="btn pcbtn" id="bCard">💌 Открытка другу</button></div>
     <div class="row"><button class="btn" id="bHome">На почту</button>${LI<LEVELS.length-1?'<button class="btn main" id="bNext">Следующее письмо</button>':''}</div>`;
@@ -1010,9 +1053,11 @@ function lose(){
   if(!SPEED)return;
   const left=goals.filter(g=>g.have<g.need).map(g=>({...g,need:g.need-g.have}));
   $('card').innerHTML=`<div class="who">${petImg(LV.pet,'petport sad')}<div><div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2></div></div><p>Осталось совсем немного:</p>${goalsHTML(left)}
-    ${extraUsed?'':'<button class="btn main" id="bExtra">+5 ходов</button><p class="note">В релизе: за просмотр рекламы. Один раз за уровень.</p>'}
+    ${extraUsed?'':'<button class="btn main" id="bExtra">📺 +5 ходов бесплатно</button><p class="note">В релизе: за просмотр рекламы. Один раз за уровень.</p>'}
+    <button class="btn buy5" id="bBuy5" ${P.coins<90?'disabled':''}>+5 ходов за ${COIN} 90 <small>(у тебя ${P.coins})</small></button>
     <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn" id="bRetry">Заново</button></div>`;
   if($('bExtra'))$('bExtra').onclick=()=>{extraUsed=true;moves+=5;updateHUD();closeOv();armHint()};
+  $('bBuy5').onclick=()=>{if(spend(90)){moves+=5;updateHUD();closeOv();armHint()}};
   $('bHome').onclick=renderHome;$('bRetry').onclick=()=>startLevel(LI);
   openOv();
 }
@@ -1088,6 +1133,117 @@ function seasonFx(host,n,inScene){
 document.documentElement.dataset.season=SEASON;
 document.documentElement.style.setProperty('--scenebg',`url(${seasonBase()})`);
 
+
+/* ---------- магазин ---------- */
+const COIN='<img class="coin" src="assets/coin.png" alt="монет">';
+const invN=id=>(P.inv&&P.inv[id])||0;
+const invAdd=(id,n)=>{P.inv={...(P.inv||{})};P.inv[id]=invN(id)+n};
+const SHOP={
+  boosters:[
+    {id:'hammer',name:'Молоток',icon:'🔨',desc:'Разбивает любую клетку. Ход не тратится.',price:60,give:()=>P.hammers++,count:()=>P.hammers},
+    {id:'shuffle',name:'Перемешивание',icon:'🔀',desc:'Перемешивает фишки, когда ходов не видно.',price:40,give:()=>P.shuffles++,count:()=>P.shuffles},
+    {id:'rocket',name:'Ракета',icon:'🚀',desc:'Перед уровнем: на поле сразу появляется полосатая фишка.',price:70,give:()=>invAdd('rocket',1),count:()=>invN('rocket')},
+    {id:'bomb',name:'Бомба',icon:'💣',desc:'Перед уровнем: на поле сразу появляется бомба.',price:90,give:()=>invAdd('bomb',1),count:()=>invN('bomb')},
+    {id:'moves3',name:'+3 хода',icon:'⏳',desc:'Перед уровнем: три дополнительных хода.',price:60,give:()=>invAdd('moves3',1),count:()=>invN('moves3')},
+  ],
+  tisha:[
+    {id:'classic',name:'Классический',filter:'saturate(1)',price:0},
+    {id:'snow',name:'Снежок',filter:'grayscale(1) brightness(1.5) contrast(.95)',price:300},
+    {id:'choco',name:'Шоколадный',filter:'sepia(.5) brightness(.62) saturate(1.4)',price:300},
+    {id:'forest',name:'Лесной дух',filter:'hue-rotate(85deg) saturate(1.25)',price:500},
+    {id:'gold',name:'Золотой',filter:'sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.12)',price:1500},
+  ],
+  frames:[
+    {id:'classic',name:'Классическая',price:0},
+    {id:'gold',name:'Золотая',price:300},
+    {id:'night',name:'Ночная',price:400},
+  ],
+  packs:[
+    {name:'Мешочек монет',coins:500,rub:'79 ₽'},
+    {name:'Сундучок монет',coins:1500,rub:'199 ₽'},
+    {name:'Клад: 4000 монет и Золотой Тиша',coins:4000,rub:'449 ₽'},
+    {name:'Игра без рекламы',coins:0,rub:'149 ₽'},
+  ],
+};
+const owns=k=>(P.owned||[]).includes(k);
+const tishaFilter=()=>(SHOP.tisha.find(t=>t.id===P.tisha)||SHOP.tisha[0]).filter;
+function applyTisha(){document.documentElement.style.setProperty('--tisha',tishaFilter())}
+function dealOfDay(){const it=SHOP.boosters[dayNum(new Date())%SHOP.boosters.length];return {...it,old:it.price,price:Math.round(it.price*.7/5)*5}}
+function addCoins(n,why){P.coins=(P.coins||0)+n;save();if(why&&SPEED)toast(`+${n} монет ${why}`)}
+function spend(price){if((P.coins||0)<price){toast('Не хватает монет');return false}P.coins-=price;save();sfx('build',.6);return true}
+let shopTab='boosters',shopBack=null;
+function showShop(tab,back){
+  if(tab)shopTab=tab;if(back!==undefined)shopBack=back;
+  const tabs=[['boosters','Бустеры'],['tisha','Наряды Тиши'],['frames','Открытки'],['coins','Монеты']];
+  let body='';
+  if(shopTab==='boosters'){
+    const d=dealOfDay();const dealBought=P.dealDay===todayKey();
+    body=`<div class="deal"><span class="dealtag">Товар дня −30%</span><span class="bi">${d.icon}</span><div class="dtxt"><b>${d.name}</b><span>${d.desc}</span></div>
+      ${dealBought?'<span class="ddone">✓ Куплено</span>':`<button class="btn main buy" data-deal="1"><s>${d.old}</s> ${COIN} ${d.price}</button>`}</div>
+      <div class="sgrid">${SHOP.boosters.map(b=>`<div class="sitem"><span class="bi">${b.icon}</span><b>${b.name}</b><span class="sd">${b.desc}</span><span class="have">Есть: ${b.count()}</span>
+      <button class="btn buy" data-b="${b.id}" ${P.coins<b.price?'disabled':''}>${COIN} ${b.price}</button></div>`).join('')}</div>`;
+  }
+  if(shopTab==='tisha'){
+    body=`<p class="note">Наряд виден везде: на поле, у почты, в ролике и на открытках.</p><div class="sgrid">${SHOP.tisha.map(t=>{const k='tisha:'+t.id,own=owns(k)||t.price===0,on=P.tisha===t.id;
+      return `<div class="sitem${on?' on':''}"><img class="tprev" src="assets/pets/bunny.png" alt="" style="filter:${t.filter} drop-shadow(0 3px 2px #0003)!important"><b>${t.name}</b>
+      ${on?'<span class="ddone">✓ Надет</span>':own?`<button class="btn" data-wear="${t.id}">Надеть</button>`:`<button class="btn buy" data-t="${t.id}" ${P.coins<t.price?'disabled':''}>${COIN} ${t.price}</button>`}</div>`}).join('')}</div>`;
+  }
+  if(shopTab==='frames'){
+    body=`<p class="note">Рамка для открыток друзьям.</p><div class="sgrid">${SHOP.frames.map(f=>{const k='frame:'+f.id,own=owns(k)||f.price===0,on=P.frame===f.id;
+      return `<div class="sitem wide${on?' on':''}"><canvas class="fprev" data-fp="${f.id}"></canvas><b>${f.name}</b>
+      ${on?'<span class="ddone">✓ Выбрана</span>':own?`<button class="btn" data-frame="${f.id}">Выбрать</button>`:`<button class="btn buy" data-f="${f.id}" ${P.coins<f.price?'disabled':''}>${COIN} ${f.price}</button>`}</div>`}).join('')}</div>`;
+  }
+  if(shopTab==='coins'){
+    const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;
+    body=`<div class="sitem wide adv"><span class="bi">📺</span><b>Посмотреть рекламу</b><span class="sd">+30 монет. Осталось сегодня: ${3-a} из 3.</span>
+      <button class="btn main" id="bAd" ${a>=3?'disabled':''}>+30 ${COIN}</button></div>
+      <p class="note">В прототипе реклама не показывается, монеты начисляются сразу. Покупки за рубли появятся в релизе через площадку (Яндекс Игры, VK Play).</p>
+      <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${k.coins?'💰':'🚫'}</span><b>${k.name}</b>${k.coins?`<span class="have">${COIN} ${k.coins}</span>`:'<span class="sd">Без рекламы между уровнями</span>'}<button class="btn" disabled>${k.rub}</button></div>`).join('')}</div>`;
+  }
+  $('card').innerHTML=`<div class="to">Магазин</div><div class="shophead"><h2>🛒 Лавка Тиши</h2><span class="wallet">${COIN} <b>${P.coins}</b></span></div>
+    <div class="tabs">${tabs.map(([k,n])=>`<button class="tab${k===shopTab?' on':''}" data-tab="${k}">${n}</button>`).join('')}</div>
+    <div class="shopbody">${body}</div>
+    <div class="row"><button class="btn main" id="bShopClose">Закрыть</button></div>`;
+  $('card').classList.add('wide');openOv();
+  const c=$('card');
+  c.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showShop(b.dataset.tab));
+  c.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{const it=SHOP.boosters.find(x=>x.id===b.dataset.b);if(spend(it.price)){it.give();save();showShop()}});
+  c.querySelectorAll('[data-deal]').forEach(b=>b.onclick=()=>{const d=dealOfDay();if(spend(d.price)){SHOP.boosters.find(x=>x.id===d.id).give();P.dealDay=todayKey();save();showShop()}});
+  c.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const t=SHOP.tisha.find(x=>x.id===b.dataset.t);if(spend(t.price)){P.owned=[...(P.owned||[]),'tisha:'+t.id];P.tisha=t.id;save();applyTisha();showShop()}});
+  c.querySelectorAll('[data-wear]').forEach(b=>b.onclick=()=>{P.tisha=b.dataset.wear;save();applyTisha();showShop()});
+  c.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=SHOP.frames.find(x=>x.id===b.dataset.f);if(spend(f.price)){P.owned=[...(P.owned||[]),'frame:'+f.id];P.frame=f.id;save();showShop()}});
+  c.querySelectorAll('[data-frame]').forEach(b=>b.onclick=()=>{P.frame=b.dataset.frame;save();showShop()});
+  c.querySelectorAll('canvas[data-fp]').forEach(async cv=>{const src=await drawPostcard('bunny','Привет!',cv.dataset.fp);cv.width=src.width;cv.height=src.height;cv.getContext('2d').drawImage(src,0,0)});
+  if($('bAd'))$('bAd').onclick=()=>{const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;if(a>=3)return;P.ads={day:todayKey(),n:a+1};addCoins(30);sfx('build',.6);showShop()};
+  $('bShopClose').onclick=()=>{$('card').classList.remove('wide');closeOv();if(shopBack)shopBack();else if(!$('home').hidden)renderHome()};
+}
+function quickBuy(id){
+  const it=SHOP.boosters.find(x=>x.id===id);
+  $('card').innerHTML=`<div class="to">Закончилось</div><h2>${it.icon} ${it.name}</h2><p>${it.desc}</p><p>У тебя ${COIN} <b>${P.coins}</b></p>
+    <div class="row"><button class="btn" id="qbNo">Не сейчас</button><button class="btn main" id="qbYes" ${P.coins<it.price?'disabled':''}>Купить за ${COIN} ${it.price}</button></div>`;
+  openOv();$('qbNo').onclick=closeOv;$('qbYes').onclick=()=>{if(spend(it.price)){it.give();save();closeOv();updateHUD()}};
+}
+let pendingBoost=new Set();
+function boostChips(){
+  const list=['rocket','bomb','moves3'].map(id=>SHOP.boosters.find(x=>x.id===id));
+  return `<div class="boosts"><span class="bl">Бустеры:</span>${list.map(b=>{const n=b.count();return `<button class="bchip${pendingBoost.has(b.id)?' on':''}" data-boost="${b.id}" ${n?'':'data-buy="1"'} title="${b.desc}">${b.icon}<small>${n||'+'}</small></button>`}).join('')}</div>`;
+}
+function bindBoostChips(){
+  document.querySelectorAll('[data-boost]').forEach(b=>b.onclick=()=>{const id=b.dataset.boost;
+    if(b.dataset.buy){const it=SHOP.boosters.find(x=>x.id===id);if(P.coins>=it.price&&spend(it.price)){it.give();save();pendingBoost.add(id)}else toast('Не хватает монет: загляни в магазин');}
+    else pendingBoost.has(id)?pendingBoost.delete(id):pendingBoost.add(id);
+    const wrap=document.querySelector('.boosts');if(wrap){wrap.outerHTML=boostChips();bindBoostChips()}});
+}
+function applyBoosts(){
+  const normal=[];for(const row of grid)for(const t of row)if(t&&!t.stone&&!t.parcel&&!t.hero&&!t.lock&&!t.sp&&t.color>=0)normal.push(t);
+  const pick=()=>normal.splice(Math.floor(Math.random()*normal.length),1)[0];
+  for(const id of pendingBoost){if(invN(id)<=0)continue;invAdd(id,-1);
+    if(id==='moves3')moves+=3;
+    else{const t=pick();if(t){t.sp=id==='bomb'?'bomb':(Math.random()<.5?'h':'v');renderTile(t);burst(t.r,t.c,t.color,10)}}}
+  if(pendingBoost.size)toast('Бустеры на поле!');
+  pendingBoost=new Set();save();updateHUD();
+}
+
 /* ---------- письмо дня ---------- */
 let DAILY=null;
 const dayNum=d=>Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
@@ -1119,11 +1275,11 @@ function dailyState(){
 function dailyWin(){
   const t=todayKey();const y=new Date();y.setDate(y.getDate()-1);const yk=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();
   const d=P.daily||{};const first=d.last!==t;
-  if(first){const streak=d.last===yk?(d.streak||0)+1:1;P.daily={last:t,streak,best:Math.max(d.best||0,streak)};P.hammers++;P.shuffles++}
+  if(first){const streak=d.last===yk?(d.streak||0)+1:1;P.daily={last:t,streak,best:Math.max(d.best||0,streak)};P.hammers++;P.shuffles++;P.coins=(P.coins||0)+50}
   save();duck(2600);fanfare();if(!SPEED)return;
   const st=dailyState();
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Письмо дня доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
-    <p>${first?'Награда: <b>+1 молоток</b> и <b>+1 перемешивание</b>.':'Сегодняшнюю награду ты уже получил.'} Серия: <b>🔥 ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд</b>.</p>
+    <p>${first?'Награда: <b>+1 молоток</b>, <b>+1 перемешивание</b> и <b>+50 '+COIN+'</b>.':'Сегодняшнюю награду ты уже получил.'} Серия: <b>🔥 ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд</b>.</p>
     ${newStampsNote()}
     <p class="note">Завтра напишет кто-то ещё. Заходи!</p>
     <div class="row"><button class="btn pcbtn" id="bCard">💌 Открытка другу</button></div>
@@ -1172,14 +1328,16 @@ function wrapText(ctx,text,x,y,maxW,lh,maxLines){
   for(const w of words){const t=line?line+' '+w:w;if(ctx.measureText(t).width>maxW&&line){ctx.fillText(line,x,y+n*lh);n++;line=w;if(n>=maxLines-1)break}else line=t}
   if(line&&n<maxLines)ctx.fillText(line,x,y+n*lh);
 }
-async function drawPostcard(pet,msg){
+async function drawPostcard(pet,msg,frame){
+  frame=frame||P.frame||'classic';
   const W=900,H=560,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
   try{await document.fonts.load('700 40px "Balsamiq Sans"');await document.fonts.load('700 26px "Nunito"')}catch(e){}
   const [bg,pi,st]=await Promise.all([loadImg(seasonBase()),loadImg(petSrc(pet)),loadImg('assets/star.png')]);
   const R=36;x.save();x.beginPath();x.roundRect(0,0,W,H,R);x.clip();
   const s=Math.max(W/bg.width,H/bg.height);x.drawImage(bg,(W-bg.width*s)/2,(H-bg.height*s)/2,bg.width*s,bg.height*s);
+  if(frame==='night'){x.fillStyle='#0b1a4acc';x.fillRect(0,0,W,H);x.fillStyle='#fff';for(let k=0;k<60;k++){const sx2=Math.random()*W*.5,sy2=Math.random()*H*.6;x.globalAlpha=.4+Math.random()*.6;x.beginPath();x.arc(sx2,sy2,1+Math.random()*2,0,7);x.fill()}x.globalAlpha=1}
   const g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'#ffffff00');g.addColorStop(.42,'#ffffff10');g.addColorStop(.5,'#ffffffe8');g.addColorStop(1,'#fffffff2');x.fillStyle=g;x.fillRect(0,0,W,H);
-  x.shadowColor='#0005';x.shadowBlur=18;x.shadowOffsetY=10;x.drawImage(pi,40,H-370,330,330);x.shadowColor='transparent';
+  x.shadowColor='#0005';x.shadowBlur=18;x.shadowOffsetY=10;if(pet==='bunny')x.filter=tishaFilter();x.drawImage(pi,40,H-370,330,330);x.filter='none';x.shadowColor='transparent';
   // марка
   const sx=W-122,sy=26;x.fillStyle='#fff';x.strokeStyle='#e0b25c';x.lineWidth=4;x.setLineDash([8,6]);x.beginPath();x.roundRect(sx,sy,98,116,9);x.fill();x.stroke();x.setLineDash([]);
   x.fillStyle='#fff3d6';x.fillRect(sx+9,sy+9,80,80);x.drawImage(pi,sx+12,sy+11,74,74);
@@ -1190,19 +1348,24 @@ async function drawPostcard(pet,msg){
   x.font='700 25px "Nunito", sans-serif';x.fillStyle='#3d4f6e';
   wrapText(x,msg||('Тебе пишет '+(PET_NAMES[pet]||'житель леса')+'. Заходи в гости!'),470,214,390,34,5);
   x.drawImage(st,470,H-96,36,34);x.font='700 19px "Nunito", sans-serif';x.fillStyle='#2f7fd6';x.fillText('Открой ссылку и получи подарок',516,H-72);
-  x.restore();return c;
+  x.restore();
+  if(frame==='gold'){const gg=x.createLinearGradient(0,0,W,H);gg.addColorStop(0,'#ffe27a');gg.addColorStop(.5,'#e8a700');gg.addColorStop(1,'#fff3b0');x.strokeStyle=gg;x.lineWidth=18;x.beginPath();x.roundRect(9,9,W-18,H-18,30);x.stroke();
+    x.fillStyle='#fff6c2';for(const [a,b2] of [[30,30],[W-30,30],[30,H-30],[W-30,H-30]]){x.beginPath();for(let k=0;k<10;k++){const r=k%2?7:18,an=k*Math.PI/5-Math.PI/2;x.lineTo(a+Math.cos(an)*r,b2+Math.sin(an)*r)}x.closePath();x.fill()}}
+  if(frame==='night'){x.strokeStyle='#2f4fa8';x.lineWidth=12;x.beginPath();x.roundRect(6,6,W-12,H-12,32);x.stroke()}
+  return c;
 }
 const cardLink=(pet,msg)=>GAME_URL+'#card-'+pet+'-'+toHex((msg||'').slice(0,60));
 async function openPostcard(pet){
   const prev=$('card').innerHTML;
   $('card').innerHTML=`<div class="to">Открытка другу</div><h2>💌 Отправь открытку</h2>
     <div class="pcwrap"><canvas id="pcPrev"></canvas></div>
+    <div class="frames">Рамка: ${SHOP.frames.filter(f=>f.price===0||owns('frame:'+f.id)).map(f=>`<button class="tab${P.frame===f.id?' on':''}" data-pcf="${f.id}">${f.name}</button>`).join('')}<button class="tab" id="pcMore">+ ещё в магазине</button></div>
     <label class="pclabel" for="pcMsg">Подпись (необязательно)</label>
     <input id="pcMsg" class="pcinput" maxlength="60" placeholder="Например: Смотри, какой у меня Пингвин!">
     <div class="row"><button class="btn main" id="pcShare">Отправить</button></div>
     <div class="row pcsocial"><a class="btn" id="pcVK" target="_blank" rel="noopener">VK</a><a class="btn" id="pcTG" target="_blank" rel="noopener">Telegram</a><a class="btn" id="pcWA" target="_blank" rel="noopener">WhatsApp</a></div>
     <input id="pcLink" class="pcinput pclink" readonly aria-label="Ссылка на открытку">
-    <p class="note">Друг получит в подарок молоток и перемешивание. А тебе раз в день за открытку дают перемешивание.</p>
+    <p class="note">Друг получит в подарок молоток и перемешивание. А тебе раз в день за открытку дают перемешивание и 20 монет.</p>
     <div class="row"><button class="btn" id="pcBack">Назад</button></div>`;
   const msgEl=$('pcMsg');
   const refresh=async()=>{
@@ -1214,8 +1377,10 @@ async function openPostcard(pet){
     const cv=await drawPostcard(pet,m);const pv=$('pcPrev');if(!pv)return;pv.width=cv.width;pv.height=cv.height;pv.getContext('2d').drawImage(cv,0,0);
   };
   let tmr;msgEl.addEventListener('input',()=>{clearTimeout(tmr);tmr=setTimeout(refresh,250)});
+  document.querySelectorAll('[data-pcf]').forEach(b=>b.onclick=()=>{P.frame=b.dataset.pcf;save();document.querySelectorAll('[data-pcf]').forEach(x=>x.classList.toggle('on',x===b));refresh()});
+  $('pcMore').onclick=()=>showShop('frames',()=>openPostcard(pet));
   await refresh();
-  const reward=()=>{if(P.lastCardDay!==todayKey()){P.lastCardDay=todayKey();P.shuffles++;save();toast('+1 перемешивание за открытку!')}};
+  const reward=()=>{if(P.lastCardDay!==todayKey()){P.lastCardDay=todayKey();P.shuffles++;P.coins=(P.coins||0)+20;save();toast('+1 перемешивание и +20 монет за открытку!')}};
   ['pcVK','pcTG','pcWA'].forEach(id=>$(id).addEventListener('click',reward));
   $('pcShare').onclick=async()=>{
     const m=msgEl.value.trim(),url=cardLink(pet,m),txt='Тебе открытка из «Лесной почты»!';
@@ -1335,7 +1500,7 @@ async function playIntro(){
 /* ---------- старт ---------- */
 addEventListener('resize',()=>{if($('level').hidden||!grid)return;layout();
   for(let r=0;r<N;r++)for(let c=0;c<N;c++){mossEl[r][c].style.transform=`translate(${c*CELL}px,${r*CELL}px)`;if(grid[r][c])place(grid[r][c],0)}});
-load();seasonFx(document.body,SEASON==='summer'?14:30,false);renderHome();
+load();applyTisha();seasonFx(document.body,SEASON==='summer'?14:30,false);renderHome();
 const _hash=(location.hash||'').slice(1);
 if(_hash.startsWith('card-')){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}receivePostcard(_hash).then(ok=>{if(!ok&&!P.introSeen)showIntroGate()})}
 else if(!P.introSeen)showIntroGate();
