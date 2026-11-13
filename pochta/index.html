@@ -378,7 +378,7 @@ function sceneSVG(){
 
 /* ---------- главная ---------- */
 function renderHome(){
-  $('level').hidden=true;$('home').hidden=false;closeOv();
+  $('level').hidden=true;$('home').hidden=false;closeOv();playMusic('home');
   const avail=Math.max(0,totalStars()-spent()),nl=nextLevel(),done=P.stars.every(Boolean);
   $('home').innerHTML=`<div class="home">
     <h1>Лесная почта <button class="btn tool snd homesnd" aria-label="Звук">${P.muted?'🔇':'🔊'}</button></h1>
@@ -422,7 +422,7 @@ function goalAdd(t,color){
 const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
-  LI=i;LV=LEVELS[i];moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
+  LI=i;LV=LEVELS[i];playMusic(i%2?'level2':'level1');moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
   $('home').hidden=true;$('level').hidden=false;closeOv();
   $('level').innerHTML=`<div class="game" id="game">
     <div class="hud">
@@ -774,7 +774,7 @@ function win(){
   const moved=!before&&LV.pet;if(moved)P.newPet=LI;
   const gained=P.stars[LI]-before;
   if(stars===3)P.hammers++;
-  save();fanfare();
+  save();duck(2600);fanfare();
   if(!SPEED)return;
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'portrait happy')}<div><div class="to">Доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
@@ -785,7 +785,7 @@ function win(){
   openOv();
 }
 function lose(){
-  clearHint();sad();
+  clearHint();duck(2400);sad();
   if(!SPEED)return;
   const left=goals.filter(g=>g.have<g.need).map(g=>({...g,need:g.need-g.have}));
   $('card').innerHTML=`<div class="who">${petImg(LV.pet,'portrait sad')}<div><div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2></div></div><p>Осталось совсем немного:</p>${goalsHTML(left)}
@@ -795,7 +795,36 @@ function lose(){
   $('bHome').onclick=renderHome;$('bRetry').onclick=()=>startLevel(LI);
   openOv();
 }
-document.addEventListener('click',e=>{const b=e.target.closest('.snd');if(!b)return;P.muted=!P.muted;save();document.querySelectorAll('.snd').forEach(x=>x.textContent=P.muted?'🔇':'🔊');if(!P.muted){ac();sfx('tap')}});
+
+/* ---------- фоновая музыка: бесшовный повтор через Web Audio ---------- */
+const MUS_VOL={home:.5,level1:.28,level2:.26};
+const mus={buf:{},src:null,gain:null,cur:null,want:null};
+const musExt=(()=>{try{return new Audio().canPlayType('audio/ogg; codecs="vorbis"')?'ogg':'mp3'}catch(e){return 'mp3'}})();
+async function loadMus(n){
+  if(!mus.buf[n])mus.buf[n]=fetch('assets/music/'+n+'.'+musExt).then(r=>r.arrayBuffer()).then(b=>new Promise((ok,no)=>AC.decodeAudioData(b,ok,no)));
+  return mus.buf[n];
+}
+function stopMusic(){
+  if(mus.gain&&AC){const g=mus.gain,s=mus.src;g.gain.cancelScheduledValues(AC.currentTime);g.gain.setTargetAtTime(0,AC.currentTime,.35);setTimeout(()=>{try{s.stop()}catch(e){}},1800)}
+  mus.src=null;mus.gain=null;mus.cur=null;
+}
+async function playMusic(n){
+  mus.want=n;
+  if(!AC||!SPEED||P.muted||mus.cur===n)return;
+  stopMusic();mus.cur=n;
+  let buf;try{buf=await loadMus(n)}catch(e){mus.cur=null;return}
+  if(mus.cur!==n||P.muted)return;
+  const src=AC.createBufferSource();src.buffer=buf;src.loop=true;
+  const g=AC.createGain();g.gain.value=0;g.gain.setTargetAtTime(MUS_VOL[n]||.3,AC.currentTime,.8);
+  src.connect(g);g.connect(AC.destination);src.start();mus.src=src;mus.gain=g;
+}
+function duck(ms=2200){
+  if(!mus.gain||!AC)return;const g=mus.gain,v=MUS_VOL[mus.cur]||.3,t=AC.currentTime;
+  g.gain.cancelScheduledValues(t);g.gain.setTargetAtTime(v*.2,t,.08);g.gain.setTargetAtTime(v,t+ms/1000,.6);
+}
+document.addEventListener('pointerdown',()=>{ac();if(mus.want&&!mus.cur)playMusic(mus.want)},{passive:true});
+document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden)AC.suspend();else if(!P.muted)AC.resume()});
+document.addEventListener('click',e=>{const b=e.target.closest('.snd');if(!b)return;P.muted=!P.muted;save();document.querySelectorAll('.snd').forEach(x=>x.textContent=P.muted?'🔇':'🔊');if(P.muted)stopMusic();else{ac();sfx('tap');if(mus.want)playMusic(mus.want)}});
 function toast(t){if(!SPEED)return;const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),1500)}
 function comboText(t){sfx('combo',.7);const e=document.createElement('div');e.className='combo';e.textContent=t;$('board').appendChild(e);setTimeout(()=>e.remove(),900)}
 
