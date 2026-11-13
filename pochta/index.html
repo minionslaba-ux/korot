@@ -231,6 +231,36 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 @keyframes starin{from{transform:scale(0) rotate(-40deg);opacity:0}}
 .toast{background:#fff;color:var(--ink);border-radius:14px;box-shadow:0 4px 0 #c9d8ea,0 10px 24px -8px #0b3a7a99;font-family:var(--display)}
 
+
+.scene{position:relative;aspect-ratio:1200/750;isolation:isolate}
+#level::before{content:"";position:fixed;inset:-20px;z-index:-1;background:linear-gradient(#ffffff26,#0b3a7a33),url(assets/scene/base.jpg) center/cover;filter:blur(4px)}
+.sbase{display:block;width:100%;height:100%;object-fit:cover}
+.scene .part{position:absolute;height:auto;transition:opacity .5s,transform .7s cubic-bezier(.3,1.6,.5,1);transform-origin:50% 100%;pointer-events:none}
+.scene .part.off{opacity:0;transform:translateY(-14%) scale(.92)}
+.need{font-size:12px;color:var(--ink-dim);font-weight:700}
+.res{position:absolute;transform:translate(-50%,-100%);height:auto;filter:drop-shadow(0 4px 2px #0003);transition:transform .2s;pointer-events:auto}
+.res:hover{transform:translate(-50%,-106%)}
+.res.hero{animation:hop 2.4s ease-in-out infinite}
+@keyframes hop{0%,70%,100%{transform:translate(-50%,-100%)}80%{transform:translate(-50%,-112%)}90%{transform:translate(-50%,-100%) scaleY(.94)}}
+.res.arrive{animation:arrive .9s cubic-bezier(.3,1.6,.5,1) .3s backwards}
+@keyframes arrive{from{transform:translate(-50%,-260%) scale(.3);opacity:0}}
+.next{display:flex;align-items:center;gap:10px}
+.nextpet{width:56px;height:56px;object-fit:contain;flex:none}
+.lv{position:relative;padding:4px 0 6px}
+.lv .face{width:62%;height:auto;display:block;filter:drop-shadow(0 2px 0 #0003)}
+.lv:disabled .face{filter:brightness(0) opacity(.25)}
+.lv .num{position:absolute;left:8%;top:6%;font-size:12px;line-height:1}
+.lv small{margin-top:1px}
+.whok{display:flex;align-items:center;gap:8px;line-height:1.2}
+.hudpet{width:44px;height:44px;object-fit:contain;flex:none}
+.game.portrait .hudpet{width:34px;height:34px}
+.who{display:flex;align-items:center;gap:14px;padding-right:56px}
+.portrait{width:96px;height:96px;object-fit:contain;flex:none;filter:drop-shadow(0 5px 3px #0003);animation:bob 1.6s ease-in-out infinite}
+.portrait.happy{animation:jump .7s cubic-bezier(.3,1.5,.5,1) 3}
+@keyframes jump{40%{transform:translateY(-18px) rotate(-6deg)}}
+.portrait.sad{animation:none;filter:grayscale(.5) drop-shadow(0 5px 3px #0003);transform:rotate(-8deg) translateY(6px)}
+.who h2{font-size:24px}
+@media (prefers-reduced-motion:reduce){.res.hero,.res.arrive,.portrait,.portrait.happy{animation:none}}
 @media (prefers-reduced-motion:reduce){.boardwrap.shake,.lv.cur,.moves.low{animation:none}}
 @media (prefers-reduced-motion:reduce){.t.hint .g,.rb,.rb::after,.t.sp-bomb::after{animation:none}}
 </style>
@@ -250,7 +280,7 @@ let SPEED=1;
 const TILE=[0,1,2,3,4].map(i=>`<img src="assets/g${i}.png" alt="" draggable="false">`);
 const TILE_SP=[0,1,2,3,4].map(i=>`<img src="assets/s${i}.png" alt="" draggable="false">`);
 const GEM_COL=['#ff6b6b','#ffd23f','#4aa8ff','#7ed957','#ff8fd0'];
-const COLOR_NAME=['яблоки','звёзды','капли','листья','цветы'];
+const COLOR_NAME=['сердечки','звёзды','кристаллы','изумруды','жемчужины'];
 const STONE='<img src="assets/stone.png" alt="" draggable="false">';
 const BOULDER='<img src="assets/boulder.png" alt="" draggable="false">';
 const ICE='<div class="ice"></div>';
@@ -288,20 +318,52 @@ const LEVELS=[
  {to:'Всему лесу',text:'Последнее письмо: приглашение на открытие почты. Разнеси его каждому!',moves:36,colors:5,goals:[['m'],['l'],['s'],['c',4,20]],
   map:['S......S','..l..l..','mmmmmmmm','mLmxxmLm','mmmmmmmm','mmLmmLmm','..s..s..','S......S']},
 ];
+const CAST=[
+ {pet:'chick',name:'Цыплёнок Пик',to:'Цыплёнку Пику',text:'Пик впервые в жизни получает письмо: от бабушки с соседнего двора. Собери сердечки и кристаллы для посылки.'},
+ {pet:'hog',name:'Кабан Гоша',to:'Кабану Гоше',text:'Гоша заказал семена к весне. Нужны звёзды и изумруды.'},
+ {pet:'bee',name:'Пчела Жужа',to:'Пчеле Жуже',text:'Тропинку к улью затянуло мхом. Делай совпадения прямо на мху, чтобы его убрать.'},
+ {pet:'cat',name:'Кот Мурзик',to:'Коту Мурзику',text:'Камнепад завалил дорогу к дому Мурзика. Камень трескается, когда рядом с ним собирают ряд.'},
+ {pet:'fox',name:'Лиса Маргарита',to:'Лисе Маргарите',text:'Посылка с духами для Маргариты. Собери жемчужины и расчисти мох у её крыльца.'},
+ {pet:'penguin',name:'Пингвин Пип',to:'Пингвину Пипу',text:'Ночью ударил мороз, и фишки вмёрзли в лёд. Пипу нравится, почтальону не очень. Собери ряд с замёрзшей фишкой, и лёд растает.'},
+ {pet:'caterpillar',name:'Гусеница Фрося',to:'Гусенице Фросе',text:'Фрося живёт у самых корней. Внизу мох, а на пути пара камней.'},
+ {pet:'dog',name:'Пёс Барбос',to:'Псу Барбосу',text:'Барбос ждёт газету «Лесной вестник». Лёд и мох в шахматном порядке.'},
+ {pet:'deer',name:'Олень Арсений',to:'Оленю Арсению',text:'Арсению нужна целая сумка кристаллов. А на дороге снова камни.'},
+ {pet:'beaver',name:'Бобр Тихон',to:'Бобру Тихону',text:'Тихон строит плотину, и всё вокруг заросло. Убери весь мох.'},
+ {pet:'parrot',name:'Попугай Кеша',to:'Попугаю Кеше',text:'Кеша собирает всё блестящее, и вся коллекция вмёрзла в лёд. Лёд и камни.'},
+ {pet:'polar',name:'Медведица Глаша',to:'Медведице Глаше',text:'Глаша заказала к чаю всё сразу: сердечки, звёзды и изумруды.'},
+ {pet:'panda',name:'Панда Бао',to:'Панде Бао',text:'Путь в бамбуковую рощу завален валунами. Валун выдерживает два удара.'},
+ {pet:'koala',name:'Коала Соня',to:'Коале Соне',text:'Соня проспала всю зиму, и теперь вокруг её дома мох, лёд и камни.'},
+ {pet:null,name:'Все жители леса',to:'Всему лесу',text:'Последнее письмо: приглашение на открытие почты. Разнеси его каждому!'},
+];
+CAST.forEach((c,i)=>Object.assign(LEVELS[i],c));
+const petSrc=p=>`assets/pets/${p||'bunny'}.png`;
+const petImg=(p,cls='')=>`<img class="${cls}" src="${petSrc(p)}" alt="" draggable="false">`;
+// места жителей на диораме (посчитаны из 3D-сцены): x, низ y, высота в процентах кадра
+const SLOTS=[[33.58, 66.6, 8.15], [24.44, 62.43, 7.97], [13.09, 61.72, 7.94], [38.04, 77.19, 8.59], [24.8, 74.47, 8.48], [11.02, 73.9, 8.46], [76.32, 78.04, 8.62], [86.99, 74.69, 8.49], [77.25, 91.72, 9.12], [47.9, 86.71, 8.95], [90.33, 89.24, 9.04], [30.73, 88.29, 9], [15.45, 84.85, 8.88], [54.42, 93.63, 9.19]];
+const HERO_SLOT=[56.53, 74.16, 9.58];
+const LAYERS={"walls": [42.75, 23.4, 24.19], "roof": [40.25, 2.5, 32.25], "ladder": [45.94, 51.4, 7.38], "flag": [54.56, 34.8, 13.56], "fence": [11.88, 44.9, 27.81], "plants": [18.69, 42.9, 14.56], "tent": [73.06, 42.3, 21.81], "bridge": [60.25, 55.9, 16.0]};
+const petW=h=>h*1.35*750/1200; // ширина в % от ширины сцены
+function petsLayer(){
+  const out=LEVELS.map((L,i)=>{if(!L.pet||!P.stars[i]||!SLOTS[i])return '';const [x,y,h]=SLOTS[i];
+    return `<img class="res${P.newPet===i?' arrive':''}" src="${petSrc(L.pet)}" alt="${L.name}" title="${L.name}" style="left:${x}%;top:${y}%;width:${petW(h)}%;z-index:${Math.round(y)}">`});
+  const [x,y,h]=HERO_SLOT;
+  out.push(`<img class="res hero" src="${petSrc('bunny')}" alt="Зайчик Тиша" title="Зайчик Тиша, почтальон" style="left:${x}%;top:${y}%;width:${petW(h)*1.05}%;z-index:${Math.round(y)}">`);
+  return out.join('');
+}
 
 /* ---------- прогресс ---------- */
 const ITEMS=[
- {id:'roof',name:'Крыша-шляпка',cost:3},
- {id:'door',name:'Дверь с колокольчиком',cost:3},
- {id:'box',name:'Почтовый ящик',cost:4},
- {id:'lamp',name:'Фонарь',cost:4},
- {id:'bench',name:'Скамейка для ожидания',cost:5},
- {id:'flowers',name:'Клумба',cost:5},
- {id:'sign',name:'Вывеска «Почта»',cost:6},
- {id:'balloon',name:'Шар для дальней доставки',cost:8},
+ {id:'walls',name:'Сруб почты',cost:3},
+ {id:'roof',name:'Крыша',cost:3,req:'walls'},
+ {id:'ladder',name:'Лестница',cost:4},
+ {id:'flag',name:'Флаг почты',cost:4},
+ {id:'fence',name:'Забор',cost:5},
+ {id:'plants',name:'Клумба',cost:5},
+ {id:'tent',name:'Палатка для посылок',cost:6},
+ {id:'bridge',name:'Мост через ручей',cost:8},
 ];
 let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2};
-function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
 function save(){try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}}
 const totalStars=()=>P.stars.reduce((a,b)=>a+b,0);
 const spent=()=>P.built.reduce((a,id)=>a+ITEMS.find(i=>i.id===id).cost,0);
@@ -309,33 +371,8 @@ const nextLevel=()=>{const i=P.stars.findIndex(s=>!s);return i<0?LEVELS.length-1
 
 /* ---------- сцена почты ---------- */
 function sceneSVG(){
-  const on=id=>P.built.includes(id)?'':' off';
-  return `<svg viewBox="0 0 400 270" role="img" aria-label="Лесная почта в старом пне">
-  <defs><radialGradient id="sky" cx="50%" cy="20%" r="80%"><stop offset="0" stop-color="#c8ecff"/><stop offset="1" stop-color="#6cc0f5"/></radialGradient>
-  <radialGradient id="glow"><stop offset="0" stop-color="#ffd27f" stop-opacity=".8"/><stop offset="1" stop-color="#ffd27f" stop-opacity="0"/></radialGradient></defs>
-  <rect width="400" height="270" fill="url(#sky)"/>
-  ${[[30,30],[80,60],[340,40],[300,80],[180,25],[370,110],[120,20]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.6" fill="#ffffff" opacity="0"/>`).join('')}<g fill="#fff" opacity=".9"><ellipse cx="70" cy="52" rx="34" ry="12"/><ellipse cx="92" cy="44" rx="20" ry="12"/><ellipse cx="318" cy="34" rx="30" ry="10"/><ellipse cx="336" cy="28" rx="16" ry="10"/></g><circle cx="40" cy="40" r="0"/>
-  <path d="M0 150 Q40 110 70 150 T140 140 T210 150 T290 135 T400 150 V270 H0z" fill="#5cae4a"/>
-  <ellipse cx="200" cy="250" rx="230" ry="45" fill="#7cc95b"/>
-  <!-- пень -->
-  <path d="M135 236 L142 110 Q200 96 258 110 L265 236 Q290 240 300 248 L100 248 Q110 240 135 236z" fill="#8a6244" stroke="#5a3d28" stroke-width="4"/>
-  <ellipse cx="200" cy="110" rx="58" ry="13" fill="#c99a6b" stroke="#5a3d28" stroke-width="4"/>
-  <ellipse cx="200" cy="110" rx="36" ry="7" fill="none" stroke="#a87a50" stroke-width="2"/>
-  <path d="M160 140v60M240 135v70M182 210v20" stroke="#6b4a33" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="230" cy="160" r="15" fill="#ffd27f" stroke="#5a3d28" stroke-width="4"/><path d="M230 145v30M215 160h30" stroke="#5a3d28" stroke-width="3"/>
-  <!-- дыра вместо двери -->
-  <path d="M178 236v-36a22 22 0 0 1 44 0v36z" fill="#2a1c12"/>
-  <g class="part${on('door')}"><path d="M178 236v-36a22 22 0 0 1 44 0v36z" fill="#d9773f" stroke="#5a3d28" stroke-width="4"/><circle cx="212" cy="218" r="3" fill="#ffd27f"/><path d="M200 182v-10" stroke="#5a3d28" stroke-width="2"/><path d="M194 186a6 6 0 0 1 12 0z" fill="#ffd23f" stroke="#5a3d28" stroke-width="2"/></g>
-  <g class="part${on('roof')}"><path d="M120 116 Q200 30 280 116 Q200 100 120 116z" fill="#e85d5d" stroke="#8a2f2f" stroke-width="4"/><circle cx="170" cy="92" r="8" fill="#fff6e6"/><circle cx="215" cy="76" r="10" fill="#fff6e6"/><circle cx="248" cy="100" r="6" fill="#fff6e6"/></g>
-  <g class="part${on('sign')}"><rect x="160" y="124" width="80" height="20" rx="4" fill="#c99a6b" stroke="#5a3d28" stroke-width="3"/><text x="200" y="139" text-anchor="middle" font-family="Comfortaa,sans-serif" font-weight="700" font-size="13" fill="#3a2410">ПОЧТА</text></g>
-  <g class="part${on('box')}"><rect x="78" y="196" width="6" height="44" fill="#5a3d28"/><rect x="62" y="176" width="38" height="26" rx="10" fill="#4a8fd8" stroke="#1f4e87" stroke-width="3"/><rect x="70" y="186" width="20" height="4" rx="2" fill="#1f4e87"/><path d="M100 180v-14h10v6h-10" fill="#e85d5d"/></g>
-  <g class="part${on('lamp')}"><circle cx="318" cy="170" r="34" fill="url(#glow)"/><rect x="316" y="176" width="5" height="66" fill="#3d3a33"/><rect x="308" y="158" width="21" height="24" rx="4" fill="#ffd27f" stroke="#3d3a33" stroke-width="3"/><path d="M305 158h27l-13-9z" fill="#3d3a33"/></g>
-  <g class="part${on('bench')}"><rect x="40" y="226" width="56" height="7" rx="3" fill="#c99a6b" stroke="#5a3d28" stroke-width="2"/><rect x="42" y="214" width="52" height="6" rx="3" fill="#c99a6b" stroke="#5a3d28" stroke-width="2"/><path d="M46 233v12M90 233v12" stroke="#5a3d28" stroke-width="4"/></g>
-  <g class="part${on('flowers')}"><ellipse cx="270" cy="248" rx="30" ry="7" fill="#5a3d28"/>${[[250,236,'#ff5d5d'],[262,230,'#ffd23f'],[275,234,'#b76cff'],[288,238,'#4aa8ff'],[268,242,'#ff5d5d']].map(([x,y,c])=>`<path d="M${x} ${y+8}v8" stroke="#2f8f3a" stroke-width="2"/><circle cx="${x}" cy="${y}" r="5" fill="${c}"/><circle cx="${x}" cy="${y}" r="2" fill="#fff6e6"/>`).join('')}</g>
-  <g class="part${on('balloon')}"><path d="M340 92 L333 112 M360 92 L367 112" stroke="#5a3d28" stroke-width="2"/><ellipse cx="350" cy="62" rx="26" ry="32" fill="#ffb84a" stroke="#b06d12" stroke-width="3"/><path d="M350 30v64M332 40q18 22 0 46M368 40q-18 22 0 46" stroke="#e85d5d" stroke-width="4" fill="none"/><rect x="333" y="110" width="34" height="18" rx="3" fill="#8a6244" stroke="#5a3d28" stroke-width="2"/><rect x="341" y="113" width="18" height="11" fill="#fff6e6" stroke="#c98420"/><path d="M341 113l9 6 9-6" stroke="#c98420" fill="none"/></g>
-  <!-- ёжик -->
-  <g transform="translate(222 214)"><path d="M0 30 Q-4 2 24 0 Q50 -2 50 30z" fill="#6b4a33"/>${Array.from({length:7},(_,i)=>`<path d="M${6+i*6} ${6-Math.sin(i/6*Math.PI)*6} l3 -10 l3 10" fill="#4a3324"/>`).join('')}<path d="M44 30 Q58 26 60 18 Q50 12 42 16z" fill="#e8c9a0"/><circle cx="60" cy="18" r="3" fill="#2a1c12"/><circle cx="50" cy="19" r="2" fill="#2a1c12"/><rect x="10" y="16" width="20" height="14" rx="2" fill="#fff6e6" stroke="#c98420" stroke-width="2"/><path d="M10 16l10 7 10-7" stroke="#c98420" stroke-width="2" fill="none"/></g>
-  </svg>`;
+  return `<img class="sbase" src="assets/scene/base.jpg" alt="Лесная почта: башня-почта у ручья в лесу" draggable="false">`+
+    ITEMS.map(it=>{const [l,t,w]=LAYERS[it.id];return `<img class="part${P.built.includes(it.id)?'':' off'}" data-part="${it.id}" src="assets/scene/${it.id}.png" alt="" draggable="false" style="left:${l}%;top:${t}%;width:${w}%">`}).join('');
 }
 
 /* ---------- главная ---------- */
@@ -345,24 +382,25 @@ function renderHome(){
   $('home').innerHTML=`<div class="home">
     <h1>Лесная почта </h1>
     <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-      <div class="scene">${sceneSVG()}</div>
-      <p class="story">После бури лесная почта развалилась. Ёжик Тиша разносит письма жителям леса, а за каждую доставку получает звёзды. На них почту можно отстроить заново.</p>
+      <div class="scene">${sceneSVG()}${petsLayer()}</div>
+      <p class="story">После бури лесная почта развалилась. Зайчик Тиша разносит письма жителям леса и получает за доставку звёзды, а на них почту можно отстроить заново. Каждый, кому пришло письмо, переселяется поближе к почте.</p>
     </div>
     <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
       <div class="panel">
         <div class="bank"><div><div class="story" style="font-size:12px">Звёзды на ремонт</div><b>${STAR_IMG} ${avail}</b> <span class="story">из ${totalStars()} заработанных</span></div>
         <button class="btn main" id="bPlay">${done?'Переиграть уровень':'Уровень '+(nl+1)} ▶</button></div>
-        <div class="story">Следующее письмо: <b style="color:var(--ink)">${LEVELS[nl].to}</b></div>
+        <div class="next">${petImg(LEVELS[nl].pet,"nextpet")}<div class="story">Следующее письмо:<br><b style="color:var(--ink)">${LEVELS[nl].to}</b></div></div>
       </div>
-      <div class="panel"><h2>Ремонт почты</h2><div class="items">${ITEMS.map(it=>{const b=P.built.includes(it.id);return `<div class="item"><span>${it.name}</span>${b?'<span class="done">✓ готово</span>':`<button class="btn small" data-build="${it.id}" ${avail<it.cost?'disabled':''}>${STAR_IMG} ${it.cost}</button>`}</div>`}).join('')}</div></div>
-      <div class="panel"><h2>Письма</h2><div class="levels">${LEVELS.map((l,i)=>{const open=i===0||P.stars[i-1]>0||P.stars[i]>0;return `<button class="lv ${i===nl?'cur':''}" data-lv="${i}" ${open?'':'disabled'} aria-label="Уровень ${i+1}">${i+1}<small>${'<img src="assets/star.png" alt="★">'.repeat(P.stars[i])}</small></button>`}).join('')}</div></div>
+      <div class="panel"><h2>Ремонт почты</h2><div class="items">${ITEMS.map(it=>{const b=P.built.includes(it.id);return `<div class="item"><span>${it.name}</span>${b?'<span class="done">✓ готово</span>':(it.req&&!P.built.includes(it.req))?`<span class="need">сначала: ${ITEMS.find(x=>x.id===it.req).name.toLowerCase()}</span>`:`<button class="btn small" data-build="${it.id}" ${avail<it.cost?'disabled':''}>${STAR_IMG} ${it.cost}</button>`}</div>`}).join('')}</div></div>
+      <div class="panel"><h2>Письма</h2><div class="levels">${LEVELS.map((l,i)=>{const open=i===0||P.stars[i-1]>0||P.stars[i]>0;return `<button class="lv ${i===nl?'cur':''}" data-lv="${i}" ${open?'':'disabled'} aria-label="Уровень ${i+1}: ${l.name}"><span class="num">${i+1}</span>${petImg(l.pet,'face')}<small>${'<img src="assets/star.png" alt="★">'.repeat(P.stars[i])}</small></button>`}).join('')}</div></div>
     </div></div>`;
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
+  if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>toast(n.name+' теперь живёт у почты!'),500)}
   $('home').querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{ac();showIntro(+b.dataset.lv)});
   $('home').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
     const it=ITEMS.find(i=>i.id===b.dataset.build);if(totalStars()-spent()<it.cost)return;
     P.built.push(it.id);save();ac();chime();
-    const off=$('home').querySelector('.part.off');renderHome();
+    renderHome();const nb=$('home').querySelector(`[data-part="${it.id}"]`);if(nb){nb.classList.add('off');void nb.offsetWidth;nb.classList.remove('off');nb.classList.add('built')}
     if(P.built.length===ITEMS.length)setTimeout(()=>toast('Почта полностью отстроена!'),300);
   });
 }
@@ -388,7 +426,7 @@ function startLevel(i){
   $('level').innerHTML=`<div class="game" id="game">
     <div class="hud">
       <div class="box mv"><div class="k">Ходы</div><div class="moves" id="mv"></div></div>
-      <div class="box gl"><div class="k">Письмо · ${LV.to}</div><div class="goals" id="gl"></div></div>
+      <div class="box gl"><div class="k whok">${petImg(LV.pet,"hudpet")}<span>Письмо<br>${LV.to}</span></div><div class="goals" id="gl"></div></div>
       <div class="box sc"><div class="k">Очки</div><div class="scorev" id="sc">0</div></div>
       <div class="tools">
         <button class="btn tool" id="tHammer" title="Разбить одну клетку, не тратя ход">🔨 <b id="nH"></b></button>
@@ -720,7 +758,7 @@ function showIntro(i){
   const L=LEVELS[i];
   const map=L.map||Array(N).fill('........');
   const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLx'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++}return {t:g[0],need}});
-  $('card').innerHTML=`<div class="stamp">✉</div><div class="to">Письмо ${i+1} · кому: ${L.to}</div><h2>${L.to}</h2><p>${L.text}</p>${goalsHTML(gs)}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
+  $('card').innerHTML=`<div class="stamp">✉</div><div class="who">${petImg(L.pet,'portrait')}<div><div class="to">Письмо ${i+1} · кому</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
   $('bGo').onclick=()=>startLevel(i);
@@ -731,13 +769,14 @@ function win(){
   const frac=moves/LV.moves;const stars=frac>=.3?3:frac>=.12?2:1;
   score+=moves*50;
   const before=P.stars[LI];P.stars[LI]=Math.max(before,stars);
+  const moved=!before&&LV.pet;if(moved)P.newPet=LI;
   const gained=P.stars[LI]-before;
   if(stars===3)P.hammers++;
   save();fanfare();
   if(!SPEED)return;
-  $('card').innerHTML=`<div class="stamp">✓</div><div class="to">Доставлено · ${LV.to}</div><h2>Письмо у адресата!</h2>
+  $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'portrait happy')}<div><div class="to">Доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
-    <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''}</p>
+    <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
     <div class="row"><button class="btn" id="bHome">На почту</button>${LI<LEVELS.length-1?'<button class="btn main" id="bNext">Следующее письмо</button>':''}</div>`;
   $('bHome').onclick=renderHome;
   if($('bNext'))$('bNext').onclick=()=>showIntro(LI+1);
@@ -747,7 +786,7 @@ function lose(){
   clearHint();sad();
   if(!SPEED)return;
   const left=goals.filter(g=>g.have<g.need).map(g=>({...g,need:g.need-g.have}));
-  $('card').innerHTML=`<div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2><p>Осталось совсем немного:</p>${goalsHTML(left)}
+  $('card').innerHTML=`<div class="who">${petImg(LV.pet,'portrait sad')}<div><div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2></div></div><p>Осталось совсем немного:</p>${goalsHTML(left)}
     ${extraUsed?'':'<button class="btn main" id="bExtra">+5 ходов</button><p class="note">В релизе: за просмотр рекламы. Один раз за уровень.</p>'}
     <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn" id="bRetry">Заново</button></div>`;
   if($('bExtra'))$('bExtra').onclick=()=>{extraUsed=true;moves+=5;updateHUD();closeOv();armHint()};
