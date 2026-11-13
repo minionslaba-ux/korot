@@ -420,6 +420,25 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 @keyframes hmrise{from{transform:translateY(24px);opacity:0}}
 @media (prefers-reduced-motion:reduce){.hm>*,.tuth,.tutb,.ldbun{animation:none}}
 
+
+/* ---------- монетизация ---------- */
+#adov{position:fixed;inset:0;z-index:65000;background:#0b1a2ee6;display:flex;align-items:center;justify-content:center;padding:16px}
+#adov[hidden]{display:none}
+.adbox{background:#fff;border-radius:22px;padding:22px;max-width:360px;width:100%;box-sizing:border-box;text-align:center;display:flex;flex-direction:column;gap:10px;color:var(--ink)}
+.adbox h3{margin:0;font-family:var(--display);font-size:22px}
+.adtag{align-self:center;background:#2f7fd6;color:#fff;font:700 12px var(--display);border-radius:999px;padding:3px 12px}
+.adbox.buy .adtag{background:#4cbf4c}
+.adnum{font:700 64px var(--display);color:#2f7fd6;line-height:1}
+.adprice{font:700 30px var(--display);color:var(--ink)}
+.adbox p{margin:0;font-size:14px;color:var(--ink-dim);line-height:1.4}
+.adbox .row{display:flex;gap:8px}.adbox .row .btn{flex:1}
+.card .btn.adx2,.card .btn.adfree{border-image-source:url(assets/btn_blue.png);color:#fff;text-shadow:0 1px 0 #1b5fa8;width:100%}
+.offerlist{display:flex;flex-direction:column;gap:6px;font:700 15px var(--body);color:var(--ink)}
+.offerlist>span{display:flex;align-items:center;gap:8px}
+.sitem.pass{background:linear-gradient(135deg,#f3e9ff,#e6f4ff);box-shadow:inset 0 0 0 2px #c9a6ff}
+.evcounts{display:flex;flex-wrap:wrap;gap:6px}.evcounts span{background:#eef4fb;border-radius:999px;padding:3px 10px;font-size:12px}
+.evlist{margin:0;padding-left:18px;font-size:12px;line-height:1.5;color:var(--ink-dim);max-height:200px;overflow:auto}
+
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
@@ -822,7 +841,7 @@ const ITEMS=[
  {id:'boat',name:'Почтовая лодка',cost:16,ch:6},
  {id:'airship',name:'Дирижабль почты',cost:18,ch:6},
 ];
-let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2,coins:150,inv:{},owned:['tisha:classic','frame:classic'],tisha:'classic',frame:'classic'};
+let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2,coins:100,inv:{},owned:['tisha:classic','frame:classic'],tisha:'classic',frame:'classic'};
 function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));if(P.muted){P.musicOff=P.sfxOff=true;delete P.muted}while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
 function save(){try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}}
 const totalStars=()=>P.stars.reduce((a,b)=>a+b,0);
@@ -870,6 +889,7 @@ function renderHome(){
   $('bAlbum').onclick=()=>{ac();showAlbum()};
   $('bShop').onclick=()=>{ac();showShop('boosters',null)};
   $('bSettings').onclick=()=>{ac();showSettings(false)};
+  passDaily();showStarterOffer();
   const sc=$('home').querySelector('.scene');if(sc)seasonFx(sc,SEASON==='summer'?10:22,true);
   if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>{toast(n.name+' теперь живёт у почты!');sfx('friend',.8)},500)}
 }
@@ -889,7 +909,7 @@ function showRepair(){
   $('bRepClose').onclick=()=>{$('card').classList.remove('wide');closeOv()};
   $('card').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
     const it=ITEMS.find(i=>i.id===b.dataset.build);if(totalStars()-spent()<it.cost)return;
-    P.built.push(it.id);save();ac();chime();$('card').classList.remove('wide');
+    P.built.push(it.id);save();ac();chime();$('card').classList.remove('wide');track('building',{id:it.id,cost:it.cost});
     renderHome();const nb=$('home').querySelector(`[data-part="${it.id}"]`);if(nb){nb.classList.add('off');void nb.offsetWidth;nb.classList.remove('off');nb.classList.add('built')}
     toast(it.name+': готово!');
     if(P.built.length===ITEMS.length)setTimeout(()=>toast('Почта полностью отстроена!'),1600);
@@ -935,12 +955,14 @@ function showSettings(){
   $('card').innerHTML=`<div class="to">Настройки</div><h2>Настройки</h2>
     ${toggleRow('sMusic','Музыка',!P.musicOff)}${toggleRow('sSfx','Звуки',!P.sfxOff)}
     <button class="btn" id="sIntro">${ICO('movie')} Посмотреть ролик</button>
+    <button class="btn" id="sAn">${ICO('information')} События аналитики</button>
     <button class="btn danger" id="sReset">${ICO('trashcan')} Сбросить прогресс</button>
     <p class="note">Сейчас в лесу ${SEASONS[SEASON].name}. Графика, звуки и шрифты: Kenney и Google Fonts (свободные лицензии).</p>
     <div class="row"><button class="btn main" id="sClose">Готово</button></div>`;
   openOv();bindToggles();
   $('sClose').onclick=closeOv;
   $('sIntro').onclick=()=>{closeOv();playIntro()};
+  $('sAn').onclick=showAnalytics;
   $('sReset').onclick=()=>{
     $('card').innerHTML=`<div class="to">Сброс прогресса</div><h2>Начать заново?</h2><p>Пропадут звёзды, монеты, постройки, жители у почты и марки. Отменить это нельзя.</p>
       <div class="row"><button class="btn main" id="rNo">Оставить как есть</button><button class="btn danger" id="rYes">Сбросить</button></div>`;
@@ -977,7 +999,7 @@ const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
   reveal();hideTut();
-  LI=i;LV=i<0?DAILY:LEVELS[i];playMusic(i%2?'level2':'level1');moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
+  LI=i;LV=i<0?DAILY:LEVELS[i];track('level_start',{level:i<0?'daily':i+1});playMusic(i%2?'level2':'level1');moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
   $('home').hidden=true;$('map').hidden=true;$('level').hidden=false;closeOv();try{scrollTo(0,0)}catch(e){}
   $('level').innerHTML=`<div class="game" id="game">
     <div class="hud">
@@ -1013,7 +1035,7 @@ function startLevel(i){
   });
   bindBoard();updateHUD();
   $('tHammer').onclick=()=>{if(busy)return;if(P.hammers<=0)return quickBuy('hammer');tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
-  $('tShuffle').onclick=async()=>{if(busy)return;if(P.shuffles<=0)return quickBuy('shuffle');P.shuffles--;save();busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
+  $('tShuffle').onclick=async()=>{if(busy)return;if(P.shuffles<=0)return quickBuy('shuffle');P.shuffles--;save();track('booster_use',{id:'shuffle',level:LI+1});busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
   $('tMenu').onclick=()=>showPause();
   armHint();
 }
@@ -1289,7 +1311,7 @@ async function hammerAt(r,c){
   if(busy||!grid[r][c])return;
   if(grid[r][c].parcel){toast('Посылку молотком не разбить: доведи её до низа');return}
   if(grid[r][c].hero){toast('Тишу молотком? Ни за что!');return}
-  tool=null;P.hammers--;save();busy=true;clearHint();
+  tool=null;P.hammers--;save();busy=true;clearHint();track('booster_use',{id:'hammer',level:LI+1});
   if(SPEED)fx({sp:'bomb'},r,c);
   await applyHits([[r,c]],[],false,1);await gravity();await resolve(null);
   busy=false;updateHUD();await afterMove();
@@ -1347,10 +1369,11 @@ function showIntro(i){
   const L=i<0?DAILY:LEVELS[i];window._GL=L;setTimeout(()=>{window._GL=null},0);
   const map=L.map||Array(N).fill('........');
   const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLxM'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++;if(g[0]==='p'&&ch==='p')need++;if(g[0]==='h'&&ch==='h')need++}return {t:g[0],need}});
-  $('card').innerHTML=`<div class="stamp">${BICON.mailc}</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}${boostChips()}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
+  $('card').innerHTML=`<div class="stamp">${BICON.mailc}</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}${boostChips()}${i>=3||i<0?`<button class="btn adfree" id="bFreeBoost">${bi('ad')} Бесплатный бустер за рекламу</button>`:''}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
   bindBoostChips();
+  if($('bFreeBoost'))$('bFreeBoost').onclick=async()=>{const b=$('bFreeBoost');b.disabled=true;if(await Platform.rewarded('free_booster')){const id=['rocket','bomb','moves3'][Math.floor(Math.random()*3)];invAdd(id,1);pendingBoost.add(id);save();const it=SHOP.boosters.find(x=>x.id===id);b.innerHTML=`Получено: <span class="ib">${it.icon}</span> ${it.name}`;const w=document.querySelector('.boosts');if(w){w.outerHTML=boostChips();bindBoostChips()}}else b.disabled=false};
   $('bGo').onclick=()=>{ac();sfx('start',.7);startLevel(i);applyBoosts();setTimeout(maybeTutorial,500)};
   openOv();
 }
@@ -1363,34 +1386,38 @@ function win(){
   const moved=!before&&LV.pet&&!!SLOTS[LI];if(moved)P.newPet=LI;
   const gained=P.stars[LI]-before;
   if(stars===3)P.hammers++;
-  const coinGain=15+moves*2+(stars===3?20:0)+(!before?25:0);P.coins=(P.coins||0)+coinGain;
+  const coinGain=10+moves+(!before?10:0);P.coins=(P.coins||0)+coinGain;
+  track('level_win',{level:LI+1,stars,moves_left:moves,score,first:!before});
   save();duck(2600);fanfare();
   if(!SPEED)return;
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
     <p>Очки: <b data-roll="${score}">0</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''} Монеты: <b>+<span data-roll="${coinGain}" data-tick="1">0</span> ${COIN}</b>.${!before?' Новая марка в альбоме!':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
     ${newStampsNote()}
+    <div class="row"><button class="btn adx2" id="bX2" data-gain="${coinGain}">${bi('ad')} ×2 монеты: ещё +${coinGain}</button></div>
     <div class="row"><button class="btn pcbtn" id="bCard">${bi("postcard")} Открытка другу</button></div>
     <div class="row"><button class="btn" id="bHome">На почту</button>${LI<LEVELS.length-1?'<button class="btn main" id="bNext">Следующее письмо</button>':''}</div>`;
   rebindWin();confetti();rollNumbers($('card'));
   openOv();
 }
 function rebindWin(){
-  if($('bHome'))$('bHome').onclick=renderHome;
-  if($('bNext'))$('bNext').onclick=()=>showIntro(LI+1);
+  if($('bHome'))$('bHome').onclick=()=>maybeInter('win_home',renderHome);
+  if($('bNext'))$('bNext').onclick=()=>maybeInter('win_next',()=>showIntro(LI+1));
+  if($('bX2'))$('bX2').onclick=async()=>{const b=$('bX2');b.disabled=true;const g=+b.dataset.gain;if(await Platform.rewarded('win_x2')){P.coins+=g;save();b.innerHTML=`Получено +${g} ${COIN}`;sfx('build',.7)}else b.disabled=false};
+  if($('bDX2'))$('bDX2').onclick=async()=>{const b=$('bDX2');b.disabled=true;if(await Platform.rewarded('daily_x2')){P.coins+=50;P.hammers++;save();b.innerHTML='Получено: +50 '+COIN+' и молоток';sfx('build',.7)}else b.disabled=false};
   if($('bCard'))$('bCard').onclick=()=>openPostcard(LV.pet||'bunny');
 }
 function lose(){
-  clearHint();duck(2400);sad();
+  clearHint();track('level_lose',{level:LI<0?'daily':LI+1,goals_left:goals.filter(g=>g.have<g.need).map(g=>g.t+(g.need-g.have)).join(' ')});duck(2400);sad();
   if(!SPEED)return;
   const left=goals.filter(g=>g.have<g.need).map(g=>({...g,need:g.need-g.have}));
   $('card').innerHTML=`<div class="who">${petImg(LV.pet,'petport sad')}<div><div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2></div></div><p>Осталось совсем немного:</p>${goalsHTML(left)}
-    ${extraUsed?'':'<button class="btn main" id="bExtra">'+bi('ad')+' +5 ходов бесплатно</button><p class="note">В релизе: за просмотр рекламы. Один раз за уровень.</p>'}
-    <button class="btn buy5" id="bBuy5" ${P.coins<90?'disabled':''}>+5 ходов за ${COIN} 90 <small>(у тебя ${P.coins})</small></button>
+    ${extraUsed?'':'<button class="btn main" id="bExtra">'+bi('ad')+' +5 ходов за рекламу</button><p class="note">Один раз за уровень.</p>'}
+    <button class="btn buy5" id="bBuy5" ${P.coins<120?'disabled':''}>+5 ходов за ${COIN} 120 <small>(у тебя ${P.coins})</small></button>
     <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn" id="bRetry">Заново</button></div>`;
-  if($('bExtra'))$('bExtra').onclick=()=>{extraUsed=true;moves+=5;updateHUD();closeOv();armHint()};
-  $('bBuy5').onclick=()=>{if(spend(90)){moves+=5;updateHUD();closeOv();armHint()}};
-  $('bHome').onclick=renderHome;$('bRetry').onclick=()=>startLevel(LI);
+  if($('bExtra'))$('bExtra').onclick=async()=>{if(await Platform.rewarded('lose_moves')){extraUsed=true;track('extra_moves',{how:'ad',level:LI+1});moves+=5;updateHUD();closeOv();armHint()}};
+  $('bBuy5').onclick=()=>{if(spend(120)){track('extra_moves',{how:'coins',level:LI+1});moves+=5;updateHUD();closeOv();armHint()}};
+  $('bHome').onclick=()=>maybeInter('lose_home',renderHome);$('bRetry').onclick=()=>maybeInter('lose_retry',()=>startLevel(LI));
   openOv();
 }
 
@@ -1484,7 +1511,7 @@ const HAND_SVG='<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M38 8c6 0
 function hideTut(){document.querySelectorAll('.tutb,.tuth').forEach(e=>e.remove())}
 function maybeTutorial(){
   if(!SPEED||LI<0)return;const t=TUT[LI];if(!t||(P.tut||[]).includes(LI))return;
-  P.tut=[...(P.tut||[]),LI];save();
+  P.tut=[...(P.tut||[]),LI];save();track('tutorial',{level:LI+1});
   const wrap=document.querySelector('.boardwrap');if(!wrap)return;
   const b=document.createElement('div');b.className='tutb';b.innerHTML=`${petImg('bunny','tutpet')}<p>${t.text}</p><button class="btn small" id="tutOk">Понятно</button>`;
   wrap.appendChild(b);$('tutOk').onclick=hideTut;
@@ -1574,6 +1601,105 @@ const BICON={
 const bi=k=>`<span class="ib">${BICON[k]}</span>`;
 function rbtn(id,color,icon,label,badge){return `<button class="rbtn ${color}" id="${id}" aria-label="${label}">${icon}${badge!==''&&badge!=null?`<span class="badge">${badge}</span>`:''}<span class="lbl">${label}</span></button>`}
 
+
+/* ---------- аналитика ---------- */
+const Analytics={buf:[],track(ev,params={}){
+  const e={ev,t:Date.now(),...params};this.buf.push(e);if(this.buf.length>300)this.buf.shift();
+  try{localStorage.setItem('lp-analytics',JSON.stringify(this.buf))}catch(x){}
+  try{if(window.ym&&window.YM_ID)window.ym(window.YM_ID,'reachGoal',ev,params)}catch(x){}
+  if(SPEED)console.debug('[analytics]',ev,params);
+}};
+try{Analytics.buf=JSON.parse(localStorage.getItem('lp-analytics'))||[]}catch(e){}
+const track=(e,p)=>Analytics.track(e,p);
+
+/* ---------- платформа: реклама и покупки (Яндекс Игры SDK или демо) ---------- */
+function adPause(on){try{if(!AC)return;if(on)AC.suspend();else AC.resume()}catch(e){}}
+function adOverlay(html){let o=$('adov');if(!o){o=document.createElement('div');o.id='adov';document.body.appendChild(o)}o.innerHTML=html;o.hidden=false;return o}
+function demoAd(kind,cb){
+  if(!SPEED)return cb();
+  adPause(true);let n=kind==='rewarded'?3:2;
+  const o=adOverlay(`<div class="adbox"><div class="adtag">Реклама · демо</div><div class="adnum" id="adNum">${n}</div><p>${kind==='rewarded'?'В релизе здесь будет короткое видео. После него игрок получает награду.':'В релизе здесь будет реклама между уровнями (не чаще раза в 2–3 минуты).'}</p></div>`);
+  const tm=setInterval(()=>{n--;const e=$('adNum');if(e)e.textContent=n;if(n<=0){clearInterval(tm);o.hidden=true;adPause(false);cb()}},700);
+}
+function demoBuy(id,rub,done){
+  if(!SPEED)return done(true);
+  const pr=PRODUCTS[id];
+  const o=adOverlay(`<div class="adbox buy"><div class="adtag">Покупка · демо</div><h3>${pr.name}</h3><div class="adprice">${rub}</div><p>В релизе здесь откроется оплата через площадку. В прототипе покупка бесплатная, чтобы её можно было проверить.</p>
+    <div class="row"><button class="btn" id="dbNo">Отмена</button><button class="btn main" id="dbYes">Получить (демо)</button></div></div>`);
+  $('dbNo').onclick=()=>{o.hidden=true;done(false)};$('dbYes').onclick=()=>{o.hidden=true;done(true)};
+}
+const Platform={name:'demo',ysdk:null,payments:null,lastInter:0,
+  async init(){
+    if(!window.YaGames)return;
+    try{this.ysdk=await window.YaGames.init();this.name='yandex';
+      try{this.payments=await this.ysdk.getPayments({signed:false});const ps=await this.payments.getPurchases();for(const p of ps){if(p.productID==='noads')P.noAds=true}save()}catch(e){}
+      try{this.ysdk.features.LoadingAPI.ready()}catch(e){}
+    }catch(e){}
+  },
+  rewarded(placement){
+    track('ad_rewarded_request',{placement});
+    return new Promise(res=>{
+      const done=ok=>{adPause(false);if(ok)track('ad_rewarded',{placement});res(ok)};
+      if(this.ysdk){let got=false;try{this.ysdk.adv.showRewardedVideo({callbacks:{onOpen:()=>adPause(true),onRewarded:()=>{got=true},onClose:()=>done(got),onError:()=>done(false)}})}catch(e){done(false)}return}
+      demoAd('rewarded',()=>done(true));
+    });
+  },
+  interstitial(placement){
+    return new Promise(res=>{
+      if(P.noAds||Date.now()-this.lastInter<150000)return res();
+      this.lastInter=Date.now();track('ad_interstitial',{placement});
+      if(this.ysdk){try{this.ysdk.adv.showFullscreenAdv({callbacks:{onOpen:()=>adPause(true),onClose:()=>{adPause(false);res()},onError:()=>{adPause(false);res()}}})}catch(e){res()}return}
+      demoAd('inter',res);
+    });
+  },
+  buy(id,rub){
+    track('purchase_request',{id});
+    return new Promise(res=>{
+      const done=ok=>{if(ok)track('purchase',{id,rub});else track('purchase_cancel',{id});res(ok)};
+      if(this.payments){this.payments.purchase({id}).then(pc=>{done(true);if(PRODUCTS[id].consumable&&pc&&pc.purchaseToken){try{this.payments.consumePurchase(pc.purchaseToken)}catch(e){}}}).catch(()=>done(false));return}
+      demoBuy(id,rub,done);
+    });
+  },
+};
+function maybeInter(placement,next){if(P.stars.filter(Boolean).length<5)return next();Platform.interstitial(placement).then(next)}
+const own=k=>{if(!(P.owned||[]).includes(k))P.owned=[...(P.owned||[]),k]};
+const PRODUCTS={
+  starter:{name:'Стартовый набор',rub:'99 ₽',consumable:false,grant:()=>{P.coins+=1000;invAdd('rocket',3);invAdd('bomb',3);invAdd('moves3',3);own('frame:gold');P.starterBought=true}},
+  coins500:{name:'Мешочек монет',rub:'79 ₽',consumable:true,grant:()=>{P.coins+=500}},
+  coins1500:{name:'Сундучок монет',rub:'199 ₽',consumable:true,grant:()=>{P.coins+=1500}},
+  coins4000:{name:'Клад: 4000 монет и Золотой Тиша',rub:'449 ₽',consumable:true,grant:()=>{P.coins+=4000;own('tisha:gold')}},
+  noads:{name:'Игра без рекламы',rub:'149 ₽',consumable:false,grant:()=>{P.noAds=true}},
+  pass:{name:'Почтовый сезон на 30 дней',rub:'199 ₽',consumable:true,grant:()=>{P.passUntil=Math.max(P.passUntil||0,Date.now())+30*864e5;own('tisha:pass');own('frame:season')}},
+};
+const passActive=()=>(P.passUntil||0)>Date.now();
+async function buyProduct(id){const pr=PRODUCTS[id];const ok=await Platform.buy(id,pr.rub);if(ok){pr.grant();save();sfx('win',.7);toast(pr.name+': готово!')}return ok}
+function passDaily(){
+  if(!passActive()||P.passDay===todayKey())return;
+  P.passDay=todayKey();P.coins+=60;P.hammers++;save();track('pass_daily');
+  setTimeout(()=>{toast('Почтовый сезон: +60 монет и молоток');sfx('build',.6)},700);
+}
+function showStarterOffer(){
+  if(P.starterBought||P.starterOffered||!P.stars[9])return;
+  P.starterOffered=true;save();track('offer_show',{id:'starter'});
+  setTimeout(()=>{if(!$('ov').hidden)return;
+    $('card').innerHTML=`<div class="to">Только один раз</div><h2>${bi('bag')} Стартовый набор</h2>
+      <div class="offerlist"><span>${COIN} 1000 монет</span><span><span class="ib">${BICON.rocket}</span> 3 ракеты</span><span><span class="ib">${BICON.bomb}</span> 3 бомбы</span><span><span class="ib">${BICON.moves3}</span> 3 × «+3 хода»</span><span><span class="ib">${BICON.postcard}</span> золотая рамка открыток</span></div>
+      <p class="note">Выгоднее, чем по отдельности, примерно в 3 раза. Предложение больше не повторится, но набор останется в магазине.</p>
+      <div class="row"><button class="btn" id="soNo">Позже</button><button class="btn main" id="soYes">Купить за 99 ₽</button></div>`;
+    openOv();$('soNo').onclick=closeOv;$('soYes').onclick=async()=>{if(await buyProduct('starter')){closeOv();renderHome()}};
+  },900);
+}
+function showAnalytics(){
+  const counts={};for(const e of Analytics.buf)counts[e.ev]=(counts[e.ev]||0)+1;
+  const last=Analytics.buf.slice(-12).reverse().map(e=>`<li><b>${e.ev}</b> ${Object.entries(e).filter(([k])=>k!=='ev'&&k!=='t').map(([k,v])=>k+'='+v).join(', ')}</li>`).join('');
+  $('card').innerHTML=`<div class="to">Для разработчика</div><h2>События аналитики</h2>
+    <div class="evcounts">${Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<span>${k}: <b>${v}</b></span>`).join('')||'<span>Пока пусто</span>'}</div>
+    <p class="note">Последние события:</p><ul class="evlist">${last}</ul>
+    <p class="note">В релизе эти события уходят в Яндекс Метрику, если на странице задан номер счётчика (переменная YM_ID).</p>
+    <div class="row"><button class="btn main" id="anClose">Закрыть</button></div>`;
+  openOv();$('anClose').onclick=()=>showSettings();
+}
+
 /* ---------- магазин ---------- */
 const COIN='<img class="coin" src="assets/coin.png" alt="монет">';
 const invN=id=>(P.inv&&P.inv[id])||0;
@@ -1592,17 +1718,18 @@ const SHOP={
     {id:'choco',name:'Шоколадный',filter:'sepia(.5) brightness(.62) saturate(1.4)',price:300},
     {id:'forest',name:'Лесной дух',filter:'hue-rotate(85deg) saturate(1.25)',price:500},
     {id:'gold',name:'Золотой',filter:'sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.12)',price:1500},
+    {id:'pass',name:'Почтальон сезона',filter:'hue-rotate(195deg) saturate(1.5) brightness(1.05)',price:0,passOnly:true},
   ],
   frames:[
     {id:'classic',name:'Классическая',price:0},
     {id:'gold',name:'Золотая',price:300},
     {id:'night',name:'Ночная',price:400},
+    {id:'season',name:'Сезонная',price:0,passOnly:true},
   ],
   packs:[
-    {name:'Мешочек монет',coins:500,rub:'79 ₽'},
-    {name:'Сундучок монет',coins:1500,rub:'199 ₽'},
-    {name:'Клад: 4000 монет и Золотой Тиша',coins:4000,rub:'449 ₽'},
-    {name:'Игра без рекламы',coins:0,rub:'149 ₽'},
+    {id:'coins500',name:'Мешочек монет',coins:500,rub:'79 ₽'},
+    {id:'coins1500',name:'Сундучок монет',coins:1500,rub:'199 ₽'},
+    {id:'coins4000',name:'Клад: 4000 монет и Золотой Тиша',coins:4000,rub:'449 ₽'},
   ],
 };
 const owns=k=>(P.owned||[]).includes(k);
@@ -1610,7 +1737,7 @@ const tishaFilter=()=>(SHOP.tisha.find(t=>t.id===P.tisha)||SHOP.tisha[0]).filter
 function applyTisha(){document.documentElement.style.setProperty('--tisha',tishaFilter())}
 function dealOfDay(){const it=SHOP.boosters[dayNum(new Date())%SHOP.boosters.length];return {...it,old:it.price,price:Math.round(it.price*.7/5)*5}}
 function addCoins(n,why){P.coins=(P.coins||0)+n;save();if(why&&SPEED)toast(`+${n} монет ${why}`)}
-function spend(price){if((P.coins||0)<price){toast('Не хватает монет');return false}P.coins-=price;save();sfx('build',.6);return true}
+function spend(price){if((P.coins||0)<price){toast('Не хватает монет');track('coins_short',{price});return false}P.coins-=price;track('coins_spend',{price});save();sfx('build',.6);return true}
 let shopTab='boosters',shopBack=null;
 function showShop(tab,back){
   if(tab)shopTab=tab;if(back!==undefined)shopBack=back;
@@ -1624,21 +1751,25 @@ function showShop(tab,back){
       <button class="btn buy" data-b="${b.id}" ${P.coins<b.price?'disabled':''}>${COIN} ${b.price}</button></div>`).join('')}</div>`;
   }
   if(shopTab==='tisha'){
-    body=`<p class="note">Наряд виден везде: на поле, у почты, в ролике и на открытках.</p><div class="sgrid">${SHOP.tisha.map(t=>{const k='tisha:'+t.id,own=owns(k)||t.price===0,on=P.tisha===t.id;
+    body=`<p class="note">Наряд виден везде: на поле, у почты, в ролике и на открытках.</p><div class="sgrid">${SHOP.tisha.map(t=>{const k='tisha:'+t.id,own=owns(k)||(t.price===0&&!t.passOnly),on=P.tisha===t.id;
       return `<div class="sitem${on?' on':''}"><img class="tprev" src="assets/pets/bunny.png" alt="" style="filter:${t.filter} drop-shadow(0 3px 2px #0003)!important"><b>${t.name}</b>
-      ${on?'<span class="ddone">✓ Надет</span>':own?`<button class="btn" data-wear="${t.id}">Надеть</button>`:`<button class="btn buy" data-t="${t.id}" ${P.coins<t.price?'disabled':''}>${COIN} ${t.price}</button>`}</div>`}).join('')}</div>`;
+      ${on?'<span class="ddone">✓ Надет</span>':own?`<button class="btn" data-wear="${t.id}">Надеть</button>`:t.passOnly?'<button class="btn" data-tab="coins">В «Почтовом сезоне»</button>':`<button class="btn buy" data-t="${t.id}" ${P.coins<t.price?'disabled':''}>${COIN} ${t.price}</button>`}</div>`}).join('')}</div>`;
   }
   if(shopTab==='frames'){
-    body=`<p class="note">Рамка для открыток друзьям.</p><div class="sgrid">${SHOP.frames.map(f=>{const k='frame:'+f.id,own=owns(k)||f.price===0,on=P.frame===f.id;
+    body=`<p class="note">Рамка для открыток друзьям.</p><div class="sgrid">${SHOP.frames.map(f=>{const k='frame:'+f.id,own=owns(k)||(f.price===0&&!f.passOnly),on=P.frame===f.id;
       return `<div class="sitem wide${on?' on':''}"><canvas class="fprev" data-fp="${f.id}"></canvas><b>${f.name}</b>
-      ${on?'<span class="ddone">✓ Выбрана</span>':own?`<button class="btn" data-frame="${f.id}">Выбрать</button>`:`<button class="btn buy" data-f="${f.id}" ${P.coins<f.price?'disabled':''}>${COIN} ${f.price}</button>`}</div>`}).join('')}</div>`;
+      ${on?'<span class="ddone">✓ Выбрана</span>':own?`<button class="btn" data-frame="${f.id}">Выбрать</button>`:f.passOnly?'<button class="btn" data-tab="coins">В «Почтовом сезоне»</button>':`<button class="btn buy" data-f="${f.id}" ${P.coins<f.price?'disabled':''}>${COIN} ${f.price}</button>`}</div>`}).join('')}</div>`;
   }
   if(shopTab==='coins'){
-    const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;
+    const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;const until=P.passUntil?new Date(P.passUntil).toLocaleDateString('ru-RU'):'';
     body=`<div class="sitem wide adv"><span class="bi">${BICON.ad}</span><b>Посмотреть рекламу</b><span class="sd">+30 монет. Осталось сегодня: ${3-a} из 3.</span>
       <button class="btn main" id="bAd" ${a>=3?'disabled':''}>+30 ${COIN}</button></div>
-      <p class="note">В прототипе реклама не показывается, монеты начисляются сразу. Покупки за рубли появятся в релизе через площадку (Яндекс Игры, VK Play).</p>
-      <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${k.coins?BICON.bag:BICON.noads}</span><b>${k.name}</b>${k.coins?`<span class="have">${COIN} ${k.coins}</span>`:'<span class="sd">Без рекламы между уровнями</span>'}<button class="btn" disabled>${k.rub}</button></div>`).join('')}</div>`;
+      ${P.starterBought?'':`<div class="deal"><span class="dealtag">Выгодно</span><span class="bi">${BICON.bag}</span><div class="dtxt"><b>Стартовый набор</b><span>1000 монет, по 3 ракеты, бомбы и «+3 хода», золотая рамка</span></div><button class="btn main buy" data-p="starter">99 ₽</button></div>`}
+      <div class="sitem wide pass${passActive()?' on':''}"><span class="bi">${BICON.medal}</span><b>Почтовый сезон</b><span class="sd">30 дней: каждый день +60 монет и молоток, наряд «Почтальон сезона» и сезонная рамка открыток.</span>
+        ${passActive()?`<span class="ddone">✓ Активен до ${until}</span><button class="btn buy" data-p="pass">Продлить · 199 ₽</button>`:'<button class="btn main buy" data-p="pass">199 ₽</button>'}</div>
+      <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${BICON.bag}</span><b>${k.name}</b><span class="have">${COIN} ${k.coins}</span><button class="btn buy" data-p="${k.id}">${k.rub}</button></div>`).join('')}
+        <div class="sitem${P.noAds?' on':''}"><span class="bi">${BICON.noads}</span><b>Игра без рекламы</b><span class="sd">Без рекламы между уровнями. Награды за рекламу остаются по желанию.</span>${P.noAds?'<span class="ddone">✓ Куплено</span>':'<button class="btn buy" data-p="noads">149 ₽</button>'}</div></div>
+      <p class="note">${Platform.name==='yandex'?'Оплата через Яндекс Игры.':'Прототип: реклама и покупки работают в демо-режиме, без настоящих денег.'}</p>`;
   }
   $('card').innerHTML=`<div class="to">Магазин</div><div class="shophead"><h2>${bi("cart")} Лавка Тиши</h2><span class="wallet">${COIN} <b>${P.coins}</b></span></div>
     <div class="tabs">${tabs.map(([k,n])=>`<button class="tab${k===shopTab?' on':''}" data-tab="${k}">${n}</button>`).join('')}</div>
@@ -1654,7 +1785,9 @@ function showShop(tab,back){
   c.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=SHOP.frames.find(x=>x.id===b.dataset.f);if(spend(f.price)){P.owned=[...(P.owned||[]),'frame:'+f.id];P.frame=f.id;save();showShop()}});
   c.querySelectorAll('[data-frame]').forEach(b=>b.onclick=()=>{P.frame=b.dataset.frame;save();showShop()});
   c.querySelectorAll('canvas[data-fp]').forEach(async cv=>{const src=await drawPostcard('bunny','Привет!',cv.dataset.fp);cv.width=src.width;cv.height=src.height;cv.getContext('2d').drawImage(src,0,0)});
-  if($('bAd'))$('bAd').onclick=()=>{const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;if(a>=3)return;P.ads={day:todayKey(),n:a+1};addCoins(30);sfx('build',.6);showShop()};
+  if($('bAd'))$('bAd').onclick=async()=>{const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;if(a>=3)return;if(!(await Platform.rewarded('shop_coins')))return;P.ads={day:todayKey(),n:a+1};addCoins(30);sfx('build',.6);showShop()};
+  c.querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{if(await buyProduct(b.dataset.p))showShop()});
+  track('shop_open',{tab:shopTab});
   $('bShopClose').onclick=()=>{$('card').classList.remove('wide');closeOv();if(shopBack)shopBack();else if(!$('home').hidden)renderHome()};
 }
 function quickBuy(id){
@@ -1677,7 +1810,7 @@ function bindBoostChips(){
 function applyBoosts(){
   const normal=[];for(const row of grid)for(const t of row)if(t&&!t.stone&&!t.parcel&&!t.hero&&!t.lock&&!t.sp&&t.color>=0)normal.push(t);
   const pick=()=>normal.splice(Math.floor(Math.random()*normal.length),1)[0];
-  for(const id of pendingBoost){if(invN(id)<=0)continue;invAdd(id,-1);
+  for(const id of pendingBoost){if(invN(id)<=0)continue;invAdd(id,-1);track('booster_use',{id,level:LI+1});
     if(id==='moves3')moves+=3;
     else{const t=pick();if(t){t.sp=id==='bomb'?'bomb':(Math.random()<.5?'h':'v');renderTile(t);burst(t.r,t.c,t.color,10)}}}
   if(pendingBoost.size)toast('Бустеры на поле!');
@@ -1713,6 +1846,7 @@ function dailyState(){
   return {done:d.last===t,streak};
 }
 function dailyWin(){
+  track('daily_win');
   const t=todayKey();const y=new Date();y.setDate(y.getDate()-1);const yk=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();
   const d=P.daily||{};const first=d.last!==t;
   if(first){const streak=d.last===yk?(d.streak||0)+1:1;P.daily={last:t,streak,best:Math.max(d.best||0,streak)};P.hammers++;P.shuffles++;P.coins=(P.coins||0)+50}
@@ -1722,6 +1856,7 @@ function dailyWin(){
     <p>${first?'Награда: <b>+1 молоток</b>, <b>+1 перемешивание</b> и <b>+50 '+COIN+'</b>.':'Сегодняшнюю награду ты уже получил.'} Серия: <b>${bi('flame')} ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд</b>.</p>
     ${newStampsNote()}
     <p class="note">Завтра напишет кто-то ещё. Заходи!</p>
+    ${first?'<div class="row"><button class="btn adx2" id="bDX2">'+bi('ad')+' ×2 награда за рекламу</button></div>':''}
     <div class="row"><button class="btn pcbtn" id="bCard">${bi("postcard")} Открытка другу</button></div>
     <div class="row"><button class="btn main" id="bHome">На почту</button></div>`;
   rebindWin();openOv();confetti(60);
@@ -1791,6 +1926,7 @@ async function drawPostcard(pet,msg,frame){
   x.restore();
   if(frame==='gold'){const gg=x.createLinearGradient(0,0,W,H);gg.addColorStop(0,'#ffe27a');gg.addColorStop(.5,'#e8a700');gg.addColorStop(1,'#fff3b0');x.strokeStyle=gg;x.lineWidth=18;x.beginPath();x.roundRect(9,9,W-18,H-18,30);x.stroke();
     x.fillStyle='#fff6c2';for(const [a,b2] of [[30,30],[W-30,30],[30,H-30],[W-30,H-30]]){x.beginPath();for(let k=0;k<10;k++){const r=k%2?7:18,an=k*Math.PI/5-Math.PI/2;x.lineTo(a+Math.cos(an)*r,b2+Math.sin(an)*r)}x.closePath();x.fill()}}
+  if(frame==='season'){const gg=x.createLinearGradient(0,0,W,H);gg.addColorStop(0,'#7cc6ff');gg.addColorStop(.5,'#b76cff');gg.addColorStop(1,'#ff8fd0');x.strokeStyle=gg;x.lineWidth=18;x.beginPath();x.roundRect(9,9,W-18,H-18,30);x.stroke()}
   if(frame==='night'){x.strokeStyle='#2f4fa8';x.lineWidth=12;x.beginPath();x.roundRect(6,6,W-12,H-12,32);x.stroke()}
   return c;
 }
@@ -1799,7 +1935,7 @@ async function openPostcard(pet){
   const prev=$('card').innerHTML;
   $('card').innerHTML=`<div class="to">Открытка другу</div><h2>${bi("postcard")} Отправь открытку</h2>
     <div class="pcwrap"><canvas id="pcPrev"></canvas></div>
-    <div class="frames">Рамка: ${SHOP.frames.filter(f=>f.price===0||owns('frame:'+f.id)).map(f=>`<button class="tab${P.frame===f.id?' on':''}" data-pcf="${f.id}">${f.name}</button>`).join('')}<button class="tab" id="pcMore">+ ещё в магазине</button></div>
+    <div class="frames">Рамка: ${SHOP.frames.filter(f=>(f.price===0&&!f.passOnly)||owns('frame:'+f.id)).map(f=>`<button class="tab${P.frame===f.id?' on':''}" data-pcf="${f.id}">${f.name}</button>`).join('')}<button class="tab" id="pcMore">+ ещё в магазине</button></div>
     <label class="pclabel" for="pcMsg">Подпись (необязательно)</label>
     <input id="pcMsg" class="pcinput" maxlength="60" placeholder="Например: Смотри, какой у меня Пингвин!">
     <div class="row"><button class="btn main" id="pcShare">Отправить</button></div>
@@ -1820,7 +1956,7 @@ async function openPostcard(pet){
   document.querySelectorAll('[data-pcf]').forEach(b=>b.onclick=()=>{P.frame=b.dataset.pcf;save();document.querySelectorAll('[data-pcf]').forEach(x=>x.classList.toggle('on',x===b));refresh()});
   $('pcMore').onclick=()=>showShop('frames',()=>openPostcard(pet));
   await refresh();
-  const reward=()=>{if(P.lastCardDay!==todayKey()){P.lastCardDay=todayKey();P.shuffles++;P.coins=(P.coins||0)+20;save();toast('+1 перемешивание и +20 монет за открытку!')}};
+  const reward=()=>{track('postcard_send',{pet});if(P.lastCardDay!==todayKey()){P.lastCardDay=todayKey();P.shuffles++;P.coins=(P.coins||0)+20;save();toast('+1 перемешивание и +20 монет за открытку!')}};
   ['pcVK','pcTG','pcWA'].forEach(id=>$(id).addEventListener('click',reward));
   $('pcShare').onclick=async()=>{
     const m=msgEl.value.trim(),url=cardLink(pet,m),txt='Тебе открытка из «Лесной почты»!';
@@ -1941,6 +2077,7 @@ async function playIntro(){
 addEventListener('resize',()=>{if($('level').hidden||!grid)return;layout();
   for(let r=0;r<N;r++)for(let c=0;c<N;c++){mossEl[r][c].style.transform=`translate(${c*CELL}px,${r*CELL}px)`;if(grid[r][c])place(grid[r][c],0)}});
 load();applyTisha();
+Platform.init();
 preload().then(()=>{
 seasonFx(document.body,SEASON==='summer'?14:30,false);renderHome();
 const _hash=(location.hash||'').slice(1);
