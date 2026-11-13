@@ -276,6 +276,24 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .pclink{font-size:12px;color:var(--ink-dim)}
 .pcsocial .btn{text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:14px}
 .card .btn.pcbtn{border-image-source:url(assets/btn_red.png);color:#fff;text-shadow:0 1px 0 #a33}
+.daily{gap:10px}
+.dhead{display:flex;align-items:center;gap:12px}
+.dhead h2{margin-bottom:2px}
+.dpet{width:64px;height:64px;object-fit:contain;flex:none;animation:bob 1.6s ease-in-out infinite;filter:drop-shadow(0 3px 0 #0002)}
+.ddone{font-weight:800;color:var(--ok);font-size:14px}
+.card.wide{max-width:640px}
+.album{max-height:min(60vh,520px);overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 4px 6px}
+.stamps{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:10px}
+.stampc{position:relative;aspect-ratio:5/6;background:#fff;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 6px 6px;box-sizing:border-box;
+  border:3px dashed var(--stc,#7cc95b);outline:4px solid #fff;outline-offset:-8px;box-shadow:0 3px 0 #0000001a,0 0 0 3px #fff}
+.stampc.ch0{--stc:#7cc95b;background:#effbe9}.stampc.ch1{--stc:#4aa8ff;background:#eaf5ff}.stampc.ch2{--stc:#ff9a3d;background:#fff3e6}
+.stampc.special{--stc:#b76cff;background:#f6edff}
+.stampc.gold{--stc:#e8a700;background:linear-gradient(135deg,#fff6c2,#ffe27a 50%,#fff6c2)}
+.stampc .sp{width:70%;height:auto;filter:drop-shadow(0 2px 0 #0002)}
+.stampc .si{font-size:30px;line-height:1.2}
+.stampc .sn{font-family:var(--display);font-weight:700;font-size:11px;color:var(--ink);text-align:center;line-height:1.1}
+.stampc.locked{--stc:#c9d3df;background:#f1f4f8}
+.stampc.locked .sp{filter:brightness(0) opacity(.18)}.stampc.locked .si{filter:grayscale(1) opacity(.3)}.stampc.locked .sn{color:#9aa6b8}
 .chap{font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink-dim);margin:4px 0 -4px}
 
 /* ---------- вступительный ролик ---------- */
@@ -528,11 +546,16 @@ function renderHome(){
         <button class="btn main" id="bPlay">${done?'Переиграть уровень':'Уровень '+(nl+1)} ▶</button></div>
         <div class="next">${petImg(LEVELS[nl].pet,"nextpet")}<div class="story">Следующее письмо:<br><b style="color:var(--ink)">${LEVELS[nl].to}</b></div></div>
       </div>
+      <div class="panel daily">${(()=>{const st=dailyState(),D=makeDaily();return `<div class="dhead">${petImg(D.pet,'dpet')}<div><h2>Письмо дня</h2><div class="story">Сегодня пишет: <b style="color:var(--ink)">${D.name}</b>${st.streak?`<br>🔥 ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд`:''}</div></div></div>
+        ${st.done?'<div class="ddone">✓ Доставлено. Завтра придёт новое письмо!</div>':'<button class="btn main" id="bDaily">Открыть письмо ✉</button>'}`})()}
+        <button class="btn" id="bAlbum">📖 Альбом марок · ${stampCount()} из ${stampTotal()}</button></div>
       <div class="panel"><h2>Ремонт почты</h2><div class="items">${ITEMS.map(it=>{const b=P.built.includes(it.id);return `<div class="item"><span>${it.name}</span>${b?'<span class="done">✓ готово</span>':(it.req&&!P.built.includes(it.req))?`<span class="need">сначала: ${ITEMS.find(x=>x.id===it.req).name.toLowerCase()}</span>`:`<button class="btn small" data-build="${it.id}" ${avail<it.cost?'disabled':''}>${STAR_IMG} ${it.cost}</button>`}</div>`}).join('')}</div></div>
       <div class="panel"><h2>Письма</h2>${CHAPTERS.map(ch=>`<div class="chap">${ch.title}</div><div class="levels">${LEVELS.slice(ch.from,ch.to+1).map((l,k)=>{const i=ch.from+k;const open=i===0||P.stars[i-1]>0||P.stars[i]>0;return `<button class="lv ${i===nl?'cur':''}" data-lv="${i}" ${open?'':'disabled'} aria-label="Уровень ${i+1}: ${l.name}"><span class="num">${i+1}</span>${petImg(l.pet,'face')}<small>${'<img src="assets/star.png" alt="★">'.repeat(P.stars[i])}</small></button>`}).join('')}</div>`).join('')}</div>
     </div></div>`;
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
   $('bReplay').onclick=()=>{ac();playIntro()};
+  if($('bDaily'))$('bDaily').onclick=()=>{ac();showIntro(-1)};
+  $('bAlbum').onclick=showAlbum;
   if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>{toast(n.name+' теперь живёт у почты!');sfx('friend',.8)},500)}
   $('home').querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{ac();showIntro(+b.dataset.lv)});
   $('home').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
@@ -559,7 +582,7 @@ function goalAdd(t,color){
 const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
-  LI=i;LV=LEVELS[i];playMusic(i%2?'level2':'level1');moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
+  LI=i;LV=i<0?DAILY:LEVELS[i];playMusic(i%2?'level2':'level1');moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
   $('home').hidden=true;$('level').hidden=false;closeOv();
   $('level').innerHTML=`<div class="game" id="game">
     <div class="hud">
@@ -925,10 +948,11 @@ function openOv(){$('ov').hidden=false}
 function closeOv(){$('ov').hidden=true}
 function goalsHTML(gs){return `<div class="goals">${gs.map(g=>`<div class="goal"><span class="ic">${goalIcon(g)}</span>${g.need}</div>`).join('')}</div>`}
 function showIntro(i){
-  const L=LEVELS[i];
+  if(i<0)DAILY=makeDaily();
+  const L=i<0?DAILY:LEVELS[i];
   const map=L.map||Array(N).fill('........');
   const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLx'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++;if(g[0]==='p'&&ch==='p')need++;if(g[0]==='h'&&ch==='h')need++}return {t:g[0],need}});
-  $('card').innerHTML=`<div class="stamp">✉</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">Письмо ${i+1} · кому</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
+  $('card').innerHTML=`<div class="stamp">✉</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
   $('bGo').onclick=()=>{ac();sfx('start',.7);startLevel(i)};
@@ -936,6 +960,7 @@ function showIntro(i){
 }
 function win(){
   clearHint();
+  if(LI<0)return dailyWin();
   const frac=moves/LV.moves;const stars=frac>=.3?3:frac>=.12?2:1;
   score+=moves*50;
   const before=P.stars[LI];P.stars[LI]=Math.max(before,stars);
@@ -946,7 +971,8 @@ function win(){
   if(!SPEED)return;
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
-    <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
+    <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''}${!before?' Новая марка в альбоме!':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
+    ${newStampsNote()}
     <div class="row"><button class="btn pcbtn" id="bCard">💌 Открытка другу</button></div>
     <div class="row"><button class="btn" id="bHome">На почту</button>${LI<LEVELS.length-1?'<button class="btn main" id="bNext">Следующее письмо</button>':''}</div>`;
   rebindWin();
@@ -1017,6 +1043,78 @@ const sad=()=>sfx('lose',.8);
 
 
 /* ---------- вступительный ролик ---------- */
+
+
+/* ---------- письмо дня ---------- */
+let DAILY=null;
+const dayNum=d=>Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
+function seeded(seed){let x=seed%2147483647;if(x<=0)x+=2147483646;return()=>(x=x*16807%2147483647)/2147483647}
+function makeDaily(){
+  const today=new Date(),dn=dayNum(today),rnd=seeded(dn*7919+13);
+  const pets=[...new Set(LEVELS.filter(L=>L.pet).map(L=>L.pet))];
+  const pet=pets[Math.floor(rnd()*pets.length)];
+  const row=()=>Array(N).fill('.');const map=Array.from({length:N},row);
+  const put=(r,c,ch)=>{if(map[r][c]==='.')map[r][c]=ch};
+  const kinds=['colors','moss','ice','stones','parcels','hero'];const kind=kinds[Math.floor(rnd()*kinds.length)];
+  let goals=[],moves=26,house=null,text='';
+  const col=()=>Math.floor(rnd()*N);
+  if(kind==='colors'){const a=Math.floor(rnd()*5);let b=(a+1+Math.floor(rnd()*4))%5;goals=[['c',a,22],['c',b,22]];text='Мне бы немного '+COLOR_NAME[a]+' и '+COLOR_NAME[b]+'. Поможешь?'}
+  if(kind==='moss'){for(let r=5;r<8;r++)for(let c=0;c<N;c++)if(rnd()<.8)put(r,c,'m');goals=[['m']];moves=28;text='У моего домика всё заросло мхом. Расчистишь?'}
+  if(kind==='ice'){for(let k=0;k<10;k++)put(2+Math.floor(rnd()*5),col(),'l');goals=[['l'],['c',Math.floor(rnd()*5),15]];text='Ночью подморозило, и мои вещи вмёрзли в лёд.'}
+  if(kind==='stones'){for(let k=0;k<8;k++)put(1+Math.floor(rnd()*6),col(),rnd()<.3?'S':'s');goals=[['s']];moves=28;text='Камнепад! Помоги разобрать завал у моей норки.'}
+  if(kind==='parcels'){put(0,1+Math.floor(rnd()*3),'p');put(0,4+Math.floor(rnd()*3),'p');goals=[['p'],['c',Math.floor(rnd()*5),15]];moves=30;text='Жду две посылки. Довезёшь их до низа поля?'}
+  if(kind==='hero'){put(0,col(),'h');house=col();goals=[['h'],['c',Math.floor(rnd()*5),12]];moves=28;text='Тиша, загляни ко мне лично! Я жду внизу.'}
+  const L={pet,name:PET_NAMES[pet],to:'дня · '+PET_NAMES[pet],text:'«'+text+'» — '+PET_NAMES[pet]+'.',moves,colors:5,goals,map:map.map(r=>r.join('')),house,daily:true,day:todayKey()};
+  return L;
+}
+function dailyState(){
+  const d=P.daily||{};const t=todayKey();
+  const y=new Date();y.setDate(y.getDate()-1);const yk=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();
+  const streak=(d.last===t||d.last===yk)?(d.streak||0):0;
+  return {done:d.last===t,streak};
+}
+function dailyWin(){
+  const t=todayKey();const y=new Date();y.setDate(y.getDate()-1);const yk=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();
+  const d=P.daily||{};const first=d.last!==t;
+  if(first){const streak=d.last===yk?(d.streak||0)+1:1;P.daily={last:t,streak,best:Math.max(d.best||0,streak)};P.hammers++;P.shuffles++}
+  save();duck(2600);fanfare();if(!SPEED)return;
+  const st=dailyState();
+  $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Письмо дня доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
+    <p>${first?'Награда: <b>+1 молоток</b> и <b>+1 перемешивание</b>.':'Сегодняшнюю награду ты уже получил.'} Серия: <b>🔥 ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд</b>.</p>
+    ${newStampsNote()}
+    <p class="note">Завтра напишет кто-то ещё. Заходи!</p>
+    <div class="row"><button class="btn pcbtn" id="bCard">💌 Открытка другу</button></div>
+    <div class="row"><button class="btn main" id="bHome">На почту</button></div>`;
+  rebindWin();openOv();
+}
+function plural(n,a,b,c){const m=n%10,h=n%100;return m===1&&h!==11?a:m>=2&&m<=4&&(h<12||h>14)?b:c}
+
+/* ---------- альбом марок ---------- */
+const SPECIAL_STAMPS=[
+ {id:'card',name:'Первая открытка',icon:'💌',has:()=>!!P.lastCardDay},
+ {id:'s3',name:'3 дня подряд',icon:'🔥',has:()=>(P.daily&&P.daily.best||0)>=3},
+ {id:'s7',name:'7 дней подряд',icon:'🏅',has:()=>(P.daily&&P.daily.best||0)>=7},
+ {id:'post',name:'Почта отстроена',icon:'🏡',has:()=>P.built.length>=ITEMS.length},
+];
+const stampCount=()=>P.stars.filter(Boolean).length+SPECIAL_STAMPS.filter(x=>x.has()).length;
+const stampTotal=()=>LEVELS.length+SPECIAL_STAMPS.length;
+function newStampsNote(){
+  const have=new Set(SPECIAL_STAMPS.filter(x=>x.has()).map(x=>x.id));const seen=new Set(P.stampsSeen||[]);
+  const fresh=[...have].filter(id=>!seen.has(id));P.stampsSeen=[...have];save();
+  return fresh.length?`<p>Новая марка в альбоме: <b>${fresh.map(id=>SPECIAL_STAMPS.find(x=>x.id===id).name).join(', ')}</b>!</p>`:'';
+}
+function showAlbum(){
+  const chs=CHAPTERS.map(ch=>`<div class="chap">${ch.title}</div><div class="stamps">${LEVELS.slice(ch.from,ch.to+1).map((L,k)=>{const i=ch.from+k,st=P.stars[i];
+    return `<div class="stampc ch${CHAPTERS.indexOf(ch)}${st?'':' locked'}${st===3?' gold':''}" title="${st?L.name:'Ещё не доставлено'}">${st||L.pet?petImg(L.pet,'sp'):''}<span class="sn">${st?(L.pet?L.name.split(' ')[1]||L.name:'Всем'):i+1}</span></div>`}).join('')}</div>`).join('');
+  const sp=`<div class="chap">Особые марки</div><div class="stamps">${SPECIAL_STAMPS.map(x=>`<div class="stampc special${x.has()?'':' locked'}" title="${x.name}"><span class="si">${x.icon}</span><span class="sn">${x.name}</span></div>`).join('')}</div>`;
+  $('card').innerHTML=`<div class="to">Альбом марок</div><h2>📖 Мои марки: ${stampCount()} из ${stampTotal()}</h2>
+    <p class="note">Марка выдаётся за каждое доставленное письмо. За три звезды марка золотая.</p>
+    <div class="album">${chs}${sp}</div>
+    <div class="row"><button class="btn main" id="bAlbClose">Закрыть</button></div>`;
+  $('card').classList.add('wide');
+  $('bAlbClose').onclick=()=>{$('card').classList.remove('wide');closeOv()};
+  openOv();
+}
 
 /* ---------- открытки друзьям ---------- */
 const seasonBase=()=>'assets/scene/base.jpg';
