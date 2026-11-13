@@ -10,7 +10,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Nunito:wght@400;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Nunito:wght@400;700;800;900&display=swap">
 <style>
 /* Layout: casual mobile game. Home = restored post office scene + level path; Level = HUD (moves, goals) beside or above an 8×8 board. Single evening-forest look by choice. */
 :root{
@@ -153,7 +153,7 @@ h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
 :root{
   --sky:#5ab4f5; --sky-2:#2f7fd6; --grass:#6cc24a; --ink:#2b3a55; --ink-dim:#61708c;
   --panel:#ffffff; --panel-2:#eef4fb; --gold:#ffc83d; --ok:#4cbf4c; --berry:#ff5a5a;
-  --display:'Rubik','Arial Black',system-ui,sans-serif;
+  --display:'Balsamiq Sans','Comic Sans MS','Trebuchet MS',system-ui,sans-serif;
   color-scheme:light;
 }
 body{background:linear-gradient(#8fd3ff 0%,var(--sky) 45%,var(--sky-2) 100%);background-color:var(--sky);color:var(--ink);background-attachment:fixed}
@@ -170,7 +170,9 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .panel h2{color:var(--ink)}
 .story{color:var(--ink-dim)}
 .home>div>.story{color:#f2f9ff;text-shadow:0 1px 2px #0b3a7a80}
-.home h1{color:#fff;text-shadow:0 3px 0 #1f5fae,0 6px 16px #0b3a7a80}
+.home h1{color:#fff;-webkit-text-stroke:6px #1f5fae;paint-order:stroke fill;text-shadow:0 4px 0 #1f5fae,0 8px 16px #0b3a7a80;letter-spacing:.01em}
+.home h1 .btn{-webkit-text-stroke:0}
+.igate h1,.ititle h1{-webkit-text-stroke:8px #1f5fae;paint-order:stroke fill}
 .home h1 small{color:#eaf6ff;text-shadow:none}
 .scene{border:0;box-shadow:0 6px 0 #1f5fae,0 14px 30px -10px #0b3a7a99;border-radius:22px}
 .bank b{color:var(--ink)}
