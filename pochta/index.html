@@ -343,7 +343,7 @@ function renderHome(){
   $('level').hidden=true;$('home').hidden=false;closeOv();
   const avail=Math.max(0,totalStars()-spent()),nl=nextLevel(),done=P.stars.every(Boolean);
   $('home').innerHTML=`<div class="home">
-    <h1>Лесная почта <small>прототип · графика Kenney (CC0)</small></h1>
+    <h1>Лесная почта </h1>
     <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
       <div class="scene">${sceneSVG()}</div>
       <p class="story">После бури лесная почта развалилась. Ёжик Тиша разносит письма жителям леса, а за каждую доставку получает звёзды. На них почту можно отстроить заново.</p>
