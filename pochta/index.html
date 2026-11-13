@@ -1,0 +1,648 @@
+<title>Лесная почта</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Nunito:wght@400;700;800;900&display=swap">
+<style>
+/* Layout: casual mobile game. Home = restored post office scene + level path; Level = HUD (moves, goals) beside or above an 8×8 board. Single evening-forest look by choice. */
+:root{
+  --night:#16303a;     /* page ground, evening forest */
+  --night-2:#1e3e49;
+  --moss:#2f5a4a;
+  --bark:#6b4a33;
+  --bark-2:#8a6244;
+  --paper:#fff6e6;     /* envelopes, panels text */
+  --paper-dim:#c9d6cf;
+  --amber:#ffb84a;     /* accent: stamps, buttons */
+  --amber-2:#ffd27f;
+  --berry:#ff5d5d;
+  --ok:#7be08a;
+  --display:'Comfortaa','Trebuchet MS',system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cell:56px;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(120% 80% at 50% 0%,var(--night-2),var(--night) 70%);background-color:var(--night);color:var(--paper);font-family:var(--body);font-size:15px;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible{outline:3px solid var(--amber-2);outline-offset:2px}
+.screen{min-height:100%;box-sizing:border-box;padding-block:14px 20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.btn{border-radius:14px;padding:12px 18px;font-weight:800;background:var(--night-2);border:2px solid var(--moss);transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.main{background:linear-gradient(var(--amber-2),var(--amber));color:#3a2410;border-color:#c98420;font-family:var(--display);font-size:17px;box-shadow:0 4px 0 #b06d12}
+.btn.small{padding:8px 12px;font-size:13px;border-radius:10px}
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
+.star{color:var(--amber)}
+
+/* ---------- home ---------- */
+.home{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:760px){.home{grid-template-columns:minmax(0,1fr)}}
+.home h1{font-size:clamp(26px,5vw,38px);grid-column:1/-1;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.home h1 small{font-family:var(--body);font-size:14px;font-weight:700;color:var(--paper-dim)}
+.scene{border-radius:20px;overflow:hidden;border:2px solid var(--moss);background:var(--night-2);aspect-ratio:400/270;max-width:100%}
+.scene svg{display:block;width:100%;height:100%}
+.part{transition:opacity .6s,transform .6s;transform-box:fill-box;transform-origin:50% 100%}
+.part.off{opacity:0;transform:scale(.6)}
+.panel{background:color-mix(in srgb,var(--night-2) 85%,transparent);border:2px solid var(--moss);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.panel h2{font-size:16px}
+.bank{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.bank b{font-family:var(--display);font-size:24px}
+.items{display:flex;flex-direction:column;gap:6px}
+.item{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--moss)}
+.item:last-child{border-bottom:0}
+.item span{font-weight:700}
+.item .done{color:var(--ok);font-weight:800;font-size:13px}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.lv{aspect-ratio:1;border-radius:50%;background:var(--night);border:2px solid var(--moss);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:16px;line-height:1}
+.lv small{font-size:9px;letter-spacing:-1px;color:var(--amber);margin-top:2px;min-height:9px}
+.lv.cur{border-color:var(--amber);box-shadow:0 0 0 3px color-mix(in srgb,var(--amber) 35%,transparent)}
+.lv:disabled{opacity:.35}
+.story{color:var(--paper-dim);line-height:1.45;font-size:14px;max-width:60ch}
+
+/* ---------- level ---------- */
+.game{display:flex;gap:18px;align-items:flex-start;justify-content:center}
+.hud{display:flex;flex-direction:column;gap:10px;width:220px;flex:none}
+.game.portrait{flex-direction:column;align-items:center}
+.game.portrait .hud{width:100%;max-width:calc(var(--cell) * 8 + 16px);flex-direction:row;flex-wrap:wrap;gap:8px}
+.box{background:var(--night-2);border:2px solid var(--moss);border-radius:14px;padding:10px 12px}
+.box .k{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
+.moves{font-family:var(--display);font-size:34px;line-height:1.1}
+.moves.low{color:var(--berry)}
+.goals{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.goal{display:flex;align-items:center;gap:4px;font-weight:900;font-size:17px;font-variant-numeric:tabular-nums}
+.goal .ic{width:28px;height:28px;display:block}
+.goal .ic svg{width:100%;height:100%;display:block}
+.goal.done{color:var(--ok)}
+.game.portrait .box.mv{flex:0 0 auto}
+.game.portrait .box.gl{flex:1 1 160px}
+.game.portrait .box.sc{display:none}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.game.portrait .tools{width:100%}
+.tool{flex:1;display:flex;align-items:center;justify-content:center;gap:6px}
+.tool.on{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 22%,var(--night-2))}
+.tool b{background:var(--amber);color:#3a2410;border-radius:8px;padding:0 6px;font-size:12px}
+.scorev{font-family:var(--display);font-size:20px}
+
+.boardwrap{padding:8px;border-radius:18px;background:var(--bark);box-shadow:inset 0 0 0 3px var(--bark-2),0 10px 30px -10px #000}
+.board{position:relative;width:calc(var(--cell) * 8);height:calc(var(--cell) * 8);overflow:hidden;border-radius:12px;touch-action:none;
+  background-color:#2a4a3c;
+  background-image:conic-gradient(#ffffff0d 25%,transparent 0 50%,#ffffff0d 0 75%,transparent 0);
+  background-size:calc(var(--cell) * 2) calc(var(--cell) * 2)}
+.mossc{position:absolute;left:0;top:0;width:var(--cell);height:var(--cell);border-radius:22%;
+  background:radial-gradient(circle at 30% 30%,#9be27a,#4f9b47 60%,#3b7a37);box-shadow:inset 0 0 0 2px #2f6a2c;opacity:.9;transition:opacity .3s,transform .3s;transform-origin:center}
+.mossc.gone{opacity:0;transform:scale(.4)}
+.t{position:absolute;left:0;top:0;width:var(--cell);height:var(--cell);transition-property:transform;transition-timing-function:cubic-bezier(.5,0,.75,1);will-change:transform}
+.t .g{position:absolute;inset:9%;transition:transform .15s}
+.t .g svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 1px #0006)}
+.t.sel .g{transform:scale(1.15)}
+.t.sel::before{content:"";position:absolute;inset:3%;border-radius:22%;background:#ffffff26;box-shadow:inset 0 0 0 2px #fff8}
+.t.hint .g{animation:wig .6s ease-in-out infinite}
+@keyframes wig{25%{transform:rotate(-10deg) scale(1.08)}75%{transform:rotate(10deg) scale(1.08)}}
+.t.pop .g{animation:pop .2s ease-in forwards}
+@keyframes pop{30%{transform:scale(1.2)}to{transform:scale(0);opacity:0}}
+.t.sp-h::after,.t.sp-v::after{content:"";position:absolute;border-radius:6px;pointer-events:none}
+.t.sp-h::after{inset:36% 4%;background:repeating-linear-gradient(90deg,#fff 0 4px,transparent 4px 8px);opacity:.85;box-shadow:0 0 8px #fff}
+.t.sp-v::after{inset:4% 36%;background:repeating-linear-gradient(0deg,#fff 0 4px,transparent 4px 8px);opacity:.85;box-shadow:0 0 8px #fff}
+.t.sp-bomb::after{content:"";position:absolute;inset:2%;border-radius:50%;border:3px dashed #fff;animation:spin 4s linear infinite;box-shadow:0 0 10px #fff8,inset 0 0 10px #fff8}
+.rb{position:absolute;inset:4%;border-radius:50%;background:conic-gradient(#ff5d5d,#ffd23f,#5fd068,#4aa8ff,#b76cff,#ff5d5d);box-shadow:inset 0 0 0 4px #ffffff70,0 0 12px #fff;animation:spin 3s linear infinite}
+.rb::after{content:"✉";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell) * .38);color:#fff;text-shadow:0 1px 3px #0008;animation:spin 3s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lk{position:absolute;inset:0;pointer-events:none}
+.lk svg{width:100%;height:100%}
+.t.hp2 .g svg{filter:brightness(.8) drop-shadow(0 0 0 #000) drop-shadow(0 2px 1px #0006)}
+.beam{position:absolute;pointer-events:none;background:linear-gradient(var(--dir,90deg),transparent,#fff 45%,#fff 55%,transparent);animation:beam .35s ease-out forwards;mix-blend-mode:screen}
+@keyframes beam{from{opacity:1}to{opacity:0}}
+.ring{position:absolute;pointer-events:none;border-radius:50%;border:4px solid #fff;animation:ring .35s ease-out forwards}
+@keyframes ring{from{transform:scale(.3);opacity:1}to{transform:scale(1.1);opacity:0}}
+.combo{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-family:var(--display);font-size:calc(var(--cell) * .55);color:var(--amber-2);text-shadow:0 3px 0 #7a4a10,0 0 12px #000;pointer-events:none;animation:cb .9s ease-out forwards;white-space:nowrap}
+@keyframes cb{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}20%{transform:translate(-50%,-50%) scale(1.1);opacity:1}100%{transform:translate(-50%,-90%) scale(1);opacity:0}}
+
+/* overlays */
+.ov{position:fixed;inset:0;z-index:20;background:#0b1a1fcc;backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;overflow-y:auto;
+  padding-block:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ov[hidden]{display:none}
+.card{width:100%;max-width:420px;background:var(--paper);color:#3a2a1c;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;box-sizing:border-box;position:relative;
+  box-shadow:0 0 0 6px #fff6e633,0 20px 50px -10px #000;
+  background-image:repeating-linear-gradient(135deg,#e85d5d 0 12px,#fff6e6 12px 24px,#4a8fd8 24px 36px,#fff6e6 36px 48px);background-size:100% 8px;background-repeat:no-repeat}
+.card h2{font-size:24px;color:#3a2a1c}
+.card p{margin:0;line-height:1.45}
+.card .to{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#a0612a}
+.card .goals .goal{color:#3a2a1c}
+.card .row{display:flex;gap:8px;flex-wrap:wrap}
+.card .row .btn{flex:1}
+.card .btn:not(.main){background:#efe2c9;border-color:#d8c3a0;color:#3a2a1c}
+.card .note{font-size:12px;color:#8a7358}
+.bigstars{font-size:44px;letter-spacing:6px;text-align:center;line-height:1}
+.bigstars .off{color:#d9c9ad}
+.stamp{position:absolute;right:18px;top:18px;width:54px;height:62px;border:3px dashed #c98420;border-radius:6px;display:flex;align-items:center;justify-content:center;transform:rotate(8deg);font-size:28px;background:#ffe9c2}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 14px);transform:translateX(-50%);background:var(--amber-2);color:#3a2410;font-weight:900;padding:10px 16px;border-radius:12px;z-index:30;white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.t.hint .g,.rb,.rb::after,.t.sp-bomb::after{animation:none}}
+</style>
+
+<div id="home" class="screen"></div>
+<div id="level" class="screen" hidden></div>
+<div class="ov" id="ov" hidden><div class="card" id="card"></div></div>
+
+<script>
+'use strict';
+const N=8;
+const $=id=>document.getElementById(id);
+const sleep=ms=>SPEED===0?Promise.resolve():new Promise(r=>setTimeout(r,ms*SPEED));
+let SPEED=1;
+
+/* ---------- графика ---------- */
+const TILE=[
+ `<svg viewBox="0 0 100 100"><path d="M50 30c-6-6-30-8-32 18-2 22 14 40 26 40 4 0 6-2 6-2s2 2 6 2c12 0 28-18 26-40-2-26-26-24-32-18z" fill="#ff5d5d" stroke="#c23838" stroke-width="3"/><path d="M50 31c0-8 4-14 9-18" stroke="#6b3b1f" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M57 21c8-8 20-6 22-4-4 8-14 10-22 4z" fill="#5fd068"/><ellipse cx="35" cy="50" rx="6" ry="11" fill="#fff" opacity=".4"/></svg>`,
+ `<svg viewBox="0 0 100 100"><path d="M50 8l12 26 28 3-21 19 6 28-25-15-25 15 6-28-21-19 28-3z" fill="#ffd23f" stroke="#d99b00" stroke-width="4" stroke-linejoin="round"/><circle cx="42" cy="42" r="6" fill="#fff" opacity=".55"/></svg>`,
+ `<svg viewBox="0 0 100 100"><path d="M50 8C40 30 20 46 20 63a30 30 0 0 0 60 0C80 46 60 30 50 8z" fill="#4aa8ff" stroke="#2273c9" stroke-width="3"/><ellipse cx="38" cy="62" rx="7" ry="13" fill="#fff" opacity=".45"/></svg>`,
+ `<svg viewBox="0 0 100 100"><path d="M16 84C16 42 44 16 86 14c0 42-24 70-70 70z" fill="#5fd068" stroke="#2f8f3a" stroke-width="3"/><path d="M20 80L70 30M42 58l-4-16M54 46l14 2" stroke="#2f8f3a" stroke-width="5" stroke-linecap="round"/></svg>`,
+ `<svg viewBox="0 0 100 100"><g fill="#b76cff" stroke="#7d3fc4" stroke-width="3">${[0,72,144,216,288].map(a=>`<ellipse cx="50" cy="28" rx="15" ry="21" transform="rotate(${a} 50 52)"/>`).join('')}</g><circle cx="50" cy="52" r="12" fill="#ffe27a" stroke="#d99b00" stroke-width="3"/></svg>`,
+];
+const COLOR_NAME=['яблоки','звёзды','капли','листья','цветы'];
+const STONE=`<svg viewBox="0 0 100 100"><path d="M16 64l9-30 25-15 27 9 9 29-11 20-30 8-22-8z" fill="#9a9caa" stroke="#5b5d66" stroke-width="5" stroke-linejoin="round"/><path d="M33 40l15-9M60 60l10 6" stroke="#c9cbd6" stroke-width="5" stroke-linecap="round"/></svg>`;
+const BOULDER=`<svg viewBox="0 0 100 100"><path d="M12 66l8-34 28-18 30 10 10 32-12 22-32 8-24-8z" fill="#7d7f8c" stroke="#45464e" stroke-width="5" stroke-linejoin="round"/><path d="M30 38l16-10M58 62l14 8M40 70l6-14 10 4" stroke="#b0b2be" stroke-width="5" stroke-linecap="round" fill="none"/></svg>`;
+const CHAIN=`<svg viewBox="0 0 100 100" fill="none" stroke-linecap="round"><g stroke="#3d3a33" stroke-width="11"><path d="M12 12L88 88M88 12L12 88"/></g><g stroke="#d7d2c4" stroke-width="6" stroke-dasharray="10 7"><path d="M12 12L88 88M88 12L12 88"/></g><circle cx="50" cy="50" r="11" fill="#c98420" stroke="#3d3a33" stroke-width="4"/></svg>`;
+const MOSS_IC=`<svg viewBox="0 0 100 100"><rect x="8" y="8" width="84" height="84" rx="20" fill="#5fae52" stroke="#2f6a2c" stroke-width="5"/><circle cx="35" cy="38" r="9" fill="#9be27a"/><circle cx="62" cy="60" r="11" fill="#9be27a"/></svg>`;
+
+/* ---------- уровни ---------- */
+// m — мох, s — камень, S — валун (2 удара), l — цепь, L — цепь на мху, x — камень на мху
+const LEVELS=[
+ {to:'Белке Варе',text:'Варя ждёт письмо от сестры с соседней опушки. Собери яблоки и капли для посылки.',moves:16,colors:4,goals:[['c',0,15],['c',2,15]]},
+ {to:'Барсуку Гоше',text:'Гоша заказал семена к весне. Нужны звёзды и листья.',moves:16,colors:4,goals:[['c',1,20],['c',3,12]]},
+ {to:'Сове Ульяне',text:'Тропинку к дуплу совы затянуло мхом. Делай совпадения прямо на мху, чтобы его убрать.',moves:18,colors:4,goals:[['m']],
+  map:['........','........','..mmmm..','..mmmm..','..mmmm..','..mmmm..','........','........']},
+ {to:'Зайцу Тимке',text:'Камнепад завалил дорогу к норке. Камень трескается, когда рядом с ним собирают ряд.',moves:22,colors:5,goals:[['s']],
+  map:['........','........','.s.s.s.s','........','........','s.s.s.s.','........','........']},
+ {to:'Лисе Маргарите',text:'Посылка с духами для Маргариты. Собери цветы, а заодно расчисти мох у её крыльца.',moves:28,colors:5,goals:[['c',4,20],['m']],
+  map:['mmmmmmmm','........','........','........','........','........','........','mmmmmmmm']},
+ {to:'Кроту Семёну',text:'Кто-то посадил фишки на цепь. Собери ряд с закованной фишкой, и цепь лопнет.',moves:28,colors:5,goals:[['l'],['c',0,18]],
+  map:['........','.l....l.','...ll...','.l....l.','.l....l.','...ll...','.l....l.','........']},
+ {to:'Мыши Пуговке',text:'Пуговка живёт у самых корней. Мох внизу поля и пара камней на пути.',moves:30,colors:5,goals:[['m'],['s']],
+  map:['........','..s..s..','........','........','........','........','mmmmmmmm','mmmmmmmm']},
+ {to:'Ежу-дедушке',text:'Дедушка ждёт газету «Лесной вестник». Цепи и мох в шахматном порядке.',moves:28,colors:5,goals:[['m'],['l']],
+  map:['........','........','m.m.L.m.','.m.m.m.m','m.L.m.m.','.m.m.L.m','........','........']},
+ {to:'Лосю Арсению',text:'Арсению нужна целая сумка капель. А на дороге снова камни.',moves:26,colors:5,goals:[['c',2,30],['s']],
+  map:['........','s......s','..s..s..','........','s......s','..s..s..','........','s......s']},
+ {to:'Бобрам-близнецам',text:'Близнецы строят плотину, и всё вокруг заросло. Убери весь мох.',moves:32,colors:5,goals:[['m']],
+  map:['........','........','........','........','mmmmmmmm','mmmmmmmm','mmmmmmmm','mmmmmmmm']},
+ {to:'Сороке Зое',text:'Зоя коллекционирует блестящее, и всё оно на цепях. Цепи и камни.',moves:32,colors:5,goals:[['l'],['s']],
+  map:['..l..l..','l......l','..s..s..','........','........','..s..s..','l......l','..l..l..']},
+ {to:'Медведице Глаше',text:'Глаша заказала к чаю всё сразу: яблоки, звёзды и листья.',moves:22,colors:5,goals:[['c',0,25],['c',1,25],['c',3,25]]},
+ {to:'Улитке Фросе',text:'Путь к Фросе завален валунами. Валун выдерживает два удара.',moves:25,colors:5,goals:[['s']],
+  map:['........','.S....S.','........','..s..s..','..s..s..','........','.S....S.','........']},
+ {to:'Лягушке Квакуше',text:'Квакуша живёт на болоте: тут и мох, и цепи, и камни.',moves:32,colors:5,goals:[['m'],['l'],['s']],
+  map:['........','..s..s..','........','mmLmmLmm','mmmmmmmm','mLmmmmLm','mmmmmmmm','........']},
+ {to:'Всему лесу',text:'Последнее письмо: приглашение на открытие почты. Разнеси его каждому!',moves:36,colors:5,goals:[['m'],['l'],['s'],['c',4,20]],
+  map:['S......S','..l..l..','mmmmmmmm','mLmxxmLm','mmmmmmmm','mmLmmLmm','..s..s..','S......S']},
+];
+
+/* ---------- прогресс ---------- */
+const ITEMS=[
+ {id:'roof',name:'Крыша-шляпка',cost:3},
+ {id:'door',name:'Дверь с колокольчиком',cost:3},
+ {id:'box',name:'Почтовый ящик',cost:4},
+ {id:'lamp',name:'Фонарь',cost:4},
+ {id:'bench',name:'Скамейка для ожидания',cost:5},
+ {id:'flowers',name:'Клумба',cost:5},
+ {id:'sign',name:'Вывеска «Почта»',cost:6},
+ {id:'balloon',name:'Шар для дальней доставки',cost:8},
+];
+let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2};
+function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
+function save(){try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}}
+const totalStars=()=>P.stars.reduce((a,b)=>a+b,0);
+const spent=()=>P.built.reduce((a,id)=>a+ITEMS.find(i=>i.id===id).cost,0);
+const nextLevel=()=>{const i=P.stars.findIndex(s=>!s);return i<0?LEVELS.length-1:i};
+
+/* ---------- сцена почты ---------- */
+function sceneSVG(){
+  const on=id=>P.built.includes(id)?'':' off';
+  return `<svg viewBox="0 0 400 270" role="img" aria-label="Лесная почта в старом пне">
+  <defs><radialGradient id="sky" cx="50%" cy="20%" r="80%"><stop offset="0" stop-color="#2d5a63"/><stop offset="1" stop-color="#16303a"/></radialGradient>
+  <radialGradient id="glow"><stop offset="0" stop-color="#ffd27f" stop-opacity=".8"/><stop offset="1" stop-color="#ffd27f" stop-opacity="0"/></radialGradient></defs>
+  <rect width="400" height="270" fill="url(#sky)"/>
+  ${[[30,30],[80,60],[340,40],[300,80],[180,25],[370,110],[120,20]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.6" fill="#fff6e6" opacity=".7"/>`).join('')}
+  <path d="M0 150 Q40 110 70 150 T140 140 T210 150 T290 135 T400 150 V270 H0z" fill="#1d4034"/>
+  <ellipse cx="200" cy="250" rx="230" ry="45" fill="#2f5a4a"/>
+  <!-- пень -->
+  <path d="M135 236 L142 110 Q200 96 258 110 L265 236 Q290 240 300 248 L100 248 Q110 240 135 236z" fill="#8a6244" stroke="#5a3d28" stroke-width="4"/>
+  <ellipse cx="200" cy="110" rx="58" ry="13" fill="#c99a6b" stroke="#5a3d28" stroke-width="4"/>
+  <ellipse cx="200" cy="110" rx="36" ry="7" fill="none" stroke="#a87a50" stroke-width="2"/>
+  <path d="M160 140v60M240 135v70M182 210v20" stroke="#6b4a33" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="230" cy="160" r="15" fill="#ffd27f" stroke="#5a3d28" stroke-width="4"/><path d="M230 145v30M215 160h30" stroke="#5a3d28" stroke-width="3"/>
+  <!-- дыра вместо двери -->
+  <path d="M178 236v-36a22 22 0 0 1 44 0v36z" fill="#2a1c12"/>
+  <g class="part${on('door')}"><path d="M178 236v-36a22 22 0 0 1 44 0v36z" fill="#d9773f" stroke="#5a3d28" stroke-width="4"/><circle cx="212" cy="218" r="3" fill="#ffd27f"/><path d="M200 182v-10" stroke="#5a3d28" stroke-width="2"/><path d="M194 186a6 6 0 0 1 12 0z" fill="#ffd23f" stroke="#5a3d28" stroke-width="2"/></g>
+  <g class="part${on('roof')}"><path d="M120 116 Q200 30 280 116 Q200 100 120 116z" fill="#e85d5d" stroke="#8a2f2f" stroke-width="4"/><circle cx="170" cy="92" r="8" fill="#fff6e6"/><circle cx="215" cy="76" r="10" fill="#fff6e6"/><circle cx="248" cy="100" r="6" fill="#fff6e6"/></g>
+  <g class="part${on('sign')}"><rect x="160" y="124" width="80" height="20" rx="4" fill="#c99a6b" stroke="#5a3d28" stroke-width="3"/><text x="200" y="139" text-anchor="middle" font-family="Comfortaa,sans-serif" font-weight="700" font-size="13" fill="#3a2410">ПОЧТА</text></g>
+  <g class="part${on('box')}"><rect x="78" y="196" width="6" height="44" fill="#5a3d28"/><rect x="62" y="176" width="38" height="26" rx="10" fill="#4a8fd8" stroke="#1f4e87" stroke-width="3"/><rect x="70" y="186" width="20" height="4" rx="2" fill="#1f4e87"/><path d="M100 180v-14h10v6h-10" fill="#e85d5d"/></g>
+  <g class="part${on('lamp')}"><circle cx="318" cy="170" r="34" fill="url(#glow)"/><rect x="316" y="176" width="5" height="66" fill="#3d3a33"/><rect x="308" y="158" width="21" height="24" rx="4" fill="#ffd27f" stroke="#3d3a33" stroke-width="3"/><path d="M305 158h27l-13-9z" fill="#3d3a33"/></g>
+  <g class="part${on('bench')}"><rect x="40" y="226" width="56" height="7" rx="3" fill="#c99a6b" stroke="#5a3d28" stroke-width="2"/><rect x="42" y="214" width="52" height="6" rx="3" fill="#c99a6b" stroke="#5a3d28" stroke-width="2"/><path d="M46 233v12M90 233v12" stroke="#5a3d28" stroke-width="4"/></g>
+  <g class="part${on('flowers')}"><ellipse cx="270" cy="248" rx="30" ry="7" fill="#5a3d28"/>${[[250,236,'#ff5d5d'],[262,230,'#ffd23f'],[275,234,'#b76cff'],[288,238,'#4aa8ff'],[268,242,'#ff5d5d']].map(([x,y,c])=>`<path d="M${x} ${y+8}v8" stroke="#2f8f3a" stroke-width="2"/><circle cx="${x}" cy="${y}" r="5" fill="${c}"/><circle cx="${x}" cy="${y}" r="2" fill="#fff6e6"/>`).join('')}</g>
+  <g class="part${on('balloon')}"><path d="M340 92 L333 112 M360 92 L367 112" stroke="#5a3d28" stroke-width="2"/><ellipse cx="350" cy="62" rx="26" ry="32" fill="#ffb84a" stroke="#b06d12" stroke-width="3"/><path d="M350 30v64M332 40q18 22 0 46M368 40q-18 22 0 46" stroke="#e85d5d" stroke-width="4" fill="none"/><rect x="333" y="110" width="34" height="18" rx="3" fill="#8a6244" stroke="#5a3d28" stroke-width="2"/><rect x="341" y="113" width="18" height="11" fill="#fff6e6" stroke="#c98420"/><path d="M341 113l9 6 9-6" stroke="#c98420" fill="none"/></g>
+  <!-- ёжик -->
+  <g transform="translate(222 214)"><path d="M0 30 Q-4 2 24 0 Q50 -2 50 30z" fill="#6b4a33"/>${Array.from({length:7},(_,i)=>`<path d="M${6+i*6} ${6-Math.sin(i/6*Math.PI)*6} l3 -10 l3 10" fill="#4a3324"/>`).join('')}<path d="M44 30 Q58 26 60 18 Q50 12 42 16z" fill="#e8c9a0"/><circle cx="60" cy="18" r="3" fill="#2a1c12"/><circle cx="50" cy="19" r="2" fill="#2a1c12"/><rect x="10" y="16" width="20" height="14" rx="2" fill="#fff6e6" stroke="#c98420" stroke-width="2"/><path d="M10 16l10 7 10-7" stroke="#c98420" stroke-width="2" fill="none"/></g>
+  </svg>`;
+}
+
+/* ---------- главная ---------- */
+function renderHome(){
+  $('level').hidden=true;$('home').hidden=false;closeOv();
+  const avail=Math.max(0,totalStars()-spent()),nl=nextLevel(),done=P.stars.every(Boolean);
+  $('home').innerHTML=`<div class="home">
+    <h1>Лесная почта <small>прототип · ёжик Тиша и старый пень</small></h1>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <div class="scene">${sceneSVG()}</div>
+      <p class="story">После бури лесная почта развалилась. Ёжик Тиша разносит письма жителям леса, а за каждую доставку получает звёзды. На них почту можно отстроить заново.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <div class="panel">
+        <div class="bank"><div><div class="story" style="font-size:12px">Звёзды на ремонт</div><b><span class="star">★</span> ${avail}</b> <span class="story">из ${totalStars()} заработанных</span></div>
+        <button class="btn main" id="bPlay">${done?'Переиграть уровень':'Уровень '+(nl+1)} ▶</button></div>
+        <div class="story">Следующее письмо: <b style="color:var(--paper)">${LEVELS[nl].to}</b></div>
+      </div>
+      <div class="panel"><h2>Ремонт почты</h2><div class="items">${ITEMS.map(it=>{const b=P.built.includes(it.id);return `<div class="item"><span>${it.name}</span>${b?'<span class="done">✓ готово</span>':`<button class="btn small" data-build="${it.id}" ${avail<it.cost?'disabled':''}>★ ${it.cost}</button>`}</div>`}).join('')}</div></div>
+      <div class="panel"><h2>Письма</h2><div class="levels">${LEVELS.map((l,i)=>{const open=i===0||P.stars[i-1]>0||P.stars[i]>0;return `<button class="lv ${i===nl?'cur':''}" data-lv="${i}" ${open?'':'disabled'} aria-label="Уровень ${i+1}">${i+1}<small>${'★'.repeat(P.stars[i])}</small></button>`}).join('')}</div></div>
+    </div></div>`;
+  $('bPlay').onclick=()=>{ac();showIntro(nl)};
+  $('home').querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{ac();showIntro(+b.dataset.lv)});
+  $('home').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
+    const it=ITEMS.find(i=>i.id===b.dataset.build);if(totalStars()-spent()<it.cost)return;
+    P.built.push(it.id);save();ac();chime();
+    const off=$('home').querySelector('.part.off');renderHome();
+    if(P.built.length===ITEMS.length)setTimeout(()=>toast('Почта полностью отстроена!'),300);
+  });
+}
+
+/* ---------- состояние уровня ---------- */
+let LV=null,LI=0,grid,moss,mossEl,goals,moves,score,busy=false,sel=null,tool=null,extraUsed=false,uid=0,hintTimer=null,CELL=56;
+const inb=(r,c)=>r>=0&&c>=0&&r<N&&c<N;
+const D4=[[1,0],[-1,0],[0,1],[0,-1]];
+const randColor=()=>Math.floor(Math.random()*LV.colors);
+
+function goalIcon(g){
+  if(g.t==='c')return TILE[g.color];
+  if(g.t==='m')return MOSS_IC;if(g.t==='s')return STONE;if(g.t==='l')return CHAIN;
+}
+function goalAdd(t,color){
+  for(const g of goals)if(g.t===t&&(t!=='c'||g.color===color)&&g.have<g.need)g.have++;
+}
+const goalsDone=()=>goals.every(g=>g.have>=g.need);
+
+function startLevel(i){
+  LI=i;LV=LEVELS[i];moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
+  $('home').hidden=true;$('level').hidden=false;closeOv();
+  $('level').innerHTML=`<div class="game" id="game">
+    <div class="hud">
+      <div class="box mv"><div class="k">Ходы</div><div class="moves" id="mv"></div></div>
+      <div class="box gl"><div class="k">Письмо · ${LV.to}</div><div class="goals" id="gl"></div></div>
+      <div class="box sc"><div class="k">Очки</div><div class="scorev" id="sc">0</div></div>
+      <div class="tools">
+        <button class="btn tool" id="tHammer" title="Разбить одну клетку, не тратя ход">🔨 <b id="nH"></b></button>
+        <button class="btn tool" id="tShuffle" title="Перемешать поле">🔀 <b id="nS"></b></button>
+        <button class="btn tool" id="tMenu" aria-label="На почту">🏠</button>
+      </div>
+    </div>
+    <div class="boardwrap"><div class="board" id="board"></div></div>
+  </div>`;
+  layout();
+  // мох и раскладка
+  const map=LV.map||Array(N).fill('........');
+  moss=[];mossEl=[];grid=[];
+  const b=$('board');
+  for(let r=0;r<N;r++){moss.push([]);mossEl.push([]);grid.push(Array(N).fill(null));
+    for(let c=0;c<N;c++){const ch=map[r][c];const m='mLx'.includes(ch)?1:0;moss[r].push(m);
+      const e=document.createElement('div');e.className='mossc'+(m?'':' gone');e.style.transform=`translate(${c*CELL}px,${r*CELL}px)`;b.appendChild(e);mossEl[r].push(e)}}
+  fillBoard(map);
+  goals=LV.goals.map(g=>{
+    if(g[0]==='c')return {t:'c',color:g[1],need:g[2],have:0};
+    let need=0;for(let r=0;r<N;r++)for(let c=0;c<N;c++){const ch=map[r][c];
+      if(g[0]==='m'&&moss[r][c])need++;
+      if(g[0]==='s'&&'sSx'.includes(ch))need++;
+      if(g[0]==='l'&&'lL'.includes(ch))need++;}
+    return {t:g[0],need,have:0};
+  });
+  bindBoard();updateHUD();
+  $('tHammer').onclick=()=>{if(busy||P.hammers<=0)return;tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
+  $('tShuffle').onclick=async()=>{if(busy||P.shuffles<=0)return;P.shuffles--;save();busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
+  $('tMenu').onclick=()=>{if(!busy)renderHome()};
+  armHint();
+}
+function layout(){
+  const vw=innerWidth,vh=innerHeight;
+  const portrait=vw<760||vh>vw*1.05;
+  const g=$('game');if(g)g.classList.toggle('portrait',portrait);
+  const avW=portrait?vw-32-16:vw-32-16-220-18;
+  const avH=portrait?vh-28-16-170:vh-28-16;
+  CELL=Math.max(34,Math.floor(Math.min(avW/N,avH/N,72)));
+  document.documentElement.style.setProperty('--cell',CELL+'px');
+}
+function fillBoard(map){
+  for(let tries=0;tries<100;tries++){
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){if(grid[r][c]&&grid[r][c].el)grid[r][c].el.remove();grid[r][c]=null}
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+      const ch=map[r][c];
+      if('sSx'.includes(ch)){grid[r][c]=mk({stone:true,hp:ch==='S'?2:1,color:-2},r,c);continue}
+      let col,guard=0;
+      do{col=randColor();guard++}while(guard<30&&((c>=2&&cc(r,c-1)===col&&cc(r,c-2)===col)||(r>=2&&cc(r-1,c)===col&&cc(r-2,c)===col)));
+      grid[r][c]=mk({color:col,lock:'lL'.includes(ch)},r,c);
+    }
+    if(hasMoves())break;
+  }
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++)place(grid[r][c],0);
+}
+function cc(r,c){const t=grid[r][c];return t&&!t.stone&&t.color>=0?t.color:-1}
+function mk(o,r,c){
+  const t={id:uid++,color:0,sp:null,lock:false,stone:false,hp:0,...o,r,c};
+  t.el=document.createElement('div');renderTile(t);$('board').appendChild(t.el);return t;
+}
+function renderTile(t){
+  t.el.className='t'+(t.sp?' sp-'+t.sp:'')+(t.stone&&t.hp>1?' hp2':'')+(t===sel?' sel':'');
+  const g=t.stone?(t.hp>1?BOULDER:STONE):t.sp==='rb'?'<div class="rb"></div>':TILE[t.color];
+  t.el.innerHTML=`<div class="g">${g}</div>${t.lock?`<div class="lk">${CHAIN}</div>`:''}`;
+}
+function place(t,dur,row){
+  t.el.style.transitionDuration=(dur||0)+'ms';
+  t.el.style.transform=`translate(${t.c*CELL}px,${(row??t.r)*CELL}px)`;
+}
+function updateHUD(){
+  const mv=$('mv');if(!mv)return;
+  mv.textContent=moves;mv.classList.toggle('low',moves<=5);
+  $('gl').innerHTML=goals.map(g=>{const left=Math.max(0,g.need-g.have);return `<div class="goal ${left?'':'done'}"><span class="ic">${goalIcon(g)}</span>${left?left:'✓'}</div>`}).join('');
+  $('sc').textContent=score.toLocaleString('ru-RU');
+  $('nH').textContent=P.hammers;$('nS').textContent=P.shuffles;
+  $('tHammer').classList.toggle('on',tool==='hammer');
+  $('tHammer').disabled=P.hammers<=0;$('tShuffle').disabled=P.shuffles<=0;
+}
+
+/* ---------- поиск совпадений ---------- */
+function findRuns(){
+  const runs=[];
+  for(let r=0;r<N;r++){let c=0;while(c<N){const k=cc(r,c);let e=c+1;if(k>=0){while(e<N&&cc(r,e)===k)e++;if(e-c>=3){const cells=[];for(let x=c;x<e;x++)cells.push([r,x]);runs.push({dir:'h',color:k,cells})}}c=e}}
+  for(let c=0;c<N;c++){let r=0;while(r<N){const k=cc(r,c);let e=r+1;if(k>=0){while(e<N&&cc(e,c)===k)e++;if(e-r>=3){const cells=[];for(let y=r;y<e;y++)cells.push([y,c]);runs.push({dir:'v',color:k,cells})}}r=e}}
+  return runs;
+}
+const movable=t=>t&&!t.stone&&!t.lock;
+function swapGrid(r1,c1,r2,c2){const a=grid[r1][c1],b=grid[r2][c2];grid[r1][c1]=b;grid[r2][c2]=a;if(a){a.r=r2;a.c=c2}if(b){b.r=r1;b.c=c1}}
+function findMove(){
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++)for(const [dr,dc] of [[0,1],[1,0]]){
+    const r2=r+dr,c2=c+dc;if(!inb(r2,c2))continue;const a=grid[r][c],b=grid[r2][c2];
+    if(!movable(a)||!movable(b))continue;
+    if(a.sp==='rb'||b.sp==='rb'||(a.sp&&b.sp))return [r,c,r2,c2];
+    swapGrid(r,c,r2,c2);const ok=findRuns().length>0;swapGrid(r,c,r2,c2);
+    if(ok)return [r,c,r2,c2];
+  }
+  return null;
+}
+const hasMoves=()=>!!findMove();
+
+function planMatch(runs,swapKeys){
+  const hits=[],spawns=[],used=new Set(),taken=new Set();
+  const hR=runs.filter(r=>r.dir==='h'),vR=runs.filter(r=>r.dir==='v');
+  for(const a of hR)for(const b of vR){
+    if(a.color!==b.color||used.has(a)||used.has(b))continue;
+    const s=a.cells.find(([r,c])=>b.cells.some(([r2,c2])=>r2===r&&c2===c));
+    if(s){used.add(a);used.add(b);taken.add(s[0]*N+s[1]);spawns.push({r:s[0],c:s[1],sp:(a.cells.length>=5||b.cells.length>=5)?'rb':'bomb'})}
+  }
+  for(const run of runs){
+    for(const cell of run.cells)hits.push(cell);
+    if(used.has(run))continue;
+    const len=run.cells.length;if(len<4)continue;
+    let pos=(swapKeys&&run.cells.find(([r,c])=>swapKeys.has(r*N+c)))||run.cells[len>>1];
+    if(grid[pos[0]][pos[1]].sp||taken.has(pos[0]*N+pos[1])){pos=run.cells.find(([r,c])=>!grid[r][c].sp&&!taken.has(r*N+c));if(!pos)continue}
+    taken.add(pos[0]*N+pos[1]);
+    spawns.push({r:pos[0],c:pos[1],sp:len>=5?'rb':(run.dir==='h'?'h':'v')});
+  }
+  return {hits,spawns};
+}
+function mostColor(){
+  const cnt=Array(5).fill(0);for(const row of grid)for(const t of row)if(t&&!t.stone&&t.color>=0)cnt[t.color]++;
+  return cnt.indexOf(Math.max(...cnt));
+}
+function area(t,r,c){
+  const out=[];
+  if(t.sp==='h')for(let x=0;x<N;x++)out.push(r*N+x);
+  else if(t.sp==='v')for(let y=0;y<N;y++)out.push(y*N+c);
+  else if(t.sp==='bomb'){for(let y=r-1;y<=r+1;y++)for(let x=c-1;x<=c+1;x++)if(inb(y,x))out.push(y*N+x)}
+  else if(t.sp==='rb'){const col=mostColor();for(let y=0;y<N;y++)for(let x=0;x<N;x++){const u=grid[y][x];if(u&&u.color===col)out.push(y*N+x)}}
+  return out;
+}
+function fx(t,r,c){
+  const b=$('board');
+  const mkEl=(cls,css)=>{const e=document.createElement('div');e.className=cls;Object.assign(e.style,css);b.appendChild(e);setTimeout(()=>e.remove(),400)};
+  if(t.sp==='h')mkEl('beam',{left:0,top:r*CELL+'px',width:N*CELL+'px',height:CELL+'px','--dir':'0deg'});
+  if(t.sp==='v')mkEl('beam',{left:c*CELL+'px',top:0,width:CELL+'px',height:N*CELL+'px','--dir':'90deg'});
+  if(t.sp==='bomb'||t.sp==='rb')mkEl('ring',{left:(c-1)*CELL+'px',top:(r-1)*CELL+'px',width:3*CELL+'px',height:3*CELL+'px'});
+  boom();
+}
+async function applyHits(list,spawns,fromMatch,mult){
+  const spawnKeys=new Set(spawns.map(s=>s.r*N+s.c));
+  const queue=list.map(([r,c])=>r*N+c);
+  if(fromMatch){for(const k of [...queue]){const r=k/N|0,c=k%N;for(const [dr,dc] of D4){const y=r+dr,x=c+dc;if(inb(y,x)&&grid[y][x]&&grid[y][x].stone)queue.push(y*N+x)}}}
+  const done=new Set(),removed=[];let big=false;
+  while(queue.length){
+    const k=queue.shift();if(done.has(k))continue;done.add(k);
+    const r=k/N|0,c=k%N;
+    if(moss[r][c]){moss[r][c]=0;mossEl[r][c].classList.add('gone');goalAdd('m');score+=20}
+    const t=grid[r][c];if(!t)continue;
+    if(spawnKeys.has(k)){if(t.lock){t.lock=false;goalAdd('l')}continue}
+    if(t.stone){t.hp--;score+=30;if(t.hp<=0){grid[r][c]=null;removed.push(t);goalAdd('s')}else renderTile(t);continue}
+    if(t.lock){t.lock=false;goalAdd('l');score+=20;renderTile(t);continue}
+    grid[r][c]=null;removed.push(t);goalAdd('c',t.color);score+=10*mult;
+    if(t.sp){big=true;fx(t,r,c);for(const kk of area(t,r,c))queue.push(kk)}
+  }
+  for(const s of spawns){const t=grid[s.r][s.c];if(t){t.sp=s.sp;if(s.sp==='rb')t.color=-1;renderTile(t)}}
+  removed.forEach(t=>t.el.classList.add('pop'));
+  if(removed.length)pop(mult);
+  updateHUD();
+  await sleep(big?280:210);
+  removed.forEach(t=>t.el.remove());
+}
+async function gravity(){
+  let maxD=0;const fresh=[];
+  for(let c=0;c<N;c++){
+    let w=N-1;
+    for(let r=N-1;r>=0;r--){const t=grid[r][c];if(t){if(w!==r){grid[w][c]=t;grid[r][c]=null;t.r=w;const d=w-r;maxD=Math.max(maxD,d);place(t,110+d*55)}w--}}
+    const holes=w+1;
+    for(let r=w;r>=0;r--){
+      const t=mk({color:randColor()},r,c);grid[r][c]=t;
+      place(t,0,r-holes);fresh.push([t,holes]);
+      maxD=Math.max(maxD,holes);
+    }
+  }
+  if(fresh.length&&SPEED)void $('board').offsetWidth;
+  for(const [t,d] of fresh)place(t,110+d*55);
+  await sleep(130+maxD*55);
+}
+async function resolve(swapKeys){
+  let cascade=0;
+  while(true){
+    const runs=findRuns();if(!runs.length)break;
+    cascade++;
+    const {hits,spawns}=planMatch(runs,cascade===1?swapKeys:null);
+    if(cascade===3&&SPEED)comboText('Здорово!');
+    if(cascade===5&&SPEED)comboText('Невероятно!');
+    await applyHits(hits,spawns,true,cascade);
+    await gravity();
+  }
+}
+async function afterMove(){
+  if(goalsDone()){await sleep(300);return win()}
+  if(moves<=0)return lose();
+  if(!hasMoves()){toast('Ходов нет — перемешиваю');await shuffleBoard()}
+  armHint();
+}
+
+/* ---------- ход ---------- */
+async function trySwap(r1,c1,r2,c2){
+  if(busy||!inb(r2,c2))return;
+  const a=grid[r1][c1],b=grid[r2][c2];
+  clearSel();clearHint();
+  if(!movable(a)||!movable(b)){if(SPEED)toast(a&&a.lock||b&&b.lock?'Фишка на цепи: собери с ней ряд':'Камень не двигается');return}
+  busy=true;
+  swapGrid(r1,c1,r2,c2);place(a,150);place(b,150);await sleep(160);
+  const combo=a.sp==='rb'||b.sp==='rb'||(a.sp&&b.sp);
+  if(combo){moves--;updateHUD();await doCombo(a,b);await resolve(null)}
+  else if(findRuns().length){moves--;updateHUD();swish();await resolve(new Set([r1*N+c1,r2*N+c2]))}
+  else{swapGrid(r1,c1,r2,c2);place(a,150);place(b,150);if(SPEED)nope();await sleep(160);busy=false;armHint();return}
+  busy=false;await afterMove();
+}
+async function doCombo(a,b){
+  const hits=[];const rb=a.sp==='rb'?a:b.sp==='rb'?b:null;
+  if(rb){
+    const o=rb===a?b:a;
+    if(o.sp==='rb'){for(let r=0;r<N;r++)for(let c=0;c<N;c++)hits.push([r,c]);if(SPEED)comboText('Весь лес!')}
+    else{
+      const col=o.color;const targets=[];
+      for(const row of grid)for(const t of row)if(t&&!t.stone&&t.color===col)targets.push(t);
+      if(o.sp){for(const t of targets){if(!t.lock&&!t.sp)t.sp=o.sp==='bomb'?'bomb':(Math.random()<.5?'h':'v');renderTile(t)}if(SPEED)comboText('Цепная реакция!');await sleep(300)}
+      for(const t of targets)hits.push([t.r,t.c]);
+    }
+    rb.sp=null;rb.color=-1;hits.push([rb.r,rb.c]);
+  }else{
+    const s=[a.sp,b.sp].sort().join('+');const r=b.r,c=b.c;a.sp=null;b.sp=null;
+    const row=y=>{for(let x=0;x<N;x++)hits.push([y,x])},colm=x=>{for(let y=0;y<N;y++)hits.push([y,x])};
+    if(s==='bomb+bomb'){for(let y=r-2;y<=r+2;y++)for(let x=c-2;x<=c+2;x++)if(inb(y,x))hits.push([y,x])}
+    else if(s.includes('bomb')){for(let d=-1;d<=1;d++){if(inb(r+d,0))row(r+d);if(inb(0,c+d))colm(c+d)}}
+    else{row(r);colm(c)}
+    hits.push([a.r,a.c]);
+    if(SPEED){fx({sp:'h'},r,c);fx({sp:'v'},r,c);comboText('Комбо!')}
+  }
+  await applyHits(hits,[],false,2);
+  await gravity();
+}
+async function hammerAt(r,c){
+  if(busy||!grid[r][c])return;
+  tool=null;P.hammers--;save();busy=true;clearHint();
+  if(SPEED)fx({sp:'bomb'},r,c);
+  await applyHits([[r,c]],[],false,1);await gravity();await resolve(null);
+  busy=false;updateHUD();await afterMove();
+}
+async function shuffleBoard(){
+  const ts=[];for(const row of grid)for(const t of row)if(t&&!t.stone&&!t.sp)ts.push(t);
+  for(let i=0;i<60;i++){
+    const cols=ts.map(t=>t.color);for(let j=cols.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[cols[j],cols[k]]=[cols[k],cols[j]]}
+    ts.forEach((t,j)=>t.color=i>30?randColor():cols[j]);
+    if(!findRuns().length&&hasMoves())break;
+  }
+  ts.forEach(t=>{renderTile(t);t.el.classList.add('pop');});
+  await sleep(180);ts.forEach(t=>t.el.classList.remove('pop'));
+  await resolve(null);
+}
+
+/* ---------- управление ---------- */
+let drag=null;
+function cellAt(e){const b=$('board').getBoundingClientRect();return [Math.floor((e.clientY-b.top)/CELL),Math.floor((e.clientX-b.left)/CELL)]}
+function clearSel(){if(sel){const s=sel;sel=null;renderTile(s)}}
+function bindBoard(){
+  const b=$('board');
+  b.addEventListener('pointerdown',e=>{
+    if(busy)return;ac();
+    const [r,c]=cellAt(e);if(!inb(r,c))return;
+    if(tool==='hammer'){hammerAt(r,c);return}
+    drag={r,c,x:e.clientX,y:e.clientY,moved:false};
+    try{b.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  b.addEventListener('pointermove',e=>{
+    if(!drag||drag.moved)return;
+    const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+    if(Math.max(Math.abs(dx),Math.abs(dy))<CELL*.35)return;
+    drag.moved=true;
+    const [dr,dc]=Math.abs(dx)>Math.abs(dy)?[0,Math.sign(dx)]:[Math.sign(dy),0];
+    trySwap(drag.r,drag.c,drag.r+dr,drag.c+dc);
+  });
+  b.addEventListener('pointerup',()=>{
+    if(!drag)return;const {r,c,moved}=drag;drag=null;if(moved||busy)return;
+    const t=grid[r][c];
+    if(sel&&Math.abs(sel.r-r)+Math.abs(sel.c-c)===1){const s=sel;trySwap(s.r,s.c,r,c);return}
+    clearSel();if(t&&movable(t)){sel=t;renderTile(t);tick()}
+  });
+  b.addEventListener('pointercancel',()=>{drag=null});
+}
+function clearHint(){clearTimeout(hintTimer);document.querySelectorAll('.t.hint').forEach(e=>e.classList.remove('hint'))}
+function armHint(){clearHint();if(!SPEED)return;hintTimer=setTimeout(()=>{if(busy||$('level').hidden)return;const m=findMove();if(m){grid[m[0]][m[1]].el.classList.add('hint');grid[m[2]][m[3]].el.classList.add('hint')}},5000)}
+
+/* ---------- экраны уровня ---------- */
+function openOv(){$('ov').hidden=false}
+function closeOv(){$('ov').hidden=true}
+function goalsHTML(gs){return `<div class="goals">${gs.map(g=>`<div class="goal"><span class="ic">${goalIcon(g)}</span>${g.need}</div>`).join('')}</div>`}
+function showIntro(i){
+  const L=LEVELS[i];
+  const map=L.map||Array(N).fill('........');
+  const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLx'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++}return {t:g[0],need}});
+  $('card').innerHTML=`<div class="stamp">✉</div><div class="to">Письмо ${i+1} · кому: ${L.to}</div><h2>${L.to}</h2><p>${L.text}</p>${goalsHTML(gs)}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
+    <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
+  $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
+  $('bGo').onclick=()=>startLevel(i);
+  openOv();
+}
+function win(){
+  clearHint();
+  const frac=moves/LV.moves;const stars=frac>=.3?3:frac>=.12?2:1;
+  score+=moves*50;
+  const before=P.stars[LI];P.stars[LI]=Math.max(before,stars);
+  const gained=P.stars[LI]-before;
+  if(stars===3)P.hammers++;
+  save();fanfare();
+  if(!SPEED)return;
+  $('card').innerHTML=`<div class="stamp">✓</div><div class="to">Доставлено · ${LV.to}</div><h2>Письмо у адресата!</h2>
+    <div class="bigstars">${[1,2,3].map(s=>`<span class="${s<=stars?'star':'off'}">★</span>`).join('')}</div>
+    <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ★</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''}</p>
+    <div class="row"><button class="btn" id="bHome">На почту</button>${LI<LEVELS.length-1?'<button class="btn main" id="bNext">Следующее письмо</button>':''}</div>`;
+  $('bHome').onclick=renderHome;
+  if($('bNext'))$('bNext').onclick=()=>showIntro(LI+1);
+  openOv();
+}
+function lose(){
+  clearHint();sad();
+  if(!SPEED)return;
+  const left=goals.filter(g=>g.have<g.need).map(g=>({...g,need:g.need-g.have}));
+  $('card').innerHTML=`<div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2><p>Осталось совсем немного:</p>${goalsHTML(left)}
+    ${extraUsed?'':'<button class="btn main" id="bExtra">+5 ходов</button><p class="note">В релизе: за просмотр рекламы. Один раз за уровень.</p>'}
+    <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn" id="bRetry">Заново</button></div>`;
+  if($('bExtra'))$('bExtra').onclick=()=>{extraUsed=true;moves+=5;updateHUD();closeOv();armHint()};
+  $('bHome').onclick=renderHome;$('bRetry').onclick=()=>startLevel(LI);
+  openOv();
+}
+function toast(t){if(!SPEED)return;const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),1500)}
+function comboText(t){const e=document.createElement('div');e.className='combo';e.textContent=t;$('board').appendChild(e);setTimeout(()=>e.remove(),900)}
+
+/* ---------- звук ---------- */
+let AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume()}
+function tone(f,d=.1,type='sine',v=.06,delay=0){if(!AC||!SPEED)return;const t0=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(v,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+d+.02)}
+const pop=m=>tone(520+Math.min(m,8)*90,.12,'triangle',.07);
+const tick=()=>tone(700,.04,'sine',.04);
+const swish=()=>tone(380,.08,'sine',.04);
+const nope=()=>{tone(220,.1,'square',.03);tone(180,.12,'square',.03,.08)};
+const boom=()=>{tone(110,.25,'sawtooth',.05);tone(660,.15,'triangle',.05,.05)};
+const chime=()=>[784,988,1175].forEach((f,i)=>tone(f,.25,'triangle',.06,i*.08));
+const fanfare=()=>[523,659,784,1047,1319].forEach((f,i)=>tone(f,.25,'triangle',.07,i*.09));
+const sad=()=>[392,330,262].forEach((f,i)=>tone(f,.3,'triangle',.06,i*.14));
+
+/* ---------- старт ---------- */
+addEventListener('resize',()=>{if($('level').hidden||!grid)return;layout();
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){mossEl[r][c].style.transform=`translate(${c*CELL}px,${r*CELL}px)`;if(grid[r][c])place(grid[r][c],0)}});
+load();renderHome();
+</script>
