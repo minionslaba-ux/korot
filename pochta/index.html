@@ -350,6 +350,8 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .playrow .rbtn .lbl{color:#fff}
 .rthumb{height:84px;width:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(#e6f4ff,#f6fbf2);border-radius:12px}
 .rthumb img{max-width:90%;max-height:78px;object-fit:contain}
+.sitem.locked .rthumb img{filter:grayscale(1) opacity(.35)}
+.sitem.locked .sd .ico2{display:inline-block;width:14px;height:14px;vertical-align:-2px;filter:brightness(.3)}
 .setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;font:700 18px var(--display);color:var(--ink);padding:4px 0}
 .tog{width:64px;height:36px;border-radius:999px;background:#c9d3df;position:relative;border:0;cursor:pointer;transition:background .2s;flex:none}
 .tog i{position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 2px 0 #0002;transition:left .2s}
@@ -781,8 +783,8 @@ const petImg=(p,cls='')=>`<img class="${cls}" src="${petSrc(p)}" alt="" draggabl
 // места жителей на диораме (посчитаны из 3D-сцены): x, низ y, высота в процентах кадра
 const SLOTS=[[33.58, 66.6, 8.15], [24.44, 62.43, 7.97], [13.09, 61.72, 7.94], [38.04, 77.19, 8.59], [24.8, 74.47, 8.48], [11.02, 73.9, 8.46], [76.32, 78.04, 8.62], [86.99, 74.69, 8.49], [77.25, 91.72, 9.12], [47.9, 86.71, 8.95], [90.33, 89.24, 9.04], [30.73, 88.29, 9], [15.45, 84.85, 8.88], [54.42, 93.63, 9.19], null, [74.8, 58.58, 7.8], [74.15, 51.5, 7.46], [43.5, 70.55, 8.32], [56.35, 82.18, 8.78], [6.15, 88.27, 9], [75.66, 101.42, 9.43], [92.63, 102.24, 9.46], [37.96, 94.97, 9.23], [21.31, 92.56, 9.15]];
 const HERO_SLOT=[56.53, 74.16, 9.58];
-const LAYERS={"walls": [42.75, 23.4, 24.19], "roof": [40.25, 2.5, 32.25], "ladder": [45.94, 51.4, 7.38], "flag": [54.56, 34.8, 13.56], "fence": [11.88, 44.9, 27.81], "plants": [18.69, 43.0, 15.75], "tent": [73.06, 42.3, 21.81], "bridge": [60.25, 55.9, 16.0], "lookout": [20.44, 8.2, 21.12], "store": [72.75, 30.3, 17.19], "bridge2": [56.19, 78.3, 19.31], "garden": [31.13, 38.4, 14.75], "pines": [8.0, 28.2, 9.12]};
-const DRAW_ORDER=['lookout','store','garden','pines','walls','roof','flag','ladder','fence','plants','tent','bridge','bridge2'];
+const LAYERS={"walls": [42.75, 23.4, 24.19], "roof": [40.25, 2.5, 32.25], "ladder": [45.94, 51.4, 7.38], "flag": [54.56, 34.8, 13.56], "fence": [11.88, 44.9, 27.81], "plants": [18.69, 43.2, 15.81], "tent": [73.06, 42.3, 21.81], "bridge": [60.25, 55.9, 16.0], "lookout": [20.44, 8.2, 21.12], "store": [72.75, 30.3, 17.19], "bridge2": [56.19, 78.3, 19.31], "garden": [31.13, 38.4, 14.75], "pines": [7.81, 28.2, 92.19], "snowman": [0.88, 47.4, 15.88], "xmastree": [59.31, 13.4, 14.31], "skating": [60.5, 66.4, 13.5], "lanterns": [37.38, 43.0, 28.75], "stall": [3.69, 33.5, 17.69], "swing": [86.62, 52.4, 13.38], "balloon": [28.38, 3.1, 21.88], "bunting": [57.81, 29.6, 29.12], "archer": [46.56, 52.4, 5.88], "boat": [66.94, 36.7, 7.19], "airship": [73.44, 8.1, 20.0], "signpost": [72.12, 49.7, 11.88]};
+const DRAW_ORDER=['balloon','airship','lookout','store','xmastree','garden','boat','pines','walls','roof','flag','stall','bunting','archer','signpost','lanterns','ladder','fence','plants','tent','bridge','swing','skating','snowman','bridge2'];
 const petW=h=>h*1.35*750/1200; // ширина в % от ширины сцены
 function petsLayer(){
   const out=LEVELS.map((L,i)=>{if(!L.pet||!P.stars[i]||!SLOTS[i])return '';const [x,y,h]=SLOTS[i];
@@ -807,6 +809,18 @@ const ITEMS=[
  {id:'bridge2',name:'Второй мост',cost:7,ch:2},
  {id:'store',name:'Склад посылок',cost:7,ch:2},
  {id:'lookout',name:'Смотровая скала',cost:8,ch:2},
+ {id:'snowman',name:'Снеговик',cost:10,ch:4},
+ {id:'lanterns',name:'Фонари у почты',cost:10,ch:4},
+ {id:'skating',name:'Каток на ручье',cost:12,ch:4},
+ {id:'xmastree',name:'Новогодняя ёлка',cost:12,ch:4},
+ {id:'stall',name:'Ярмарочный прилавок',cost:12,ch:5},
+ {id:'swing',name:'Качели',cost:12,ch:5},
+ {id:'bunting',name:'Гирлянда флажков',cost:14,ch:5},
+ {id:'balloon',name:'Воздушный шар',cost:14,ch:5},
+ {id:'signpost',name:'Указатель «Почта»',cost:15,ch:6},
+ {id:'archer',name:'Лесной стражник',cost:15,ch:6},
+ {id:'boat',name:'Почтовая лодка',cost:16,ch:6},
+ {id:'airship',name:'Дирижабль почты',cost:18,ch:6},
 ];
 let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2,coins:150,inv:{},owned:['tisha:classic','frame:classic'],tisha:'classic',frame:'classic'};
 function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));if(P.muted){P.musicOff=P.sfxOff=true;delete P.muted}while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
@@ -825,7 +839,7 @@ function sceneSVG(){
 function renderHome(){
   reveal();$('level').hidden=true;$('map').hidden=true;$('home').hidden=false;closeOv();playMusic('home');try{scrollTo(0,0)}catch(e){}
   const avail=Math.max(0,totalStars()-spent()),nl=nextLevel(),done=P.stars.every(Boolean),NL=LEVELS[nl];
-  const canBuild=ITEMS.filter(it=>!P.built.includes(it.id)&&(!it.req||P.built.includes(it.req))&&it.cost<=avail).length;
+  const canBuild=ITEMS.filter(it=>itemOpen(it)&&!P.built.includes(it.id)&&(!it.req||P.built.includes(it.req))&&it.cost<=avail).length;
   const st=dailyState();
   $('home').innerHTML=`<div class="hm">
     <div class="topbar">
@@ -861,12 +875,15 @@ function renderHome(){
 }
 
 /* ---------- окно ремонта ---------- */
+const ITEM_GROUPS=[{title:'Почта',ch:1},{title:'Лето у ручья',ch:2},{title:'Зима',ch:4},{title:'Весенняя ярмарка',ch:5},{title:'Большая доставка',ch:6}];
+const itemCh=it=>it.ch||1;
+function itemOpen(it){const ch=itemCh(it);if(ch<=2)return true;const from=CHAPTERS[ch-1].from;return P.stars.slice(from-1).some(Boolean)}
 function showRepair(){
   const avail=Math.max(0,totalStars()-spent());
   $('card').innerHTML=`<div class="to">Ремонт почты</div><div class="shophead"><h2>${bi('house')} Стройка у почты</h2><span class="wallet">${STAR_IMG} <b>${avail}</b></span></div>
     <p class="note">Звёзды за доставленные письма тратятся на постройки. Каждая сразу появляется у почты.</p>
-    <div class="shopbody"><div class="sgrid">${ITEMS.map(it=>{const b=P.built.includes(it.id),lockReq=it.req&&!P.built.includes(it.req);
-      return `<div class="sitem${b?' on':''}"><div class="rthumb"><img src="${layerSrc(it.id)}" alt=""></div><b>${it.name}</b>${b?'<span class="ddone">✓ Построено</span>':lockReq?`<span class="sd">Сначала: ${ITEMS.find(x=>x.id===it.req).name.toLowerCase()}</span>`:`<button class="btn buy" data-build="${it.id}" ${avail<it.cost?'disabled':''}>${STAR_IMG} ${it.cost}</button>`}</div>`}).join('')}</div></div>
+    <div class="shopbody">${ITEM_GROUPS.map(G=>{const list=ITEMS.filter(it=>(itemCh(it)===G.ch)||(G.ch===1&&!it.ch));if(!list.length)return '';const open=itemOpen(list[0]);return `<div class="chap">${G.title}${open?'':' · откроется в главе '+G.ch}</div><div class="sgrid">${list.map(it=>{if(!open)return `<div class="sitem locked"><div class="rthumb"><img src="${layerSrc(it.id)}" alt=""></div><b>${it.name}</b><span class="sd">${ICO('locked')} Глава ${G.ch}</span></div>`;const b=P.built.includes(it.id),lockReq=it.req&&!P.built.includes(it.req);
+      return `<div class="sitem${b?' on':''}"><div class="rthumb"><img src="${layerSrc(it.id)}" alt=""></div><b>${it.name}</b>${b?'<span class="ddone">✓ Построено</span>':lockReq?`<span class="sd">Сначала: ${ITEMS.find(x=>x.id===it.req).name.toLowerCase()}</span>`:`<button class="btn buy" data-build="${it.id}" ${avail<it.cost?'disabled':''}>${STAR_IMG} ${it.cost}</button>`}</div>`}).join('')}</div>`}).join('')}</div>
     <div class="row"><button class="btn main" id="bRepClose">Закрыть</button></div>`;
   $('card').classList.add('wide');openOv();
   $('bRepClose').onclick=()=>{$('card').classList.remove('wide');closeOv()};
