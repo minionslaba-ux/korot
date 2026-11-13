@@ -87,7 +87,8 @@ h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
 .game.portrait .box.gl{flex:1 1 160px}
 .game.portrait .box.sc{display:none}
 .tools{display:flex;gap:8px;flex-wrap:wrap}
-.game.portrait .tools{width:100%;flex-wrap:nowrap}
+.game.portrait .tools{width:100%;flex-wrap:nowrap;justify-content:center;gap:18px}
+.tools{justify-content:center;gap:14px;padding:4px 0}
 .game.portrait .tool{min-width:0;padding:0 4px}
 @media (max-width:360px){.home h1 .btn.replay{font-size:0;min-width:44px}.home h1 .btn.replay::before{content:"▶";font-size:14px}}
 .tool{flex:1;display:flex;align-items:center;justify-content:center;gap:6px}
@@ -312,6 +313,74 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 :root[data-season="autumn"] body::after{background:radial-gradient(60% 100% at 20% 100%,#e0b04a 60%,transparent 61%),radial-gradient(70% 100% at 85% 100%,#d8973a 60%,transparent 61%)}
 :root[data-season="spring"] body{background:linear-gradient(#c8eeff 0%,#7cc6f8 50%,#3d8ee0 100%)}
 :root[data-season="spring"] body::after{background:radial-gradient(60% 100% at 20% 100%,#97e070 60%,transparent 61%),radial-gradient(70% 100% at 85% 100%,#7ccf5a 60%,transparent 61%)}
+
+/* ---------- полировка: главный экран, карта, иконки ---------- */
+.ico2{width:56%;height:56%;display:block;pointer-events:none}
+.ib{display:inline-block;width:1.3em;height:1.3em;vertical-align:-.28em}
+.ib svg{width:100%;height:100%;display:block}
+.bi svg{width:52px;height:52px;display:block}
+.stampc .si svg{width:44px;height:44px;display:block}
+.stamp svg{width:70%;height:70%}
+.heroenv svg{width:1em;height:1em;display:block}
+.rbtn{position:relative;width:64px;height:64px;flex:none;border:0;padding:0 0 5px;display:flex;align-items:center;justify-content:center;background:url(assets/ui/round_yellow.png) center/100% 100% no-repeat;cursor:pointer;transition:transform .12s}
+.rbtn:active{transform:translateY(2px) scale(.97)}
+.rbtn.green{background-image:url(assets/ui/round_green.png)}.rbtn.blue{background-image:url(assets/ui/round_blue.png)}.rbtn.red{background-image:url(assets/ui/round_red.png)}.rbtn.grey{background-image:url(assets/ui/round_grey.png)}
+.rbtn.small{width:48px;height:48px}.rbtn.big{width:76px;height:76px}
+.rbtn .lbl{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:3px;font:700 13px var(--display);color:#fff;text-shadow:0 1px 0 #1f5fae,0 2px 4px #0b3a7a99;white-space:nowrap;pointer-events:none}
+.rbtn .badge{position:absolute;top:-5px;right:-5px;min-width:22px;height:22px;padding:0 5px;box-sizing:border-box;border-radius:999px;background:#ff5a5a;color:#fff;font:700 13px var(--display);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 0 #a33;animation:bob 1.2s ease-in-out infinite}
+.rbtn .badge.cnt{animation:none;background:#2b3a55;box-shadow:0 2px 0 #0004}
+.rbtn.grey .ico2{filter:brightness(.35)}
+.hm{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;min-height:calc(100vh - 40px)}
+.topbar{width:100%;display:flex;align-items:center;gap:8px}
+.topbar .sp,.maphead .sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#ffffffee;border-radius:999px;padding:4px 14px 4px 6px;font:700 19px var(--display);color:var(--ink);box-shadow:0 3px 0 #9fb8d6;border:0;min-height:40px;cursor:pointer}
+.pill .ico,.pill .coin{width:28px;height:28px;vertical-align:0}
+.pill .plus{margin-left:2px;width:20px;height:20px;border-radius:50%;background:#4cbf4c;color:#fff;font-size:16px;line-height:20px;text-align:center}
+.logo{margin:0;font-family:var(--display);font-weight:700;color:#fff;font-size:clamp(34px,8vw,56px);line-height:1;-webkit-text-stroke:7px #1f5fae;paint-order:stroke fill;text-shadow:0 5px 0 #1f5fae,0 10px 20px #0b3a7a80;text-align:center}
+.hm .scene{width:min(100%,calc((100vh - 360px) * 1.6),900px);min-width:min(100%,320px);border-radius:24px}
+.actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.playrow{display:flex;gap:16px;align-items:center;justify-content:center;width:100%;max-width:560px;margin-bottom:14px}
+.playbtn{flex:1;min-height:76px;display:flex!important;align-items:center;justify-content:center;gap:12px;font-size:30px!important}
+.playbtn .pt{display:flex;flex-direction:column;align-items:flex-start;line-height:1}
+.playbtn small{font-size:13px;font-family:var(--body);font-weight:800;opacity:.8;margin-bottom:4px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.playpet{width:54px;height:54px;object-fit:contain;flex:none;animation:bob 1.6s ease-in-out infinite}
+.playrow .rbtn .lbl{color:#fff}
+.rthumb{height:84px;width:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(#e6f4ff,#f6fbf2);border-radius:12px}
+.rthumb img{max-width:90%;max-height:78px;object-fit:contain}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;font:700 18px var(--display);color:var(--ink);padding:4px 0}
+.tog{width:64px;height:36px;border-radius:999px;background:#c9d3df;position:relative;border:0;cursor:pointer;transition:background .2s;flex:none}
+.tog i{position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 2px 0 #0002;transition:left .2s}
+.tog.on{background:#4cbf4c}.tog.on i{left:32px}
+.card .btn .ico2{display:inline-block;width:20px;height:20px;vertical-align:-4px;filter:brightness(0) invert(1)}
+.card .btn.danger{border-image-source:url(assets/btn_red.png);color:#fff;text-shadow:0 1px 0 #a33}
+/* карта */
+#map{padding-left:0;padding-right:0}
+.mapc{box-shadow:0 0 0 6px #ffffff55,0 20px 50px -10px #0b3a7a80;margin-bottom:24px!important}
+.maphead{position:sticky;top:env(safe-area-inset-top,0px);z-index:40000;display:flex;align-items:center;gap:10px;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));background:linear-gradient(#5ab4f5ee,#5ab4f500)}
+.maphead h2{margin:0;color:#fff;font-size:24px;-webkit-text-stroke:5px #1f5fae;paint-order:stroke fill}
+.mapc{position:relative;margin:0 auto;overflow:hidden;border-radius:28px}
+.band{position:absolute;left:0;right:0}
+.band.b0{background:linear-gradient(#a6e68a,#7cc95b)}.band.b1{background:linear-gradient(#8fd8ff,#79c55a 30%,#6cbf4c)}.band.b2{background:linear-gradient(#ffd9a8,#d9b14c 30%,#c99a3a)}
+.csign{position:absolute;left:50%;transform:translateX(-50%);z-index:35000;pointer-events:none}
+.csign span{display:block;background:#c98a5a;color:#fff;font:700 15px var(--display);padding:6px 16px;border-radius:10px;box-shadow:0 4px 0 #6b4a33;border:3px solid #6b4a33;white-space:nowrap}
+.mpath{position:absolute;left:0;top:0;pointer-events:none}
+.deco{position:absolute;transform:translate(-50%,-100%);pointer-events:none;filter:drop-shadow(0 4px 2px #0003)}
+.node{position:absolute;width:66px;height:66px;margin:-33px 0 0 -33px;border-radius:50%;border:5px solid #fff;background:#fff;box-shadow:0 5px 0 #0002,0 0 0 3px #4cbf4c;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.node .npet{width:84%;height:84%;object-fit:contain}
+.node .nn{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);background:#2b3a55;color:#fff;font:700 12px var(--display);border-radius:999px;padding:1px 8px}
+.node .nst{position:absolute;top:-14px;left:50%;transform:translateX(-50%);display:flex;gap:1px}
+.node .nst img{width:16px;height:16px}
+.node.cur{box-shadow:0 5px 0 #0002,0 0 0 4px #ffc83d,0 0 22px 6px #ffd23f;animation:bob 1.2s ease-in-out infinite;background:#fff7d6}
+.node.open{box-shadow:0 5px 0 #0002,0 0 0 3px #2f7fd6}
+.node.locked{background:#c9d3df;border-color:#e3e9f0;box-shadow:0 5px 0 #0002}
+.node.locked .ico2{filter:brightness(.4);width:46%;height:46%}
+.node.locked .nn{background:#7d8798}
+.mtisha{position:absolute;width:58px;transform:translate(-50%,-100%);pointer-events:none;animation:hop 2.4s ease-in-out infinite}
+.bchip svg{width:34px;height:34px;display:block;margin:auto}
+.rbtn.hb.on{transform:scale(1.12);filter:drop-shadow(0 0 8px #ffd23f)}
+.heroenv{padding:1px!important;background:#fff}
+@media (max-width:420px){.rbtn{width:58px;height:58px}.actions{gap:12px}.playbtn{font-size:26px!important;min-height:68px}.rbtn.big{width:68px;height:68px}}
+
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
@@ -418,6 +487,7 @@ img[src*="pets/bunny"]{filter:var(--tisha,saturate(1)) drop-shadow(0 3px 2px #00
 <body>
 
 <div id="home" class="screen"></div>
+<div id="map" class="screen" hidden></div>
 <div id="level" class="screen" hidden></div>
 <div id="intro" hidden></div>
 <div class="ov" id="ov" hidden><div class="card" id="card"></div></div>
@@ -437,7 +507,7 @@ const COLOR_NAME=['сердечки','звёзды','кристаллы','изу
 const STONE='<img src="assets/stone.png" alt="" draggable="false">';
 const BOULDER='<img src="assets/boulder.png" alt="" draggable="false">';
 const ICE='<div class="ice"></div>';
-const HERO_T='<div class="halo"></div><img src="assets/pets/bunny.png" alt="Тиша" draggable="false"><span class="heroenv">✉</span>';
+const HERO_T='<div class="halo"></div><img src="assets/pets/bunny.png" alt="Тиша" draggable="false"><span class="heroenv"><svg viewBox="0 0 100 100"><rect x="10" y="22" width="80" height="58" rx="8" fill="#fff" stroke="#c98420" stroke-width="7"/><path d="M14 26l36 28 36-28" fill="none" stroke="#c98420" stroke-width="7"/></svg></span>';
 const PARCEL='<img src="assets/sq_yellow.png" alt="" draggable="false"><svg class="env" viewBox="0 0 100 100" aria-hidden="true"><rect x="16" y="28" width="68" height="46" rx="6" fill="#fff" stroke="#8a5a14" stroke-width="5"/><path d="M18 31l32 24 32-24" fill="none" stroke="#8a5a14" stroke-width="5" stroke-linejoin="round"/><circle cx="50" cy="56" r="8" fill="#ff5a5a" stroke="#a33" stroke-width="3"/></svg>';
 const MOSS_IC='<span class="mossi"></span>';
 const STAR_IMG='<img class="ico" src="assets/star.png" alt="★">';
@@ -577,7 +647,7 @@ const ITEMS=[
  {id:'lookout',name:'Смотровая скала',cost:8,ch:2},
 ];
 let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2,coins:150,inv:{},owned:['tisha:classic','frame:classic'],tisha:'classic',frame:'classic'};
-function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));if(P.muted){P.musicOff=P.sfxOff=true;delete P.muted}while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
 function save(){try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}}
 const totalStars=()=>P.stars.reduce((a,b)=>a+b,0);
 const spent=()=>P.built.reduce((a,id)=>a+ITEMS.find(i=>i.id===id).cost,0);
@@ -591,42 +661,124 @@ function sceneSVG(){
 
 /* ---------- главная ---------- */
 function renderHome(){
-  $('level').hidden=true;$('home').hidden=false;closeOv();playMusic('home');
-  const avail=Math.max(0,totalStars()-spent()),nl=nextLevel(),done=P.stars.every(Boolean);
-  $('home').innerHTML=`<div class="home">
-    <h1>Лесная почта <button class="btn tool replay" id="bReplay">▶ Ролик</button><button class="btn tool snd homesnd" aria-label="Звук">${P.muted?'🔇':'🔊'}</button></h1>
-    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-      <div class="scene">${sceneSVG()}${petsLayer()}</div>
-      <p class="story">После бури лесная почта развалилась. Зайчик Тиша разносит письма жителям леса и получает за доставку звёзды, а на них почту можно отстроить заново. Каждый, кому пришло письмо, переселяется поближе к почте.</p>
-      <p class="seasonchip">${SEASONS[SEASON].icon} Сейчас в лесу ${SEASONS[SEASON].name}</p>
+  $('level').hidden=true;$('map').hidden=true;$('home').hidden=false;closeOv();playMusic('home');try{scrollTo(0,0)}catch(e){}
+  const avail=Math.max(0,totalStars()-spent()),nl=nextLevel(),done=P.stars.every(Boolean),NL=LEVELS[nl];
+  const canBuild=ITEMS.filter(it=>!P.built.includes(it.id)&&(!it.req||P.built.includes(it.req))&&it.cost<=avail).length;
+  const st=dailyState();
+  $('home').innerHTML=`<div class="hm">
+    <div class="topbar">
+      <button class="pill" id="pStars" aria-label="Звёзды на ремонт">${STAR_IMG}<b>${avail}</b></button>
+      <button class="pill" id="pCoins" aria-label="Монеты">${COIN}<b>${P.coins}</b><span class="plus">+</span></button>
+      <span class="sp"></span>
+      <button class="rbtn small grey" id="bSettings" aria-label="Настройки">${ICO('gear')}</button>
     </div>
-    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-      <div class="panel">
-        <div class="bank"><div><div class="story" style="font-size:12px">Звёзды на ремонт</div><b>${STAR_IMG} ${avail}</b> <span class="story">из ${totalStars()} заработанных</span></div>
-        <button class="btn main" id="bPlay">${done?'Переиграть уровень':'Уровень '+(nl+1)} ▶</button></div>
-        <div class="walletrow"><span class="wallet">${COIN} <b>${P.coins}</b></span><button class="btn shopbtn" id="bShop">🛒 Магазин</button></div>
-        <div class="next">${petImg(LEVELS[nl].pet,"nextpet")}<div class="story">Следующее письмо:<br><b style="color:var(--ink)">${LEVELS[nl].to}</b></div></div>
-      </div>
-      <div class="panel daily">${(()=>{const st=dailyState(),D=makeDaily();return `<div class="dhead">${petImg(D.pet,'dpet')}<div><h2>Письмо дня</h2><div class="story">Сегодня пишет: <b style="color:var(--ink)">${D.name}</b>${st.streak?`<br>🔥 ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд`:''}</div></div></div>
-        ${st.done?'<div class="ddone">✓ Доставлено. Завтра придёт новое письмо!</div>':'<button class="btn main" id="bDaily">Открыть письмо ✉</button>'}`})()}
-        <button class="btn" id="bAlbum">📖 Альбом марок · ${stampCount()} из ${stampTotal()}</button></div>
-      <div class="panel"><h2>Ремонт почты</h2><div class="items">${ITEMS.map(it=>{const b=P.built.includes(it.id);return `<div class="item"><span>${it.name}</span>${b?'<span class="done">✓ готово</span>':(it.req&&!P.built.includes(it.req))?`<span class="need">сначала: ${ITEMS.find(x=>x.id===it.req).name.toLowerCase()}</span>`:`<button class="btn small" data-build="${it.id}" ${avail<it.cost?'disabled':''}>${STAR_IMG} ${it.cost}</button>`}</div>`}).join('')}</div></div>
-      <div class="panel"><h2>Письма</h2>${CHAPTERS.map(ch=>`<div class="chap">${ch.title}</div><div class="levels">${LEVELS.slice(ch.from,ch.to+1).map((l,k)=>{const i=ch.from+k;const open=i===0||P.stars[i-1]>0||P.stars[i]>0;return `<button class="lv ${i===nl?'cur':''}" data-lv="${i}" ${open?'':'disabled'} aria-label="Уровень ${i+1}: ${l.name}"><span class="num">${i+1}</span>${petImg(l.pet,'face')}<small>${'<img src="assets/star.png" alt="★">'.repeat(P.stars[i])}</small></button>`}).join('')}</div>`).join('')}</div>
-    </div></div>`;
+    <h1 class="logo">Лесная почта</h1>
+    <div class="scene">${sceneSVG()}${petsLayer()}</div>
+    <div class="actions">
+      ${rbtn('bRepair','yellow',ICO('wrench'),'Ремонт',canBuild||'')}
+      ${rbtn('bDaily','red',SVG.mail,'Письмо дня',st.done?'':'!')}
+      ${rbtn('bAlbum','blue',SVG.album,'Марки','')}
+      ${rbtn('bShop','green',ICO('shoppingCart'),'Магазин','')}
+    </div>
+    <div class="playrow">
+      ${rbtn('bMap','blue big',SVG.map,'Карта','')}
+      <button class="btn main playbtn" id="bPlay">${petImg(NL.pet,'playpet')}<span class="pt"><small>${done?'Все письма доставлены!':'Письмо '+(nl+1)+' · '+NL.name}</small>Играть</span></button>
+    </div>
+  </div>`;
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
-  $('bReplay').onclick=()=>{ac();playIntro()};
+  $('bMap').onclick=()=>{ac();showMap()};
+  $('bRepair').onclick=()=>{ac();showRepair()};
+  $('pStars').onclick=()=>{ac();showRepair()};
+  $('pCoins').onclick=()=>{ac();showShop('coins',null)};
+  $('bDaily').onclick=()=>{ac();if(dailyState().done)toast('Письмо дня уже доставлено. Завтра придёт новое!');else showIntro(-1)};
+  $('bAlbum').onclick=()=>{ac();showAlbum()};
+  $('bShop').onclick=()=>{ac();showShop('boosters',null)};
+  $('bSettings').onclick=()=>{ac();showSettings(false)};
   const sc=$('home').querySelector('.scene');if(sc)seasonFx(sc,SEASON==='summer'?10:22,true);
-  if($('bDaily'))$('bDaily').onclick=()=>{ac();showIntro(-1)};
-  $('bAlbum').onclick=showAlbum;
-  $('bShop').onclick=()=>showShop('boosters',null);
   if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>{toast(n.name+' теперь живёт у почты!');sfx('friend',.8)},500)}
-  $('home').querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{ac();showIntro(+b.dataset.lv)});
-  $('home').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
+}
+
+/* ---------- окно ремонта ---------- */
+function showRepair(){
+  const avail=Math.max(0,totalStars()-spent());
+  $('card').innerHTML=`<div class="to">Ремонт почты</div><div class="shophead"><h2>${bi('house')} Стройка у почты</h2><span class="wallet">${STAR_IMG} <b>${avail}</b></span></div>
+    <p class="note">Звёзды за доставленные письма тратятся на постройки. Каждая сразу появляется у почты.</p>
+    <div class="shopbody"><div class="sgrid">${ITEMS.map(it=>{const b=P.built.includes(it.id),lockReq=it.req&&!P.built.includes(it.req);
+      return `<div class="sitem${b?' on':''}"><div class="rthumb"><img src="${layerSrc(it.id)}" alt=""></div><b>${it.name}</b>${b?'<span class="ddone">✓ Построено</span>':lockReq?`<span class="sd">Сначала: ${ITEMS.find(x=>x.id===it.req).name.toLowerCase()}</span>`:`<button class="btn buy" data-build="${it.id}" ${avail<it.cost?'disabled':''}>${STAR_IMG} ${it.cost}</button>`}</div>`}).join('')}</div></div>
+    <div class="row"><button class="btn main" id="bRepClose">Закрыть</button></div>`;
+  $('card').classList.add('wide');openOv();
+  $('bRepClose').onclick=()=>{$('card').classList.remove('wide');closeOv()};
+  $('card').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
     const it=ITEMS.find(i=>i.id===b.dataset.build);if(totalStars()-spent()<it.cost)return;
-    P.built.push(it.id);save();ac();chime();
+    P.built.push(it.id);save();ac();chime();$('card').classList.remove('wide');
     renderHome();const nb=$('home').querySelector(`[data-part="${it.id}"]`);if(nb){nb.classList.add('off');void nb.offsetWidth;nb.classList.remove('off');nb.classList.add('built')}
-    if(P.built.length===ITEMS.length)setTimeout(()=>toast('Почта полностью отстроена!'),300);
+    toast(it.name+': готово!');
+    if(P.built.length===ITEMS.length)setTimeout(()=>toast('Почта полностью отстроена!'),1600);
   });
+}
+
+/* ---------- карта уровней ---------- */
+function showMap(){
+  closeOv();$('home').hidden=true;$('level').hidden=true;$('map').hidden=false;
+  const nl=nextLevel(),SP=112,n=LEVELS.length,PADT=90,PADB=110,Hh=PADT+n*SP+PADB;
+  const W=Math.min(innerWidth-32,680);
+  const pos=i=>[W/2+Math.sin(i*0.9)*W*0.27,Hh-PADB-i*SP-SP/2];
+  let d='';for(let i=0;i<n;i++){const [x,y]=pos(i);if(!i)d=`M${x} ${y+SP}L${x} ${y}`;else{const [px,py]=pos(i-1);d+=` C${px} ${py-SP*.5},${x} ${y+SP*.5},${x} ${y}`}}
+  const deco={0:['tree','tree-high','plant-spring','rocks-low','tree'],1:['tree-high','tree','plant','stones','tree-high'],2:['tree-autumn','tree-high-autumn','plant-autumn','rocks-low','tree-autumn']};
+  const rnd=seeded(4242);let decor='';
+  for(let i=0;i<n;i++){const ch=CHAPTERS.findIndex(c=>i>=c.from&&i<=c.to);const [x,y]=pos(i);
+    for(const side of [-1,1]){if(rnd()<.25)continue;const list=deco[ch];const k=list[Math.floor(rnd()*list.length)];
+      const xx=side<0?14+rnd()*W*.16:W-14-rnd()*W*.16,sz=(k.includes('tree')?54:36)+rnd()*20,yy=y+rnd()*50-25;
+      decor+=`<img class="deco" src="assets/deco/${k}.png" alt="" style="left:${xx}px;top:${yy}px;width:${sz}px;z-index:${Math.round(yy)}">`}}
+  const bands=CHAPTERS.map((ch,k)=>{const top=k===CHAPTERS.length-1?0:pos(ch.to)[1]-SP/2,bot=k===0?Hh:pos(ch.from)[1]+SP/2;
+    return `<div class="band b${k}" style="top:${top}px;height:${bot-top}px"></div><div class="csign" style="top:${bot-46}px"><span>${ch.title}</span></div>`}).join('');
+  const nodes=LEVELS.map((L,i)=>{const [x,y]=pos(i),stars=P.stars[i],open=i===0||P.stars[i-1]>0||stars>0,cur=i===nl&&!P.stars.every(Boolean);
+    const cls=stars?'done':cur?'cur':open?'open':'locked';
+    return `<button class="node ${cls}" data-lv="${i}" style="left:${x}px;top:${y}px;z-index:${20000+Math.round(y)}" ${cls==='locked'?'disabled':''} aria-label="Письмо ${i+1}: ${L.name}">
+      ${cls==='locked'?ICO('locked'):petImg(L.pet,'npet')}<span class="nn">${i+1}</span>${stars?`<span class="nst">${'<img src="assets/star.png" alt="★">'.repeat(stars)}</span>`:''}</button>`}).join('');
+  const [tx,ty]=pos(Math.min(nl,n-1));
+  $('map').innerHTML=`<div class="maphead"><button class="rbtn small blue" id="bMapBack" aria-label="На почту">${ICO('home')}</button><h2>Карта писем</h2><span class="sp"></span><span class="pill">${STAR_IMG}<b>${totalStars()}</b></span></div>
+    <div class="mapc" style="width:${W}px;height:${Hh}px">${bands}
+      <svg class="mpath" width="${W}" height="${Hh}" aria-hidden="true"><path d="${d}" fill="none" stroke="#e9c98f" stroke-width="30" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#fff3d6" stroke-width="20" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#d9b475" stroke-width="4" stroke-dasharray="2 16" stroke-linecap="round"/></svg>
+      ${decor}${nodes}<img class="mtisha" src="${petSrc('bunny')}" alt="Тиша" style="left:${tx+44}px;top:${ty+8}px;z-index:30000"></div>`;
+  $('bMapBack').onclick=()=>{ac();renderHome()};
+  $('map').querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{ac();showIntro(+b.dataset.lv)});
+  const mc=$('map').querySelector('.mapc');requestAnimationFrame(()=>{try{scrollTo(0,mc.offsetTop+ty-innerHeight/2)}catch(e){}});
+}
+
+/* ---------- настройки и пауза ---------- */
+function toggleRow(id,label,on){return `<div class="setrow"><span>${label}</span><button class="tog${on?' on':''}" id="${id}" role="switch" aria-checked="${on}" aria-label="${label}"><i></i></button></div>`}
+function bindToggles(){
+  $('sMusic').onclick=()=>{setMusic(!!P.musicOff);$('sMusic').classList.toggle('on',!P.musicOff);$('sMusic').setAttribute('aria-checked',!P.musicOff)};
+  $('sSfx').onclick=()=>{setSfx(!!P.sfxOff);$('sSfx').classList.toggle('on',!P.sfxOff);$('sSfx').setAttribute('aria-checked',!P.sfxOff)};
+}
+function showSettings(){
+  $('card').innerHTML=`<div class="to">Настройки</div><h2>Настройки</h2>
+    ${toggleRow('sMusic','Музыка',!P.musicOff)}${toggleRow('sSfx','Звуки',!P.sfxOff)}
+    <button class="btn" id="sIntro">${ICO('movie')} Посмотреть ролик</button>
+    <button class="btn danger" id="sReset">${ICO('trashcan')} Сбросить прогресс</button>
+    <p class="note">Сейчас в лесу ${SEASONS[SEASON].name}. Графика, звуки и шрифты: Kenney и Google Fonts (свободные лицензии).</p>
+    <div class="row"><button class="btn main" id="sClose">Готово</button></div>`;
+  openOv();bindToggles();
+  $('sClose').onclick=closeOv;
+  $('sIntro').onclick=()=>{closeOv();playIntro()};
+  $('sReset').onclick=()=>{
+    $('card').innerHTML=`<div class="to">Сброс прогресса</div><h2>Начать заново?</h2><p>Пропадут звёзды, монеты, постройки, жители у почты и марки. Отменить это нельзя.</p>
+      <div class="row"><button class="btn main" id="rNo">Оставить как есть</button><button class="btn danger" id="rYes">Сбросить</button></div>`;
+    $('rNo').onclick=showSettings;
+    $('rYes').onclick=()=>{try{localStorage.removeItem('lesnaya-pochta-v1')}catch(e){}location.reload()};
+  };
+}
+function showPause(){
+  if(busy)return;clearHint();
+  $('card').innerHTML=`<div class="to">Пауза</div><h2>Письмо ждёт</h2>
+    ${toggleRow('sMusic','Музыка',!P.musicOff)}${toggleRow('sSfx','Звуки',!P.sfxOff)}
+    <button class="btn main" id="pzGo">Продолжить</button>
+    <div class="row"><button class="btn" id="pzRetry">${ICO('return')} Заново</button><button class="btn" id="pzHome">${ICO('home')} На почту</button></div>`;
+  openOv();bindToggles();
+  $('pzGo').onclick=()=>{closeOv();armHint()};
+  $('pzRetry').onclick=()=>startLevel(LI);
+  $('pzHome').onclick=()=>renderHome();
 }
 
 /* ---------- состояние уровня ---------- */
@@ -646,17 +798,16 @@ const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
   LI=i;LV=i<0?DAILY:LEVELS[i];playMusic(i%2?'level2':'level1');moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
-  $('home').hidden=true;$('level').hidden=false;closeOv();
+  $('home').hidden=true;$('map').hidden=true;$('level').hidden=false;closeOv();try{scrollTo(0,0)}catch(e){}
   $('level').innerHTML=`<div class="game" id="game">
     <div class="hud">
       <div class="box mv"><div class="k">Ходы</div><div class="moves" id="mv"></div></div>
       <div class="box gl"><div class="k whok">${petImg(LV.pet,"hudpet")}<span>Письмо<br>${LV.to}</span></div><div class="goals" id="gl"></div></div>
       <div class="box sc"><div class="k">Очки</div><div class="scorev" id="sc">0</div></div>
       <div class="tools">
-        <button class="btn tool" id="tHammer" title="Разбить одну клетку, не тратя ход">🔨 <b id="nH"></b></button>
-        <button class="btn tool" id="tShuffle" title="Перемешать поле">🔀 <b id="nS"></b></button>
-        <button class="btn tool" id="tMenu" aria-label="На почту">🏠</button>
-        <button class="btn tool snd" aria-label="Звук">${P.muted?'🔇':'🔊'}</button>
+        <button class="rbtn hb yellow" id="tHammer" aria-label="Молоток: разбить одну клетку">${SVG.hammer}<b id="nH" class="badge cnt"></b></button>
+        <button class="rbtn hb green" id="tShuffle" aria-label="Перемешать поле">${SVG.shuffle}<b id="nS" class="badge cnt"></b></button>
+        <button class="rbtn hb blue" id="tMenu" aria-label="Пауза">${SVG.pause}</button>
       </div>
     </div>
     <div class="boardwrap"><div class="board" id="board"></div>${LV.house!=null?`<div class="houserow"><div class="house" style="left:calc(${LV.house} * var(--cell))"><span class="arrow">▼</span>${petImg(LV.pet||'polar',"housepet").replace('<img','<img id="housePet"')}</div></div>`:""}</div>
@@ -683,7 +834,7 @@ function startLevel(i){
   bindBoard();updateHUD();
   $('tHammer').onclick=()=>{if(busy)return;if(P.hammers<=0)return quickBuy('hammer');tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
   $('tShuffle').onclick=async()=>{if(busy)return;if(P.shuffles<=0)return quickBuy('shuffle');P.shuffles--;save();busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
-  $('tMenu').onclick=()=>{if(!busy)renderHome()};
+  $('tMenu').onclick=()=>showPause();
   armHint();
 }
 const CELL_H=54;
@@ -1015,7 +1166,7 @@ function showIntro(i){
   const L=i<0?DAILY:LEVELS[i];
   const map=L.map||Array(N).fill('........');
   const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLx'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++;if(g[0]==='p'&&ch==='p')need++;if(g[0]==='h'&&ch==='h')need++}return {t:g[0],need}});
-  $('card').innerHTML=`<div class="stamp">✉</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}${boostChips()}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
+  $('card').innerHTML=`<div class="stamp">${BICON.mailc}</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}${boostChips()}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
   bindBoostChips();
@@ -1038,7 +1189,7 @@ function win(){
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
     <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''} Монеты: <b>+${coinGain} ${COIN}</b>.${!before?' Новая марка в альбоме!':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
     ${newStampsNote()}
-    <div class="row"><button class="btn pcbtn" id="bCard">💌 Открытка другу</button></div>
+    <div class="row"><button class="btn pcbtn" id="bCard">${bi("postcard")} Открытка другу</button></div>
     <div class="row"><button class="btn" id="bHome">На почту</button>${LI<LEVELS.length-1?'<button class="btn main" id="bNext">Следующее письмо</button>':''}</div>`;
   rebindWin();
   openOv();
@@ -1053,7 +1204,7 @@ function lose(){
   if(!SPEED)return;
   const left=goals.filter(g=>g.have<g.need).map(g=>({...g,need:g.need-g.have}));
   $('card').innerHTML=`<div class="who">${petImg(LV.pet,'petport sad')}<div><div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2></div></div><p>Осталось совсем немного:</p>${goalsHTML(left)}
-    ${extraUsed?'':'<button class="btn main" id="bExtra">📺 +5 ходов бесплатно</button><p class="note">В релизе: за просмотр рекламы. Один раз за уровень.</p>'}
+    ${extraUsed?'':'<button class="btn main" id="bExtra">'+bi('ad')+' +5 ходов бесплатно</button><p class="note">В релизе: за просмотр рекламы. Один раз за уровень.</p>'}
     <button class="btn buy5" id="bBuy5" ${P.coins<90?'disabled':''}>+5 ходов за ${COIN} 90 <small>(у тебя ${P.coins})</small></button>
     <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn" id="bRetry">Заново</button></div>`;
   if($('bExtra'))$('bExtra').onclick=()=>{extraUsed=true;moves+=5;updateHUD();closeOv();armHint()};
@@ -1076,10 +1227,10 @@ function stopMusic(){
 }
 async function playMusic(n){
   mus.want=n;
-  if(!AC||!SPEED||P.muted||mus.cur===n)return;
+  if(!AC||!SPEED||P.musicOff||mus.cur===n)return;
   stopMusic();mus.cur=n;
   let buf;try{buf=await loadMus(n)}catch(e){mus.cur=null;return}
-  if(mus.cur!==n||P.muted)return;
+  if(mus.cur!==n||P.musicOff)return;
   const src=AC.createBufferSource();src.buffer=buf;src.loop=true;
   const g=AC.createGain();g.gain.value=0;g.gain.setTargetAtTime(MUS_VOL[n]||.3,AC.currentTime,.8);
   src.connect(g);g.connect(AC.destination);src.start();mus.src=src;mus.gain=g;
@@ -1089,17 +1240,18 @@ function duck(ms=2200){
   g.gain.cancelScheduledValues(t);g.gain.setTargetAtTime(v*.2,t,.08);g.gain.setTargetAtTime(v,t+ms/1000,.6);
 }
 document.addEventListener('pointerdown',()=>{ac();if(mus.want&&!mus.cur)playMusic(mus.want)},{passive:true});
-document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden)AC.suspend();else if(!P.muted)AC.resume()});
-document.addEventListener('click',e=>{const b=e.target.closest('.snd');if(!b)return;P.muted=!P.muted;save();document.querySelectorAll('.snd').forEach(x=>x.textContent=P.muted?'🔇':'🔊');if(P.muted)stopMusic();else{ac();sfx('tap');if(mus.want)playMusic(mus.want)}});
+document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden)AC.suspend();else AC.resume()});
+function setMusic(on){P.musicOff=!on;save();if(!on)stopMusic();else{ac();if(mus.want)playMusic(mus.want)}}
+function setSfx(on){P.sfxOff=!on;save();if(on){ac();sfx('tap')}}
 function toast(t){if(!SPEED)return;const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),1500)}
 function comboText(t){sfx('combo',.7);const e=document.createElement('div');e.className='combo';e.textContent=t;$('board').appendChild(e);setTimeout(()=>e.remove(),900)}
 
 /* ---------- звук ---------- */
 let AC=null;
 function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume()}
-function tone(f,d=.1,type='sine',v=.06,delay=0){if(!AC||!SPEED||P.muted)return;const t0=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(v,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+d+.02)}
+function tone(f,d=.1,type='sine',v=.06,delay=0){if(!AC||!SPEED||P.sfxOff)return;const t0=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(v,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+d+.02)}
 const pop=m=>tone(520+Math.min(m,8)*90,.12,'triangle',.07);
-const SFX={};function sfx(n,vol=.6){if(!SPEED||P.muted)return;try{const a=(SFX[n]=SFX[n]||new Audio('assets/sfx/'+n+'.mp3'));a.currentTime=0;a.volume=vol;a.play().catch(()=>{})}catch(e){}}
+const SFX={};function sfx(n,vol=.6){if(!SPEED||P.sfxOff)return;try{const a=(SFX[n]=SFX[n]||new Audio('assets/sfx/'+n+'.mp3'));a.currentTime=0;a.volume=vol;a.play().catch(()=>{})}catch(e){}}
 const tick=()=>{sfx('tap');tone(700,.04,'sine',.02)};
 const swish=()=>{sfx('click');tone(380,.08,'sine',.03)};
 const nope=()=>{tone(220,.1,'square',.03);tone(180,.12,'square',.03,.08)};
@@ -1134,17 +1286,48 @@ document.documentElement.dataset.season=SEASON;
 document.documentElement.style.setProperty('--scenebg',`url(${seasonBase()})`);
 
 
+
+/* ---------- иконки ---------- */
+const ICO=n=>`<img class="ico2" src="assets/ui/i-${n}.png" alt="" draggable="false">`;
+const SVG={
+ hammer:'<svg class="ico2" viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(-40 50 50)" fill="#fff"><rect x="44" y="34" width="12" height="58" rx="5"/><rect x="20" y="12" width="60" height="26" rx="7"/></g></svg>',
+ shuffle:'<svg class="ico2" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><path d="M12 30h20c14 0 22 40 36 40h16M12 70h20c14 0 22-40 36-40h16"/><path d="M76 20l10 10-10 10M76 60l10 10-10 10"/></svg>',
+ mail:'<svg class="ico2" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round"><rect x="12" y="24" width="76" height="54" rx="8"/><path d="M15 28l35 27 35-27"/></svg>',
+ album:'<svg class="ico2" viewBox="0 0 100 100" aria-hidden="true" fill="#fff"><path d="M12 22c11-5 23-5 34 2v60c-11-7-23-7-34-2z"/><path d="M88 22c-11-5-23-5-34 2v60c11-7 23-7 34-2z"/></svg>',
+ pause:'<svg class="ico2" viewBox="0 0 100 100" aria-hidden="true" fill="#fff"><rect x="26" y="20" width="16" height="60" rx="5"/><rect x="58" y="20" width="16" height="60" rx="5"/></svg>',
+ map:'<svg class="ico2" viewBox="0 0 100 100" aria-hidden="true" fill="#fff"><path d="M10 24l26-9 28 10 26-9v60l-26 9-28-10-26 9z" opacity=".45"/><path d="M10 24l26-9v60l-26 9zM64 25l26-9v60l-26 9z"/><circle cx="50" cy="44" r="8" fill="#ff5a5a"/></svg>',
+};
+const BICON={
+ hammer:'<svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(-40 50 50)"><rect x="44" y="34" width="12" height="60" rx="5" fill="#c98a5a" stroke="#6b4a33" stroke-width="3"/><rect x="18" y="12" width="64" height="28" rx="8" fill="#9aa4b4" stroke="#55606f" stroke-width="3"/><rect x="22" y="15" width="56" height="7" rx="3" fill="#fff" opacity=".5"/></g></svg>',
+ shuffle:'<svg viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 32h20c14 0 22 36 36 36h16" stroke="#2f7fd6" stroke-width="11"/><path d="M12 68h20c14 0 22-36 36-36h16" stroke="#4cbf4c" stroke-width="11"/><path d="M76 22l10 10-10 10" stroke="#4cbf4c" stroke-width="9"/><path d="M76 58l10 10-10 10" stroke="#2f7fd6" stroke-width="9"/></svg>',
+ rocket:'<svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(45 50 50)"><path d="M42 62c2 12 6 20 8 28 2-8 6-16 8-28z" fill="#ffc83d"/><path d="M50 8c14 12 18 30 16 54H34c-2-24 2-42 16-54z" fill="#f2f5fa" stroke="#55606f" stroke-width="3"/><circle cx="50" cy="36" r="7" fill="#4aa8ff" stroke="#55606f" stroke-width="3"/><path d="M34 44l-12 18h12zM66 44l12 18H66z" fill="#ff5a5a" stroke="#a33" stroke-width="3" stroke-linejoin="round"/></g></svg>',
+ bomb:'<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="44" cy="58" r="30" fill="#3b4256" stroke="#1f2433" stroke-width="3"/><circle cx="34" cy="48" r="8" fill="#fff" opacity=".35"/><rect x="56" y="22" width="16" height="14" rx="3" transform="rotate(35 64 29)" fill="#9aa4b4" stroke="#55606f" stroke-width="3"/><path d="M70 22c6-8 12-8 16-4" stroke="#c98a5a" stroke-width="4" fill="none"/><circle cx="87" cy="16" r="7" fill="#ffc83d"/><circle cx="87" cy="16" r="3" fill="#fff"/></svg>',
+ moves3:'<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="22" y="10" width="56" height="10" rx="4" fill="#c98a5a"/><rect x="22" y="80" width="56" height="10" rx="4" fill="#c98a5a"/><path d="M28 20h44c0 18-14 22-14 30s14 12 14 30H28c0-18 14-22 14-30S28 38 28 20z" fill="#e8f6ff" stroke="#55606f" stroke-width="3"/><path d="M36 30h28c-2 8-10 12-14 16-4-4-12-8-14-16zM34 76c4-10 12-12 16-14 4 2 12 4 16 14z" fill="#ffc83d"/></svg>',
+ ad:'<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="20" width="80" height="56" rx="10" fill="#2f7fd6" stroke="#1b5fa8" stroke-width="3"/><path d="M42 36l22 12-22 12z" fill="#fff"/><rect x="34" y="80" width="32" height="8" rx="4" fill="#1b5fa8"/></svg>',
+ noads:'<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="20" width="80" height="56" rx="10" fill="#9aa4b4"/><path d="M42 36l22 12-22 12z" fill="#fff"/><path d="M16 84L84 14" stroke="#ff5a5a" stroke-width="9" stroke-linecap="round"/></svg>',
+ bag:'<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M30 30h40l-6-14H36z" fill="#c98a5a" stroke="#6b4a33" stroke-width="3"/><path d="M28 32c-14 14-18 30-14 44 4 12 16 16 36 16s32-4 36-16c4-14 0-30-14-44z" fill="#e0a95a" stroke="#6b4a33" stroke-width="3"/><circle cx="50" cy="64" r="14" fill="#ffd23f" stroke="#c98420" stroke-width="3"/><path d="M50 56v16" stroke="#c98420" stroke-width="4"/></svg>',
+ flame:'<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8c6 18 26 26 26 50a26 26 0 0 1-52 0c0-14 8-20 12-28 2 10 6 14 10 16-2-14 0-26 4-38z" fill="#ff8a3d"/><path d="M50 50c4 8 12 12 12 22a12 12 0 0 1-24 0c0-8 6-12 12-22z" fill="#ffd23f"/></svg>',
+ postcard:'<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="8" y="20" width="84" height="60" rx="8" fill="#fff" stroke="#c98420" stroke-width="4"/><path d="M12 24l38 30 38-30" fill="none" stroke="#c98420" stroke-width="4" stroke-linejoin="round"/><path d="M50 74c-12-7-18-13-18-20a7 7 0 0 1 14-2 7 7 0 0 1 14 2c0 7-4 13-10 20z" fill="#ff5a5a"/></svg>',
+ house:'<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M10 48L50 14l40 34" fill="#5b7bd5" stroke="#2f4fa8" stroke-width="4" stroke-linejoin="round"/><rect x="22" y="44" width="56" height="44" fill="#c98a5a" stroke="#6b4a33" stroke-width="4"/><rect x="42" y="60" width="16" height="28" fill="#6b4a33"/></svg>',
+ medal:'<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M30 8h16l8 30H38zM70 8H54l-8 30h16z" fill="#4aa8ff"/><circle cx="50" cy="62" r="28" fill="#ffd23f" stroke="#c98420" stroke-width="4"/><path d="M50 46l5 11 12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1z" fill="#fff"/></svg>',
+ album:'<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M10 22c12-6 26-6 38 2v62c-12-8-26-8-38-2z" fill="#4aa8ff" stroke="#1b5fa8" stroke-width="3"/><path d="M90 22c-12-6-26-6-38 2v62c12-8 26-8 38-2z" fill="#7cc6ff" stroke="#1b5fa8" stroke-width="3"/><rect x="60" y="34" width="20" height="24" rx="2" fill="#fff" stroke="#e0b25c" stroke-width="2" stroke-dasharray="3 2"/></svg>',
+ cart:'<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M8 18h14l10 46h48l10-34H28" fill="none" stroke="#4cbf4c" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="38" cy="80" r="7" fill="#2a7a2a"/><circle cx="72" cy="80" r="7" fill="#2a7a2a"/></svg>',
+ mailc:'<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="22" width="80" height="58" rx="8" fill="#fff" stroke="#c98420" stroke-width="5"/><path d="M14 26l36 28 36-28" fill="none" stroke="#c98420" stroke-width="5" stroke-linejoin="round"/></svg>',
+};
+const bi=k=>`<span class="ib">${BICON[k]}</span>`;
+function rbtn(id,color,icon,label,badge){return `<button class="rbtn ${color}" id="${id}" aria-label="${label}">${icon}${badge!==''&&badge!=null?`<span class="badge">${badge}</span>`:''}<span class="lbl">${label}</span></button>`}
+
 /* ---------- магазин ---------- */
 const COIN='<img class="coin" src="assets/coin.png" alt="монет">';
 const invN=id=>(P.inv&&P.inv[id])||0;
 const invAdd=(id,n)=>{P.inv={...(P.inv||{})};P.inv[id]=invN(id)+n};
 const SHOP={
   boosters:[
-    {id:'hammer',name:'Молоток',icon:'🔨',desc:'Разбивает любую клетку. Ход не тратится.',price:60,give:()=>P.hammers++,count:()=>P.hammers},
-    {id:'shuffle',name:'Перемешивание',icon:'🔀',desc:'Перемешивает фишки, когда ходов не видно.',price:40,give:()=>P.shuffles++,count:()=>P.shuffles},
-    {id:'rocket',name:'Ракета',icon:'🚀',desc:'Перед уровнем: на поле сразу появляется полосатая фишка.',price:70,give:()=>invAdd('rocket',1),count:()=>invN('rocket')},
-    {id:'bomb',name:'Бомба',icon:'💣',desc:'Перед уровнем: на поле сразу появляется бомба.',price:90,give:()=>invAdd('bomb',1),count:()=>invN('bomb')},
-    {id:'moves3',name:'+3 хода',icon:'⏳',desc:'Перед уровнем: три дополнительных хода.',price:60,give:()=>invAdd('moves3',1),count:()=>invN('moves3')},
+    {id:'hammer',name:'Молоток',icon:BICON.hammer,desc:'Разбивает любую клетку. Ход не тратится.',price:60,give:()=>P.hammers++,count:()=>P.hammers},
+    {id:'shuffle',name:'Перемешивание',icon:BICON.shuffle,desc:'Перемешивает фишки, когда ходов не видно.',price:40,give:()=>P.shuffles++,count:()=>P.shuffles},
+    {id:'rocket',name:'Ракета',icon:BICON.rocket,desc:'Перед уровнем: на поле сразу появляется полосатая фишка.',price:70,give:()=>invAdd('rocket',1),count:()=>invN('rocket')},
+    {id:'bomb',name:'Бомба',icon:BICON.bomb,desc:'Перед уровнем: на поле сразу появляется бомба.',price:90,give:()=>invAdd('bomb',1),count:()=>invN('bomb')},
+    {id:'moves3',name:'+3 хода',icon:BICON.moves3,desc:'Перед уровнем: три дополнительных хода.',price:60,give:()=>invAdd('moves3',1),count:()=>invN('moves3')},
   ],
   tisha:[
     {id:'classic',name:'Классический',filter:'saturate(1)',price:0},
@@ -1195,12 +1378,12 @@ function showShop(tab,back){
   }
   if(shopTab==='coins'){
     const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;
-    body=`<div class="sitem wide adv"><span class="bi">📺</span><b>Посмотреть рекламу</b><span class="sd">+30 монет. Осталось сегодня: ${3-a} из 3.</span>
+    body=`<div class="sitem wide adv"><span class="bi">${BICON.ad}</span><b>Посмотреть рекламу</b><span class="sd">+30 монет. Осталось сегодня: ${3-a} из 3.</span>
       <button class="btn main" id="bAd" ${a>=3?'disabled':''}>+30 ${COIN}</button></div>
       <p class="note">В прототипе реклама не показывается, монеты начисляются сразу. Покупки за рубли появятся в релизе через площадку (Яндекс Игры, VK Play).</p>
-      <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${k.coins?'💰':'🚫'}</span><b>${k.name}</b>${k.coins?`<span class="have">${COIN} ${k.coins}</span>`:'<span class="sd">Без рекламы между уровнями</span>'}<button class="btn" disabled>${k.rub}</button></div>`).join('')}</div>`;
+      <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${k.coins?BICON.bag:BICON.noads}</span><b>${k.name}</b>${k.coins?`<span class="have">${COIN} ${k.coins}</span>`:'<span class="sd">Без рекламы между уровнями</span>'}<button class="btn" disabled>${k.rub}</button></div>`).join('')}</div>`;
   }
-  $('card').innerHTML=`<div class="to">Магазин</div><div class="shophead"><h2>🛒 Лавка Тиши</h2><span class="wallet">${COIN} <b>${P.coins}</b></span></div>
+  $('card').innerHTML=`<div class="to">Магазин</div><div class="shophead"><h2>${bi("cart")} Лавка Тиши</h2><span class="wallet">${COIN} <b>${P.coins}</b></span></div>
     <div class="tabs">${tabs.map(([k,n])=>`<button class="tab${k===shopTab?' on':''}" data-tab="${k}">${n}</button>`).join('')}</div>
     <div class="shopbody">${body}</div>
     <div class="row"><button class="btn main" id="bShopClose">Закрыть</button></div>`;
@@ -1219,7 +1402,7 @@ function showShop(tab,back){
 }
 function quickBuy(id){
   const it=SHOP.boosters.find(x=>x.id===id);
-  $('card').innerHTML=`<div class="to">Закончилось</div><h2>${it.icon} ${it.name}</h2><p>${it.desc}</p><p>У тебя ${COIN} <b>${P.coins}</b></p>
+  $('card').innerHTML=`<div class="to">Закончилось</div><h2><span class="ib">${it.icon}</span> ${it.name}</h2><p>${it.desc}</p><p>У тебя ${COIN} <b>${P.coins}</b></p>
     <div class="row"><button class="btn" id="qbNo">Не сейчас</button><button class="btn main" id="qbYes" ${P.coins<it.price?'disabled':''}>Купить за ${COIN} ${it.price}</button></div>`;
   openOv();$('qbNo').onclick=closeOv;$('qbYes').onclick=()=>{if(spend(it.price)){it.give();save();closeOv();updateHUD()}};
 }
@@ -1279,10 +1462,10 @@ function dailyWin(){
   save();duck(2600);fanfare();if(!SPEED)return;
   const st=dailyState();
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Письмо дня доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
-    <p>${first?'Награда: <b>+1 молоток</b>, <b>+1 перемешивание</b> и <b>+50 '+COIN+'</b>.':'Сегодняшнюю награду ты уже получил.'} Серия: <b>🔥 ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд</b>.</p>
+    <p>${first?'Награда: <b>+1 молоток</b>, <b>+1 перемешивание</b> и <b>+50 '+COIN+'</b>.':'Сегодняшнюю награду ты уже получил.'} Серия: <b>${bi('flame')} ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд</b>.</p>
     ${newStampsNote()}
     <p class="note">Завтра напишет кто-то ещё. Заходи!</p>
-    <div class="row"><button class="btn pcbtn" id="bCard">💌 Открытка другу</button></div>
+    <div class="row"><button class="btn pcbtn" id="bCard">${bi("postcard")} Открытка другу</button></div>
     <div class="row"><button class="btn main" id="bHome">На почту</button></div>`;
   rebindWin();openOv();
 }
@@ -1290,10 +1473,10 @@ function plural(n,a,b,c){const m=n%10,h=n%100;return m===1&&h!==11?a:m>=2&&m<=4&
 
 /* ---------- альбом марок ---------- */
 const SPECIAL_STAMPS=[
- {id:'card',name:'Первая открытка',icon:'💌',has:()=>!!P.lastCardDay},
- {id:'s3',name:'3 дня подряд',icon:'🔥',has:()=>(P.daily&&P.daily.best||0)>=3},
- {id:'s7',name:'7 дней подряд',icon:'🏅',has:()=>(P.daily&&P.daily.best||0)>=7},
- {id:'post',name:'Почта отстроена',icon:'🏡',has:()=>P.built.length>=ITEMS.length},
+ {id:'card',name:'Первая открытка',icon:BICON.postcard,has:()=>!!P.lastCardDay},
+ {id:'s3',name:'3 дня подряд',icon:BICON.flame,has:()=>(P.daily&&P.daily.best||0)>=3},
+ {id:'s7',name:'7 дней подряд',icon:BICON.medal,has:()=>(P.daily&&P.daily.best||0)>=7},
+ {id:'post',name:'Почта отстроена',icon:BICON.house,has:()=>P.built.length>=ITEMS.length},
 ];
 const stampCount=()=>P.stars.filter(Boolean).length+SPECIAL_STAMPS.filter(x=>x.has()).length;
 const stampTotal=()=>LEVELS.length+SPECIAL_STAMPS.length;
@@ -1306,7 +1489,7 @@ function showAlbum(){
   const chs=CHAPTERS.map(ch=>`<div class="chap">${ch.title}</div><div class="stamps">${LEVELS.slice(ch.from,ch.to+1).map((L,k)=>{const i=ch.from+k,st=P.stars[i];
     return `<div class="stampc ch${CHAPTERS.indexOf(ch)}${st?'':' locked'}${st===3?' gold':''}" title="${st?L.name:'Ещё не доставлено'}">${st||L.pet?petImg(L.pet,'sp'):''}<span class="sn">${st?(L.pet?L.name.split(' ')[1]||L.name:'Всем'):i+1}</span></div>`}).join('')}</div>`).join('');
   const sp=`<div class="chap">Особые марки</div><div class="stamps">${SPECIAL_STAMPS.map(x=>`<div class="stampc special${x.has()?'':' locked'}" title="${x.name}"><span class="si">${x.icon}</span><span class="sn">${x.name}</span></div>`).join('')}</div>`;
-  $('card').innerHTML=`<div class="to">Альбом марок</div><h2>📖 Мои марки: ${stampCount()} из ${stampTotal()}</h2>
+  $('card').innerHTML=`<div class="to">Альбом марок</div><h2>${bi("album")} Мои марки: ${stampCount()} из ${stampTotal()}</h2>
     <p class="note">Марка выдаётся за каждое доставленное письмо. За три звезды марка золотая.</p>
     <div class="album">${chs}${sp}</div>
     <div class="row"><button class="btn main" id="bAlbClose">Закрыть</button></div>`;
@@ -1357,7 +1540,7 @@ async function drawPostcard(pet,msg,frame){
 const cardLink=(pet,msg)=>GAME_URL+'#card-'+pet+'-'+toHex((msg||'').slice(0,60));
 async function openPostcard(pet){
   const prev=$('card').innerHTML;
-  $('card').innerHTML=`<div class="to">Открытка другу</div><h2>💌 Отправь открытку</h2>
+  $('card').innerHTML=`<div class="to">Открытка другу</div><h2>${bi("postcard")} Отправь открытку</h2>
     <div class="pcwrap"><canvas id="pcPrev"></canvas></div>
     <div class="frames">Рамка: ${SHOP.frames.filter(f=>f.price===0||owns('frame:'+f.id)).map(f=>`<button class="tab${P.frame===f.id?' on':''}" data-pcf="${f.id}">${f.name}</button>`).join('')}<button class="tab" id="pcMore">+ ещё в магазине</button></div>
     <label class="pclabel" for="pcMsg">Подпись (необязательно)</label>
@@ -1401,7 +1584,7 @@ async function receivePostcard(code){
   if(!PET_NAMES[pet])return false;
   const fresh=!(P.gifts||[]).includes(code);
   if(fresh){P.gifts=[...(P.gifts||[]),code].slice(-50);P.hammers++;P.shuffles++;save()}
-  $('card').innerHTML=`<div class="to">Тебе пришло письмо</div><h2>💌 Открытка от друга!</h2><div class="pcwrap"><canvas id="pcIn"></canvas></div>
+  $('card').innerHTML=`<div class="to">Тебе пришло письмо</div><h2>${bi("postcard")} Открытка от друга!</h2><div class="pcwrap"><canvas id="pcIn"></canvas></div>
     ${fresh?'<p><b>Подарок:</b> молоток и перемешивание уже у тебя.</p>':'<p class="note">Подарок по этой открытке ты уже получил.</p>'}
     <div class="row"><button class="btn main" id="pcOk">${P.introSeen?'Играть':'Начать игру'} ▶</button></div>`;
   openOv();
@@ -1413,10 +1596,10 @@ async function receivePostcard(code){
 const ENV_SVG='<svg viewBox="0 0 100 100"><rect x="8" y="22" width="84" height="58" rx="8" fill="#fff" stroke="#8a5a14" stroke-width="6"/><path d="M11 26l39 30 39-30" fill="none" stroke="#8a5a14" stroke-width="6" stroke-linejoin="round"/><circle cx="50" cy="58" r="9" fill="#ff5a5a"/></svg>';
 let introRun=0;
 function noise(sec){const b=AC.createBuffer(1,AC.sampleRate*sec,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b}
-function thunder(){if(!AC||P.muted)return;const s=AC.createBufferSource();s.buffer=noise(2.5);const f=AC.createBiquadFilter();f.type='lowpass';f.frequency.value=380;const g=AC.createGain(),t=AC.currentTime;
+function thunder(){if(!AC||P.sfxOff)return;const s=AC.createBufferSource();s.buffer=noise(2.5);const f=AC.createBiquadFilter();f.type='lowpass';f.frequency.value=380;const g=AC.createGain(),t=AC.currentTime;
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.9,t+.05);g.gain.exponentialRampToValueAtTime(.001,t+2.4);s.connect(f);f.connect(g);g.connect(AC.destination);s.start()}
 let rainNode=null;
-function rainSound(on){if(!AC)return;if(on&&!P.muted){if(rainNode)return;const s=AC.createBufferSource();s.buffer=noise(3);s.loop=true;const f=AC.createBiquadFilter();f.type='bandpass';f.frequency.value=2200;f.Q.value=.5;const g=AC.createGain();g.gain.value=0;g.gain.setTargetAtTime(.12,AC.currentTime,.6);s.connect(f);f.connect(g);g.connect(AC.destination);s.start();rainNode={s,g}}
+function rainSound(on){if(!AC)return;if(on&&!P.sfxOff){if(rainNode)return;const s=AC.createBufferSource();s.buffer=noise(3);s.loop=true;const f=AC.createBiquadFilter();f.type='bandpass';f.frequency.value=2200;f.Q.value=.5;const g=AC.createGain();g.gain.value=0;g.gain.setTargetAtTime(.12,AC.currentTime,.6);s.connect(f);f.connect(g);g.connect(AC.destination);s.start();rainNode={s,g}}
   else if(rainNode){const n=rainNode;rainNode=null;n.g.gain.setTargetAtTime(0,AC.currentTime,.5);setTimeout(()=>{try{n.s.stop()}catch(e){}},2500)}}
 function showIntroGate(){
   const el=$('intro');el.hidden=false;
