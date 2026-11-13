@@ -257,6 +257,25 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .goal .ic .env{position:absolute;inset:12%;width:76%;height:76%}
 .home h1 .btn{flex:none;padding:0 12px;font-size:14px;min-height:40px}
 @media (max-width:480px){.home h1{flex-wrap:nowrap;gap:8px;font-size:clamp(20px,6.2vw,30px);align-items:center;white-space:nowrap}.home h1 .replay{padding:0 8px;font-size:12px}.home h1 .homesnd{min-width:44px;padding:0 6px}}
+.t.heroT .g{inset:2%}
+.t.heroT .halo{position:absolute;inset:4%;border-radius:50%;background:radial-gradient(circle,#fff6c9 0 45%,#ffd23f80 60%,transparent 72%);animation:halo 1.6s ease-in-out infinite}
+@keyframes halo{50%{transform:scale(1.08);opacity:.8}}
+.t.heroT img{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 3px 0 #0003)}
+.heroenv{position:absolute;right:2%;bottom:4%;font-size:calc(var(--cell) * .3);line-height:1;background:#fff;border-radius:6px;padding:0 2px;color:#c2410c;box-shadow:0 1px 0 #0003}
+.houserow{position:relative;height:48px;margin-top:4px}
+.house{position:absolute;top:0;width:var(--cell);display:flex;flex-direction:column;align-items:center}
+.house .arrow{color:#ff8a3d;font-size:14px;line-height:1;animation:bob 1s ease-in-out infinite}
+.housepet{width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 2px 0 #0003)}
+.housepet.yay{animation:jump .6s cubic-bezier(.3,1.5,.5,1) 3}
+.goal .ic>img[src*="bunny"]{filter:drop-shadow(0 2px 0 #0003)}
+.pcwrap{border-radius:16px;overflow:hidden;box-shadow:0 4px 0 #c9d8ea}
+.pcwrap canvas{display:block;width:100%;height:auto}
+.pclabel{font-size:13px;font-weight:800;color:var(--ink-dim);margin-bottom:-8px}
+.pcinput{width:100%;box-sizing:border-box;border:2px solid #c9d8ea;border-radius:12px;padding:10px 12px;font:600 15px var(--body);color:var(--ink);background:#f6f9fd}
+.pcinput:focus{outline:none;border-color:#2f7fd6}
+.pclink{font-size:12px;color:var(--ink-dim)}
+.pcsocial .btn{text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:14px}
+.card .btn.pcbtn{border-image-source:url(assets/btn_red.png);color:#fff;text-shadow:0 1px 0 #a33}
 .chap{font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink-dim);margin:4px 0 -4px}
 
 /* ---------- вступительный ролик ---------- */
@@ -341,6 +360,7 @@ const COLOR_NAME=['сердечки','звёзды','кристаллы','изу
 const STONE='<img src="assets/stone.png" alt="" draggable="false">';
 const BOULDER='<img src="assets/boulder.png" alt="" draggable="false">';
 const ICE='<div class="ice"></div>';
+const HERO_T='<div class="halo"></div><img src="assets/pets/bunny.png" alt="Тиша" draggable="false"><span class="heroenv">✉</span>';
 const PARCEL='<img src="assets/sq_yellow.png" alt="" draggable="false"><svg class="env" viewBox="0 0 100 100" aria-hidden="true"><rect x="16" y="28" width="68" height="46" rx="6" fill="#fff" stroke="#8a5a14" stroke-width="5"/><path d="M18 31l32 24 32-24" fill="none" stroke="#8a5a14" stroke-width="5" stroke-linejoin="round"/><circle cx="50" cy="56" r="8" fill="#ff5a5a" stroke="#a33" stroke-width="3"/></svg>';
 const MOSS_IC='<span class="mossi"></span>';
 const STAR_IMG='<img class="ico" src="assets/star.png" alt="★">';
@@ -391,6 +411,17 @@ const LEVELS=[
  {moves:36,colors:5,goals:[['m']],map:['mmmmmmmm','mmmmmmmm','mmmmmmmm','mmmmmmmm','mmmmmmmm','mmmmmmmm','mmmmmmmm','mmmmmmmm']},
  {moves:38,colors:5,goals:[['p'],['l'],['m']],map:['.p.pp.p.','........','..l..l..','mmmmmmmm','mLmmmmLm','mmmmmmmm','..l..l..','........']},
  {moves:40,colors:5,goals:[['p'],['m'],['l'],['s']],map:['pp....pp','........','.S....S.','mmLmmLmm','mmmxxmmm','mmLmmLmm','........','........']},
+ // ---------- Глава 3: Осень, Тиша в пути ----------
+ {moves:22,colors:4,house:3,goals:[['h']],map:['...h....','........','........','........','........','........','........','........']},
+ {moves:24,colors:5,house:6,goals:[['h'],['c',0,15]],map:['.h......','........','........','........','........','........','........','........']},
+ {moves:32,colors:5,house:1,goals:[['h'],['m']],map:['......h.','........','........','........','........','........','mmmmmmmm','mmmmmmmm']},
+ {moves:28,colors:5,house:7,goals:[['h'],['s']],map:['h.......','........','..s..s..','........','.s....s.','........','..s..s..','........']},
+ {moves:28,colors:5,house:4,goals:[['h'],['l']],map:['....h...','........','.l....l.','..l..l..','........','..l..l..','.l....l.','........']},
+ {moves:34,colors:5,house:5,goals:[['h'],['p']],map:['p.h....p','........','........','........','........','........','........','........']},
+ {moves:30,colors:5,house:0,goals:[['h'],['s']],map:['.......h','........','.S....S.','........','...SS...','........','.S....S.','........']},
+ {moves:32,colors:5,house:3,goals:[['h'],['m'],['l']],map:['........','...h....','........','mmLmmLmm','mmmmmmmm','mLmmmmLm','mmmmmmmm','........']},
+ {moves:30,colors:5,house:6,goals:[['h'],['c',1,25],['c',3,25]],map:['.h......','........','........','........','........','........','........','........']},
+ {moves:44,colors:5,house:7,goals:[['h'],['m'],['l'],['s'],['p']],map:['h.p..p..','........','.S....S.','mmLmmLmm','mmmxxmmm','mmLmmLmm','........','........']},
 ];
 const CAST=[
  {pet:'chick',name:'Цыплёнок Пик',to:'Цыплёнку Пику',text:'Пик впервые в жизни получает письмо: от бабушки с соседнего двора. Собери сердечки и кристаллы для посылки.'},
@@ -423,9 +454,19 @@ const CAST=[
  {pet:'beaver',name:'Бобр Тихон',to:'Бобру Тихону',text:'Плотина Тихона заросла целиком. Мох на каждой клетке!'},
  {pet:'bee',name:'Пчела Жужа',to:'Пчеле Жуже',text:'Жужа отправляет мёд всему лесу, а посылки застряли во льду и мху.'},
  {pet:null,name:'Все жители леса',to:'Всему лесу',text:'Приглашение на праздник лета у ручья. Последние посылки, и можно праздновать!'},
+ {pet:'chick',name:'Цыплёнок Пик',to:'Цыплёнку Пику',text:'Осенью Тиша доставляет письма лично! Тиша стоит на поле. Убирай фишки под ним, и он спустится к Пику, который ждёт внизу под отмеченной колонкой.'},
+ {pet:'cat',name:'Кот Мурзик',to:'Коту Мурзику',text:'Мурзик ждёт в другой колонке. Тиша может шагнуть влево или вправо в любой момент: потяни его в сторону, это стоит один ход.'},
+ {pet:'caterpillar',name:'Гусеница Фрося',to:'Гусенице Фросе',text:'Фрося укуталась в мох на зиму. Доведи Тишу и расчисти мох.'},
+ {pet:'deer',name:'Олень Арсений',to:'Оленю Арсению',text:'Арсений живёт на другом краю поля, а на пути камни.'},
+ {pet:'crab',name:'Краб Капитан',to:'Крабу Капитану',text:'Ручей подмёрз. Капитан ждёт письмо прямо под Тишей, но вокруг лёд.'},
+ {pet:'cow',name:'Корова Бурёнка',to:'Корове Бурёнке',text:'Тиша несёт письмо, а рядом едут посылки для Бурёнки.'},
+ {pet:'elephant',name:'Слон Тимофей',to:'Слону Тимофею',text:'Тимофей ждёт в дальнем углу, а между ними валуны.'},
+ {pet:'fish',name:'Рыбка Буль',to:'Рыбке Буль',text:'Путь к ручью зарос мхом и затянут льдом.'},
+ {pet:'parrot',name:'Попугай Кеша',to:'Попугаю Кеше',text:'Кеша ждёт письмо и заодно просит собрать ему звёзды и изумруды.'},
+ {pet:'polar',name:'Медведица Глаша',to:'Медведице Глаше',text:'Глаша устраивает осенний бал и ждёт последнее письмо. Тут всё сразу!'},
 ];
 CAST.forEach((c,i)=>Object.assign(LEVELS[i],c));
-const CHAPTERS=[{title:'Глава 1 · Весна',from:0,to:14},{title:'Глава 2 · Лето у ручья',from:15,to:29}];
+const CHAPTERS=[{title:'Глава 1 · Весна',from:0,to:14},{title:'Глава 2 · Лето у ручья',from:15,to:29},{title:'Глава 3 · Осень: Тиша в пути',from:30,to:39}];
 const petSrc=p=>`assets/pets/${p||'bunny'}.png`;
 const petImg=(p,cls='')=>`<img class="${cls}" src="${petSrc(p)}" alt="" draggable="false">`;
 // места жителей на диораме (посчитаны из 3D-сцены): x, низ y, высота в процентах кадра
@@ -510,7 +551,7 @@ const randColor=()=>Math.floor(Math.random()*LV.colors);
 
 function goalIcon(g){
   if(g.t==='c')return TILE[g.color];
-  if(g.t==='p')return PARCEL;if(g.t==='m')return MOSS_IC;if(g.t==='s')return STONE;if(g.t==='l')return TILE[0]+ICE;
+  if(g.t==='h')return '<img src="assets/pets/bunny.png" alt="">';if(g.t==='p')return PARCEL;if(g.t==='m')return MOSS_IC;if(g.t==='s')return STONE;if(g.t==='l')return TILE[0]+ICE;
 }
 function goalAdd(t,color){
   for(const g of goals)if(g.t===t&&(t!=='c'||g.color===color)&&g.have<g.need)g.have++;
@@ -532,7 +573,7 @@ function startLevel(i){
         <button class="btn tool snd" aria-label="Звук">${P.muted?'🔇':'🔊'}</button>
       </div>
     </div>
-    <div class="boardwrap"><div class="board" id="board"></div></div>
+    <div class="boardwrap"><div class="board" id="board"></div>${LV.house!=null?`<div class="houserow"><div class="house" style="left:calc(${LV.house} * var(--cell))"><span class="arrow">▼</span>${petImg(LV.pet||'polar',"housepet").replace('<img','<img id="housePet"')}</div></div>`:""}</div>
   </div>`;
   layout();
   // мох и раскладка
@@ -549,7 +590,8 @@ function startLevel(i){
       if(g[0]==='m'&&moss[r][c])need++;
       if(g[0]==='s'&&'sSx'.includes(ch))need++;
       if(g[0]==='l'&&'lL'.includes(ch))need++;
-      if(g[0]==='p'&&ch==='p')need++;}
+      if(g[0]==='p'&&ch==='p')need++;
+      if(g[0]==='h'&&ch==='h')need++;}
     return {t:g[0],need,have:0};
   });
   bindBoard();updateHUD();
@@ -558,12 +600,13 @@ function startLevel(i){
   $('tMenu').onclick=()=>{if(!busy)renderHome()};
   armHint();
 }
+const CELL_H=54;
 function layout(){
   const vw=innerWidth,vh=innerHeight;
   const portrait=vw<760||vh>vw*1.05;
   const g=$('game');if(g)g.classList.toggle('portrait',portrait);
   const avW=portrait?vw-32-16:vw-32-16-220-18;
-  const avH=portrait?vh-28-16-170:vh-28-16;
+  const avH=(portrait?vh-28-16-170:vh-28-16)-(LV&&LV.house!=null?CELL_H:0);
   CELL=Math.max(34,Math.floor(Math.min(avW/N,avH/N,72)));
   document.documentElement.style.setProperty('--cell',CELL+'px');
 }
@@ -574,6 +617,7 @@ function fillBoard(map){
       const ch=map[r][c];
       if('sSx'.includes(ch)){grid[r][c]=mk({stone:true,hp:ch==='S'?2:1,color:-2},r,c);continue}
       if(ch==='p'){grid[r][c]=mk({parcel:true,color:-3},r,c);continue}
+      if(ch==='h'){grid[r][c]=mk({hero:true,color:-4},r,c);continue}
       let col,guard=0;
       do{col=randColor();guard++}while(guard<30&&((c>=2&&cc(r,c-1)===col&&cc(r,c-2)===col)||(r>=2&&cc(r-1,c)===col&&cc(r-2,c)===col)));
       grid[r][c]=mk({color:col,lock:'lL'.includes(ch)},r,c);
@@ -588,8 +632,8 @@ function mk(o,r,c){
   t.el=document.createElement('div');renderTile(t);$('board').appendChild(t.el);return t;
 }
 function renderTile(t){
-  t.el.className='t'+(t.parcel?' parcel':'')+(t.sp?' sp-'+t.sp:'')+(t.stone&&t.hp>1?' hp2':'')+(t===sel?' sel':'');
-  const g=t.parcel?PARCEL:t.stone?(t.hp>1?BOULDER:STONE):t.sp==='rb'?'<div class="rb"></div>':(t.sp?TILE_SP[t.color]:TILE[t.color]);
+  t.el.className='t'+(t.parcel?' parcel':'')+(t.hero?' heroT':'')+(t.sp?' sp-'+t.sp:'')+(t.stone&&t.hp>1?' hp2':'')+(t===sel?' sel':'');
+  const g=t.hero?HERO_T:t.parcel?PARCEL:t.stone?(t.hp>1?BOULDER:STONE):t.sp==='rb'?'<div class="rb"></div>':(t.sp?TILE_SP[t.color]:TILE[t.color]);
   t.el.innerHTML=`<div class="g">${g}</div>${t.lock?ICE:''}`;
 }
 function place(t,dur,row){
@@ -713,7 +757,7 @@ async function applyHits(list,spawns,fromMatch,mult){
     if(moss[r][c]){moss[r][c]=0;mossEl[r][c].classList.add('gone');goalAdd('m');score+=20}
     const t=grid[r][c];if(!t)continue;
     if(spawnKeys.has(k)){if(t.lock){t.lock=false;goalAdd('l')}continue}
-    if(t.parcel)continue;
+    if(t.parcel||t.hero)continue;
     if(t.stone){t.hp--;score+=30;if(t.hp<=0){grid[r][c]=null;removed.push(t);goalAdd('s')}else renderTile(t);continue}
     if(t.lock){t.lock=false;goalAdd('l');score+=20;renderTile(t);continue}
     grid[r][c]=null;removed.push(t);goalAdd('c',t.color);score+=10*mult;
@@ -746,6 +790,15 @@ async function gravity(){
 async function collectParcels(){
   const got=[];
   for(let c=0;c<N;c++){const t=grid[N-1][c];if(t&&t.parcel){grid[N-1][c]=null;got.push(t);goalAdd('p');score+=200}}
+  let heroGot=null;
+  if(LV.house!=null){const t=grid[N-1][LV.house];if(t&&t.hero){grid[N-1][LV.house]=null;heroGot=t;goalAdd('h');score+=500}}
+  if(heroGot){
+    const t=heroGot;burst(t.r,t.c,1,14);floatNum(t.r,t.c,'+500');
+    t.el.style.transition='transform .55s cubic-bezier(.3,1.4,.5,1)';t.el.style.transform=`translate(${t.c*CELL}px,${(t.r+.85)*CELL}px) scale(.9)`;
+    if(SPEED){sfx('friend',.8);comboText('Письмо вручено!');const hp=$('housePet');if(hp){hp.classList.remove('yay');void hp.offsetWidth;hp.classList.add('yay')}}
+    updateHUD();await sleep(600);t.el.remove();
+    if(!got.length)return true;
+  }
   if(!got.length)return false;
   for(const t of got){burst(t.r,t.c,1,8);floatNum(t.r,t.c,'+200');t.el.style.transitionDuration='350ms';t.el.style.transform=`translate(${t.c*CELL}px,${(t.r+1)*CELL}px)`;t.el.style.opacity='0';t.el.style.transition='transform .35s ease-in,opacity .35s'}
   if(SPEED){sfx('build',.6);comboText('Посылка доставлена!')}
@@ -778,6 +831,11 @@ async function trySwap(r1,c1,r2,c2){
   clearSel();clearHint();
   if(!movable(a)||!movable(b)){if(SPEED)toast(a&&a.lock||b&&b.lock?'Фишка во льду: собери с ней ряд':'Камень не двигается');return}
   busy=true;
+  if((a.hero||b.hero)&&r1===r2){
+    swapGrid(r1,c1,r2,c2);place(a,180);place(b,180);await sleep(190);
+    moves--;updateHUD();if(SPEED)tick();
+    await resolve(null);busy=false;await afterMove();return;
+  }
   swapGrid(r1,c1,r2,c2);place(a,150);place(b,150);await sleep(160);
   const combo=a.sp==='rb'||b.sp==='rb'||(a.sp&&b.sp);
   if(combo){moves--;updateHUD();await doCombo(a,b);await resolve(null)}
@@ -812,13 +870,14 @@ async function doCombo(a,b){
 async function hammerAt(r,c){
   if(busy||!grid[r][c])return;
   if(grid[r][c].parcel){toast('Посылку молотком не разбить: доведи её до низа');return}
+  if(grid[r][c].hero){toast('Тишу молотком? Ни за что!');return}
   tool=null;P.hammers--;save();busy=true;clearHint();
   if(SPEED)fx({sp:'bomb'},r,c);
   await applyHits([[r,c]],[],false,1);await gravity();await resolve(null);
   busy=false;updateHUD();await afterMove();
 }
 async function shuffleBoard(){
-  const ts=[];for(const row of grid)for(const t of row)if(t&&!t.stone&&!t.sp&&!t.parcel)ts.push(t);
+  const ts=[];for(const row of grid)for(const t of row)if(t&&!t.stone&&!t.sp&&!t.parcel&&!t.hero)ts.push(t);
   for(let i=0;i<60;i++){
     const cols=ts.map(t=>t.color);for(let j=cols.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[cols[j],cols[k]]=[cols[k],cols[j]]}
     ts.forEach((t,j)=>t.color=i>30?randColor():cols[j]);
@@ -868,7 +927,7 @@ function goalsHTML(gs){return `<div class="goals">${gs.map(g=>`<div class="goal"
 function showIntro(i){
   const L=LEVELS[i];
   const map=L.map||Array(N).fill('........');
-  const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLx'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++;if(g[0]==='p'&&ch==='p')need++}return {t:g[0],need}});
+  const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLx'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++;if(g[0]==='p'&&ch==='p')need++;if(g[0]==='h'&&ch==='h')need++}return {t:g[0],need}});
   $('card').innerHTML=`<div class="stamp">✉</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">Письмо ${i+1} · кому</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
@@ -888,10 +947,15 @@ function win(){
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
     <p>Очки: <b>${score.toLocaleString('ru-RU')}</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
+    <div class="row"><button class="btn pcbtn" id="bCard">💌 Открытка другу</button></div>
     <div class="row"><button class="btn" id="bHome">На почту</button>${LI<LEVELS.length-1?'<button class="btn main" id="bNext">Следующее письмо</button>':''}</div>`;
-  $('bHome').onclick=renderHome;
-  if($('bNext'))$('bNext').onclick=()=>showIntro(LI+1);
+  rebindWin();
   openOv();
+}
+function rebindWin(){
+  if($('bHome'))$('bHome').onclick=renderHome;
+  if($('bNext'))$('bNext').onclick=()=>showIntro(LI+1);
+  if($('bCard'))$('bCard').onclick=()=>openPostcard(LV.pet||'bunny');
 }
 function lose(){
   clearHint();duck(2400);sad();
@@ -953,6 +1017,94 @@ const sad=()=>sfx('lose',.8);
 
 
 /* ---------- вступительный ролик ---------- */
+
+/* ---------- открытки друзьям ---------- */
+const seasonBase=()=>'assets/scene/base.jpg';
+const GAME_URL='https://minionslaba-ux.github.io/korot/pochta/';
+const PET_NAMES={};LEVELS.forEach(L=>{if(L.pet&&!PET_NAMES[L.pet])PET_NAMES[L.pet]=L.name});PET_NAMES.bunny='Зайчик Тиша';
+const toHex=t=>[...new TextEncoder().encode(t)].map(b=>b.toString(16).padStart(2,'0')).join('');
+const fromHex=h=>{try{return new TextDecoder().decode(new Uint8Array((h.match(/../g)||[]).map(x=>parseInt(x,16))))}catch(e){return ''}};
+const todayKey=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+const imgCache={};
+function loadImg(src){return imgCache[src]||(imgCache[src]=new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=src}))}
+function wrapText(ctx,text,x,y,maxW,lh,maxLines){
+  const words=text.split(/\s+/);let line='',n=0;
+  for(const w of words){const t=line?line+' '+w:w;if(ctx.measureText(t).width>maxW&&line){ctx.fillText(line,x,y+n*lh);n++;line=w;if(n>=maxLines-1)break}else line=t}
+  if(line&&n<maxLines)ctx.fillText(line,x,y+n*lh);
+}
+async function drawPostcard(pet,msg){
+  const W=900,H=560,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  try{await document.fonts.load('700 40px "Balsamiq Sans"');await document.fonts.load('700 26px "Nunito"')}catch(e){}
+  const [bg,pi,st]=await Promise.all([loadImg(seasonBase()),loadImg(petSrc(pet)),loadImg('assets/star.png')]);
+  const R=36;x.save();x.beginPath();x.roundRect(0,0,W,H,R);x.clip();
+  const s=Math.max(W/bg.width,H/bg.height);x.drawImage(bg,(W-bg.width*s)/2,(H-bg.height*s)/2,bg.width*s,bg.height*s);
+  const g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'#ffffff00');g.addColorStop(.42,'#ffffff10');g.addColorStop(.5,'#ffffffe8');g.addColorStop(1,'#fffffff2');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.shadowColor='#0005';x.shadowBlur=18;x.shadowOffsetY=10;x.drawImage(pi,40,H-370,330,330);x.shadowColor='transparent';
+  // марка
+  const sx=W-122,sy=26;x.fillStyle='#fff';x.strokeStyle='#e0b25c';x.lineWidth=4;x.setLineDash([8,6]);x.beginPath();x.roundRect(sx,sy,98,116,9);x.fill();x.stroke();x.setLineDash([]);
+  x.fillStyle='#fff3d6';x.fillRect(sx+9,sy+9,80,80);x.drawImage(pi,sx+12,sy+11,74,74);
+  x.fillStyle='#a0612a';x.font='700 12px "Balsamiq Sans", sans-serif';x.textAlign='center';x.fillText('ЛЕСНАЯ ПОЧТА',sx+49,sy+106);
+  // текст
+  x.textAlign='left';x.fillStyle='#2b3a55';x.font='700 36px "Balsamiq Sans", sans-serif';
+  x.fillText('Привет',470,80);x.fillText('из Лесной почты!',470,124);
+  x.font='700 25px "Nunito", sans-serif';x.fillStyle='#3d4f6e';
+  wrapText(x,msg||('Тебе пишет '+(PET_NAMES[pet]||'житель леса')+'. Заходи в гости!'),470,214,390,34,5);
+  x.drawImage(st,470,H-96,36,34);x.font='700 19px "Nunito", sans-serif';x.fillStyle='#2f7fd6';x.fillText('Открой ссылку и получи подарок',516,H-72);
+  x.restore();return c;
+}
+const cardLink=(pet,msg)=>GAME_URL+'#card-'+pet+'-'+toHex((msg||'').slice(0,60));
+async function openPostcard(pet){
+  const prev=$('card').innerHTML;
+  $('card').innerHTML=`<div class="to">Открытка другу</div><h2>💌 Отправь открытку</h2>
+    <div class="pcwrap"><canvas id="pcPrev"></canvas></div>
+    <label class="pclabel" for="pcMsg">Подпись (необязательно)</label>
+    <input id="pcMsg" class="pcinput" maxlength="60" placeholder="Например: Смотри, какой у меня Пингвин!">
+    <div class="row"><button class="btn main" id="pcShare">Отправить</button></div>
+    <div class="row pcsocial"><a class="btn" id="pcVK" target="_blank" rel="noopener">VK</a><a class="btn" id="pcTG" target="_blank" rel="noopener">Telegram</a><a class="btn" id="pcWA" target="_blank" rel="noopener">WhatsApp</a></div>
+    <input id="pcLink" class="pcinput pclink" readonly aria-label="Ссылка на открытку">
+    <p class="note">Друг получит в подарок молоток и перемешивание. А тебе раз в день за открытку дают перемешивание.</p>
+    <div class="row"><button class="btn" id="pcBack">Назад</button></div>`;
+  const msgEl=$('pcMsg');
+  const refresh=async()=>{
+    const m=msgEl.value.trim(),url=cardLink(pet,m),txt='Тебе открытка из «Лесной почты»!';
+    $('pcLink').value=url;
+    $('pcVK').href='https://vk.com/share.php?url='+encodeURIComponent(url);
+    $('pcTG').href='https://t.me/share/url?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(txt);
+    $('pcWA').href='https://wa.me/?text='+encodeURIComponent(txt+' '+url);
+    const cv=await drawPostcard(pet,m);const pv=$('pcPrev');if(!pv)return;pv.width=cv.width;pv.height=cv.height;pv.getContext('2d').drawImage(cv,0,0);
+  };
+  let tmr;msgEl.addEventListener('input',()=>{clearTimeout(tmr);tmr=setTimeout(refresh,250)});
+  await refresh();
+  const reward=()=>{if(P.lastCardDay!==todayKey()){P.lastCardDay=todayKey();P.shuffles++;save();toast('+1 перемешивание за открытку!')}};
+  ['pcVK','pcTG','pcWA'].forEach(id=>$(id).addEventListener('click',reward));
+  $('pcShare').onclick=async()=>{
+    const m=msgEl.value.trim(),url=cardLink(pet,m),txt='Тебе открытка из «Лесной почты»!';
+    try{
+      const cv=await drawPostcard(pet,m);const blob=await new Promise(r=>cv.toBlob(r,'image/png'));
+      const file=new File([blob],'otkrytka.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:txt,text:txt+' '+url,files:[file]});reward();return}
+      if(navigator.share){await navigator.share({title:txt,text:txt,url});reward();return}
+    }catch(e){if(e&&e.name==='AbortError')return}
+    try{await navigator.clipboard.writeText(url);toast('Ссылка скопирована');reward()}catch(e){const l=$('pcLink');l.focus();l.select();toast('Скопируй ссылку из поля ниже')}
+  };
+  $('pcBack').onclick=()=>{$('card').innerHTML=prev;rebindWin()};
+  $('pcLink').addEventListener('focus',e=>e.target.select());
+}
+async function receivePostcard(code){
+  const m=/^card-([a-z]+)-([0-9a-f]*)$/.exec(code);if(!m)return false;
+  const pet=m[1],msg=fromHex(m[2]).slice(0,60);
+  if(!PET_NAMES[pet])return false;
+  const fresh=!(P.gifts||[]).includes(code);
+  if(fresh){P.gifts=[...(P.gifts||[]),code].slice(-50);P.hammers++;P.shuffles++;save()}
+  $('card').innerHTML=`<div class="to">Тебе пришло письмо</div><h2>💌 Открытка от друга!</h2><div class="pcwrap"><canvas id="pcIn"></canvas></div>
+    ${fresh?'<p><b>Подарок:</b> молоток и перемешивание уже у тебя.</p>':'<p class="note">Подарок по этой открытке ты уже получил.</p>'}
+    <div class="row"><button class="btn main" id="pcOk">${P.introSeen?'Играть':'Начать игру'} ▶</button></div>`;
+  openOv();
+  const cv=await drawPostcard(pet,msg);const pv=$('pcIn');pv.width=cv.width;pv.height=cv.height;pv.getContext('2d').drawImage(cv,0,0);
+  $('pcOk').onclick=()=>{ac();closeOv();if(!P.introSeen)showIntroGate();else renderHome()};
+  return true;
+}
+
 const ENV_SVG='<svg viewBox="0 0 100 100"><rect x="8" y="22" width="84" height="58" rx="8" fill="#fff" stroke="#8a5a14" stroke-width="6"/><path d="M11 26l39 30 39-30" fill="none" stroke="#8a5a14" stroke-width="6" stroke-linejoin="round"/><circle cx="50" cy="58" r="9" fill="#ff5a5a"/></svg>';
 let introRun=0;
 function noise(sec){const b=AC.createBuffer(1,AC.sampleRate*sec,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b}
@@ -1043,7 +1195,10 @@ async function playIntro(){
 /* ---------- старт ---------- */
 addEventListener('resize',()=>{if($('level').hidden||!grid)return;layout();
   for(let r=0;r<N;r++)for(let c=0;c<N;c++){mossEl[r][c].style.transform=`translate(${c*CELL}px,${r*CELL}px)`;if(grid[r][c])place(grid[r][c],0)}});
-load();renderHome();if(!P.introSeen)showIntroGate();
+load();renderHome();
+const _hash=(location.hash||'').slice(1);
+if(_hash.startsWith('card-')){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}receivePostcard(_hash).then(ok=>{if(!ok&&!P.introSeen)showIntroGate()})}
+else if(!P.introSeen)showIntroGate();
 </script>
 </body>
 </html>
