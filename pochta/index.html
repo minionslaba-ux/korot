@@ -237,6 +237,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .sbase{display:block;width:100%;height:100%;object-fit:cover}
 .scene .part{position:absolute;height:auto;transition:opacity .5s,transform .7s cubic-bezier(.3,1.6,.5,1);transform-origin:50% 100%;pointer-events:none}
 .scene .part.off{opacity:0;transform:translateY(-14%) scale(.92)}
+.homesnd{margin-left:auto;font-size:18px;min-height:40px;min-width:56px;text-shadow:none}
 .need{font-size:12px;color:var(--ink-dim);font-weight:700}
 .res{position:absolute;transform:translate(-50%,-100%);height:auto;filter:drop-shadow(0 4px 2px #0003);transition:transform .2s;pointer-events:auto}
 .res:hover{transform:translate(-50%,-106%)}
@@ -380,7 +381,7 @@ function renderHome(){
   $('level').hidden=true;$('home').hidden=false;closeOv();
   const avail=Math.max(0,totalStars()-spent()),nl=nextLevel(),done=P.stars.every(Boolean);
   $('home').innerHTML=`<div class="home">
-    <h1>Лесная почта </h1>
+    <h1>Лесная почта <button class="btn tool snd homesnd" aria-label="Звук">${P.muted?'🔇':'🔊'}</button></h1>
     <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
       <div class="scene">${sceneSVG()}${petsLayer()}</div>
       <p class="story">После бури лесная почта развалилась. Зайчик Тиша разносит письма жителям леса и получает за доставку звёзды, а на них почту можно отстроить заново. Каждый, кому пришло письмо, переселяется поближе к почте.</p>
@@ -395,7 +396,7 @@ function renderHome(){
       <div class="panel"><h2>Письма</h2><div class="levels">${LEVELS.map((l,i)=>{const open=i===0||P.stars[i-1]>0||P.stars[i]>0;return `<button class="lv ${i===nl?'cur':''}" data-lv="${i}" ${open?'':'disabled'} aria-label="Уровень ${i+1}: ${l.name}"><span class="num">${i+1}</span>${petImg(l.pet,'face')}<small>${'<img src="assets/star.png" alt="★">'.repeat(P.stars[i])}</small></button>`}).join('')}</div></div>
     </div></div>`;
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
-  if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>toast(n.name+' теперь живёт у почты!'),500)}
+  if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>{toast(n.name+' теперь живёт у почты!');sfx('friend',.8)},500)}
   $('home').querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{ac();showIntro(+b.dataset.lv)});
   $('home').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
     const it=ITEMS.find(i=>i.id===b.dataset.build);if(totalStars()-spent()<it.cost)return;
@@ -432,6 +433,7 @@ function startLevel(i){
         <button class="btn tool" id="tHammer" title="Разбить одну клетку, не тратя ход">🔨 <b id="nH"></b></button>
         <button class="btn tool" id="tShuffle" title="Перемешать поле">🔀 <b id="nS"></b></button>
         <button class="btn tool" id="tMenu" aria-label="На почту">🏠</button>
+        <button class="btn tool snd" aria-label="Звук">${P.muted?'🔇':'🔊'}</button>
       </div>
     </div>
     <div class="boardwrap"><div class="board" id="board"></div></div>
@@ -761,7 +763,7 @@ function showIntro(i){
   $('card').innerHTML=`<div class="stamp">✉</div><div class="who">${petImg(L.pet,'portrait')}<div><div class="to">Письмо ${i+1} · кому</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
-  $('bGo').onclick=()=>startLevel(i);
+  $('bGo').onclick=()=>{ac();sfx('start',.7);startLevel(i)};
   openOv();
 }
 function win(){
@@ -793,22 +795,23 @@ function lose(){
   $('bHome').onclick=renderHome;$('bRetry').onclick=()=>startLevel(LI);
   openOv();
 }
+document.addEventListener('click',e=>{const b=e.target.closest('.snd');if(!b)return;P.muted=!P.muted;save();document.querySelectorAll('.snd').forEach(x=>x.textContent=P.muted?'🔇':'🔊');if(!P.muted){ac();sfx('tap')}});
 function toast(t){if(!SPEED)return;const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),1500)}
-function comboText(t){const e=document.createElement('div');e.className='combo';e.textContent=t;$('board').appendChild(e);setTimeout(()=>e.remove(),900)}
+function comboText(t){sfx('combo',.7);const e=document.createElement('div');e.className='combo';e.textContent=t;$('board').appendChild(e);setTimeout(()=>e.remove(),900)}
 
 /* ---------- звук ---------- */
 let AC=null;
 function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume()}
-function tone(f,d=.1,type='sine',v=.06,delay=0){if(!AC||!SPEED)return;const t0=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(v,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+d+.02)}
+function tone(f,d=.1,type='sine',v=.06,delay=0){if(!AC||!SPEED||P.muted)return;const t0=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(v,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+d+.02)}
 const pop=m=>tone(520+Math.min(m,8)*90,.12,'triangle',.07);
-const SFX={};function sfx(n){if(!SPEED)return;try{const a=(SFX[n]=SFX[n]||new Audio('assets/'+n+'.ogg'));a.currentTime=0;a.volume=.6;a.play().catch(()=>{})}catch(e){}}
+const SFX={};function sfx(n,vol=.6){if(!SPEED||P.muted)return;try{const a=(SFX[n]=SFX[n]||new Audio('assets/sfx/'+n+'.mp3'));a.currentTime=0;a.volume=vol;a.play().catch(()=>{})}catch(e){}}
 const tick=()=>{sfx('tap');tone(700,.04,'sine',.02)};
 const swish=()=>{sfx('click');tone(380,.08,'sine',.03)};
 const nope=()=>{tone(220,.1,'square',.03);tone(180,.12,'square',.03,.08)};
 const boom=()=>{tone(110,.25,'sawtooth',.05);tone(660,.15,'triangle',.05,.05)};
-const chime=()=>[784,988,1175].forEach((f,i)=>tone(f,.25,'triangle',.06,i*.08));
-const fanfare=()=>[523,659,784,1047,1319].forEach((f,i)=>tone(f,.25,'triangle',.07,i*.09));
-const sad=()=>[392,330,262].forEach((f,i)=>tone(f,.3,'triangle',.06,i*.14));
+const chime=()=>sfx('build',.8);
+const fanfare=()=>sfx('win',.85);
+const sad=()=>sfx('lose',.8);
 
 /* ---------- старт ---------- */
 addEventListener('resize',()=>{if($('level').hidden||!grid)return;layout();
