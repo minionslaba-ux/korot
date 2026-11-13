@@ -246,7 +246,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 
 
 .scene{position:relative;aspect-ratio:1200/750;isolation:isolate}
-#level::before{content:"";position:fixed;inset:-20px;z-index:-1;background:linear-gradient(#ffffff26,#0b3a7a33),url(assets/scene/base.jpg) center/cover;filter:blur(4px)}
+#level::before{content:"";position:fixed;inset:-20px;z-index:-1;background:linear-gradient(#ffffff26,#0b3a7a33),var(--scenebg) center/cover;filter:blur(4px)}
 .sbase{display:block;width:100%;height:100%;object-fit:cover}
 .scene .part{position:absolute;height:auto;transition:opacity .5s,transform .7s cubic-bezier(.3,1.6,.5,1);transform-origin:50% 100%;pointer-events:none}
 .scene .part.off{opacity:0;transform:translateY(-14%) scale(.92)}
@@ -294,6 +294,26 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .stampc .sn{font-family:var(--display);font-weight:700;font-size:11px;color:var(--ink);text-align:center;line-height:1.1}
 .stampc.locked{--stc:#c9d3df;background:#f1f4f8}
 .stampc.locked .sp{filter:brightness(0) opacity(.18)}.stampc.locked .si{filter:grayscale(1) opacity(.3)}.stampc.locked .sn{color:#9aa6b8}
+.sfx{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.sfx.inscene{position:absolute;z-index:200}
+.sfx i{position:absolute;top:-6%;display:block;animation:sfall linear infinite}
+@keyframes sfall{0%{transform:translate(0,-10vh) rotate(0)}50%{transform:translate(var(--sway),50vh) rotate(calc(var(--rot) / 2))}100%{transform:translate(calc(var(--sway) * -1),110vh) rotate(var(--rot))}}
+.sfx.inscene i{animation-name:sfallin}
+@keyframes sfallin{0%{transform:translate(0,0) rotate(0);top:-6%}100%{transform:translate(var(--sway),0) rotate(var(--rot));top:104%}}
+.p-winter{background:#fff;border-radius:50%;box-shadow:0 0 6px #fff}
+.p-autumn{border-radius:0 80% 0 80%}
+.p-spring{background:#ffc2de;border-radius:80% 0 80% 0;box-shadow:inset -2px -2px 0 #ff9ccb}
+.p-summer{background:#fff7b0;border-radius:50%;box-shadow:0 0 8px 2px #fff59a;animation-name:float!important}
+@keyframes float{0%{transform:translate(0,40vh);opacity:0}20%{opacity:1}100%{transform:translate(var(--sway),-10vh);opacity:0}}
+.seasonchip{margin:0;color:#fff;font-family:var(--display);font-weight:700;font-size:15px;text-shadow:0 1px 2px #0b3a7a80}
+:root[data-season="winter"] body{background:linear-gradient(#dcecf8 0%,#9cc6ea 50%,#5f95c9 100%)}
+:root[data-season="winter"] body::after{background:radial-gradient(60% 100% at 20% 100%,#ffffff 60%,transparent 61%),radial-gradient(70% 100% at 85% 100%,#eef5fc 60%,transparent 61%)}
+:root[data-season="autumn"] body{background:linear-gradient(#ffd9a8 0%,#9ccbf0 55%,#4f8fd6 100%)}
+:root[data-season="autumn"] body::after{background:radial-gradient(60% 100% at 20% 100%,#e0b04a 60%,transparent 61%),radial-gradient(70% 100% at 85% 100%,#d8973a 60%,transparent 61%)}
+:root[data-season="spring"] body{background:linear-gradient(#c8eeff 0%,#7cc6f8 50%,#3d8ee0 100%)}
+:root[data-season="spring"] body::after{background:radial-gradient(60% 100% at 20% 100%,#97e070 60%,transparent 61%),radial-gradient(70% 100% at 85% 100%,#7ccf5a 60%,transparent 61%)}
+@media (prefers-reduced-motion:reduce){.sfx{display:none}}
+:root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .chap{font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink-dim);margin:4px 0 -4px}
 
 /* ---------- вступительный ролик ---------- */
@@ -526,8 +546,8 @@ const nextLevel=()=>{const i=P.stars.findIndex(s=>!s);return i<0?LEVELS.length-1
 
 /* ---------- сцена почты ---------- */
 function sceneSVG(){
-  return `<img class="sbase" src="assets/scene/base.jpg" alt="Лесная почта: башня-почта у ручья в лесу" draggable="false">`+
-    DRAW_ORDER.map(id=>ITEMS.find(x=>x.id===id)).map(it=>{const [l,t,w]=LAYERS[it.id];return `<img class="part${P.built.includes(it.id)?'':' off'}" data-part="${it.id}" src="assets/scene/${it.id}.png" alt="" draggable="false" style="left:${l}%;top:${t}%;width:${w}%">`}).join('');
+  return `<img class="sbase" src="${seasonBase()}" alt="Лесная почта: башня-почта у ручья в лесу" draggable="false">`+
+    DRAW_ORDER.map(id=>ITEMS.find(x=>x.id===id)).map(it=>{const [l,t,w]=LAYERS[it.id];return `<img class="part${P.built.includes(it.id)?'':' off'}" data-part="${it.id}" src="${layerSrc(it.id)}" alt="" draggable="false" style="left:${l}%;top:${t}%;width:${w}%">`}).join('');
 }
 
 /* ---------- главная ---------- */
@@ -539,6 +559,7 @@ function renderHome(){
     <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
       <div class="scene">${sceneSVG()}${petsLayer()}</div>
       <p class="story">После бури лесная почта развалилась. Зайчик Тиша разносит письма жителям леса и получает за доставку звёзды, а на них почту можно отстроить заново. Каждый, кому пришло письмо, переселяется поближе к почте.</p>
+      <p class="seasonchip">${SEASONS[SEASON].icon} Сейчас в лесу ${SEASONS[SEASON].name}</p>
     </div>
     <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
       <div class="panel">
@@ -554,6 +575,7 @@ function renderHome(){
     </div></div>`;
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
   $('bReplay').onclick=()=>{ac();playIntro()};
+  const sc=$('home').querySelector('.scene');if(sc)seasonFx(sc,SEASON==='summer'?10:22,true);
   if($('bDaily'))$('bDaily').onclick=()=>{ac();showIntro(-1)};
   $('bAlbum').onclick=showAlbum;
   if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>{toast(n.name+' теперь живёт у почты!');sfx('friend',.8)},500)}
@@ -1045,6 +1067,27 @@ const sad=()=>sfx('lose',.8);
 /* ---------- вступительный ролик ---------- */
 
 
+
+/* ---------- времена года ---------- */
+const SEASONS={winter:{name:'зима',icon:'❄️'},spring:{name:'весна',icon:'🌸'},summer:{name:'лето',icon:'☀️'},autumn:{name:'осень',icon:'🍂'}};
+const SEASON=(()=>{const m=/season-(winter|spring|summer|autumn)/.exec(location.hash||'');if(m)return m[1];const mo=new Date().getMonth();return mo===11||mo<2?'winter':mo<5?'spring':mo<8?'summer':'autumn'})();
+const SEASON_LAYERS=['pines','plants','garden'];
+const seasonBase=()=>SEASON==='summer'?'assets/scene/base.jpg':`assets/scene/base-${SEASON}.jpg`;
+const layerSrc=id=>SEASON!=='summer'&&SEASON_LAYERS.includes(id)?`assets/scene/${id}-${SEASON}.png`:`assets/scene/${id}.png`;
+function seasonFx(host,n,inScene){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce)return;
+  const box=document.createElement('div');box.className='sfx'+(inScene?' inscene':'');
+  for(let i=0;i<n;i++){const e=document.createElement('i');e.className='p-'+SEASON;
+    const sz=SEASON==='winter'?4+Math.random()*7:SEASON==='summer'?3+Math.random()*4:9+Math.random()*9;
+    Object.assign(e.style,{left:Math.random()*100+'%',width:sz+'px',height:sz+'px',animationDuration:(SEASON==='summer'?9:6)+Math.random()*8+'s',animationDelay:-Math.random()*14+'s',
+      '--sway':(Math.random()*60-30)+'px','--rot':(Math.random()*720-360)+'deg',opacity:.55+Math.random()*.45});
+    if(SEASON==='autumn')e.style.background=['#f08a24','#e0531f','#f2b632','#c2410c'][i%4];
+    box.appendChild(e)}
+  host.appendChild(box);
+}
+document.documentElement.dataset.season=SEASON;
+document.documentElement.style.setProperty('--scenebg',`url(${seasonBase()})`);
+
 /* ---------- письмо дня ---------- */
 let DAILY=null;
 const dayNum=d=>Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
@@ -1117,7 +1160,6 @@ function showAlbum(){
 }
 
 /* ---------- открытки друзьям ---------- */
-const seasonBase=()=>'assets/scene/base.jpg';
 const GAME_URL='https://minionslaba-ux.github.io/korot/pochta/';
 const PET_NAMES={};LEVELS.forEach(L=>{if(L.pet&&!PET_NAMES[L.pet])PET_NAMES[L.pet]=L.name});PET_NAMES.bunny='Зайчик Тиша';
 const toHex=t=>[...new TextEncoder().encode(t)].map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -1229,8 +1271,8 @@ async function playIntro(){
   const show=['walls','roof','flag','ladder','fence','plants','tent','bridge'];
   const pets=[['chick',0],['hog',1],['bee',2],['fox',4],['deer',8],['dog',7],['cat',3],['penguin',5]];
   el.innerHTML=`<button class="iskip" id="iSkip">Пропустить ›</button>
-    <div class="istage" id="iStage"><img class="ibase" src="assets/scene/base.jpg" alt="">
-    ${DRAW_ORDER.filter(id=>show.includes(id)).map(id=>{const [l,t,w]=LAYERS[id];return `<img data-l="${id}" src="assets/scene/${id}.png" alt="" style="left:${l}%;top:${t}%;width:${w}%">`}).join('')}
+    <div class="istage" id="iStage"><img class="ibase" src="${seasonBase()}" alt="">
+    ${DRAW_ORDER.filter(id=>show.includes(id)).map(id=>{const [l,t,w]=LAYERS[id];return `<img data-l="${id}" src="${layerSrc(id)}" alt="" style="left:${l}%;top:${t}%;width:${w}%">`}).join('')}
     ${pets.map(([n,i])=>{const [x,y,h]=SLOTS[i];return `<img class="ipet" data-p="${n}" src="${petSrc(n)}" alt="" style="left:${x}%;top:${y}%;width:${petW(h)}%;transform:translate(-50%,-100%);z-index:${Math.round(y)}">`}).join('')}
     <div class="iov idark"></div><div class="iov irain"></div><div class="iov idawn"></div><div class="iov iflash"></div>
     <div class="ititle" id="iTitle"><h1>Лесная почта</h1><button class="btn main" id="iStart">Начать игру ▶</button></div></div>
@@ -1293,7 +1335,7 @@ async function playIntro(){
 /* ---------- старт ---------- */
 addEventListener('resize',()=>{if($('level').hidden||!grid)return;layout();
   for(let r=0;r<N;r++)for(let c=0;c<N;c++){mossEl[r][c].style.transform=`translate(${c*CELL}px,${r*CELL}px)`;if(grid[r][c])place(grid[r][c],0)}});
-load();renderHome();
+load();seasonFx(document.body,SEASON==='summer'?14:30,false);renderHome();
 const _hash=(location.hash||'').slice(1);
 if(_hash.startsWith('card-')){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}receivePostcard(_hash).then(ok=>{if(!ok&&!P.introSeen)showIntroGate()})}
 else if(!P.introSeen)showIntroGate();
