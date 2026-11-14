@@ -636,6 +636,18 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .ach .am{width:34px;height:34px;flex:none;display:flex}.ach .am svg,.ach .am img{width:100%;height:100%;object-fit:contain}.ach .am.off{filter:grayscale(1);opacity:.4}.ach .ad{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}.ach .ad span{font-size:12px;color:var(--ink-dim)}.ach .ad small{font-size:11px;color:var(--ink-dim)}
 .ach .arw{font-size:12px;color:var(--ink-dim);white-space:nowrap}.ach .btn.small{padding:6px 10px;font-size:13px;white-space:nowrap}
 @media (orientation:landscape) and (max-height:480px){.rankline{display:none}}
+.tourchip{display:flex;align-items:center;gap:8px;border:0;border-radius:999px;background:linear-gradient(90deg,#7b4fd6,#4a7fd0);color:#fff;padding:6px 14px 6px 8px;font:800 14px var(--body);box-shadow:0 4px 0 #3a2a8a66;cursor:pointer;margin:2px 0 10px;max-width:100%}
+.tourchip img{width:26px;height:26px}.tourchip span{opacity:.9}.tourchip b{background:#fff3;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.ttro{width:28px;height:28px;vertical-align:-5px;background:#7b4fd6;border-radius:8px;padding:2px}
+.tourtop{list-style:none;padding:0;margin:6px 0;display:flex;flex-direction:column;gap:4px}
+.tourtop li{display:flex;align-items:center;gap:10px;background:#f6f9fd;border-radius:10px;padding:6px 10px;font-size:14px}
+.tourtop li.me{background:#fff4e0;box-shadow:inset 0 0 0 2px #ffd23f}.tourtop li.gap{margin-top:8px}
+.tourtop .tr{width:26px;font-weight:900;color:var(--ink-dim)}.tourtop li:nth-child(1) .tr{color:#d4a017}.tourtop li:nth-child(2) .tr{color:#8a96a8}.tourtop li:nth-child(3) .tr{color:#b8733a}
+.tourtop .tn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tourtop li.empty{justify-content:center;color:var(--ink-dim)}
+.tourlast{background:#efe6ff;border-radius:12px;padding:8px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tname{display:flex;flex-direction:column;gap:4px;font-size:13px}
+@media (max-width:360px){.tourchip span{display:none}}
+@media (orientation:landscape) and (max-height:480px){.hm{grid-template-areas:"top top" "scene act" "scene tour" "scene play"!important}.hm .tourchip{grid-area:tour;margin:0}}
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
@@ -1644,12 +1656,14 @@ function renderHome(){
       ${rbtn('bAlbum','blue',SVG.album,'Альбом',achReady().length||'')}
       ${rbtn('bShop','green',ICO('shoppingCart'),'Магазин','')}
     </div>
+    ${tourChip()}
     <div class="playrow">
       ${rbtn('bMap','blue big',SVG.map,'Карта','')}
       <button class="btn main playbtn" id="bPlay">${petImg(NL.pet,'playpet')}<span class="pt"><small>${done?'Все письма доставлены!':'Письмо '+(nl+1)+' · '+NL.name}</small>Играть</span></button>
     </div>
   </div>`;
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
+  if($('bTour'))$('bTour').onclick=()=>{ac();showTour()};
   $('home').querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{ac();P.view=b.dataset.view;save();renderHome()});
   $('bMap').onclick=()=>{ac();showMap()};
   $('bRepair').onclick=()=>{ac();showRepair()};
@@ -1799,7 +1813,7 @@ const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
   reveal();hideTut();applyTileSet(tileSetFor(i));
-  LI=i;LV=i<0?DAILY:LEVELS[i];hammerState='none';track('level_start',{level:i<0?'daily':i+1});playMusic(levelTrack(i));moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
+  LI=i;LV=i===-2?WEEKLY:i<0?DAILY:LEVELS[i];hammerState='none';track('level_start',{level:i===-2?'tour':i<0?'daily':i+1});playMusic(levelTrack(i));moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
   $('home').hidden=true;$('map').hidden=true;$('level').hidden=false;closeOv();try{scrollTo(0,0)}catch(e){}
   $('level').innerHTML=`<div class="game" id="game">
     <div class="hud">
@@ -2335,7 +2349,7 @@ async function finale(){
   moves=keep;busy=false;await sleep(250);
 }
 async function afterMove(){
-  if(goalsDone()){await sleep(300);if(SPEED&&LI>=0&&moves>0)await finale();return win()}
+  if(goalsDone()){await sleep(300);if(SPEED&&(LI>=0||LI===-2)&&moves>0)await finale();return win()}
   if(OB.fail){const f=OB.fail;OB.fail=null;return lose(f)}
   if(moves<=0)return lose();
   if(!hasMoves()){toast('Ходов нет — перемешиваю');await shuffleBoard()}
@@ -2452,11 +2466,11 @@ function closeOv(){$('ov').hidden=true}
 function goalsHTML(gs){return `<div class="goals">${gs.map(g=>`<div class="goal"><span class="ic">${goalIcon(g)}</span>${g.need}</div>`).join('')}</div>`}
 function showIntro(i){
   applyTileSet(tileSetFor(i));
-  if(i<0)DAILY=makeDaily();
-  const L=i<0?DAILY:LEVELS[i];window._GL=L;setTimeout(()=>{window._GL=null},0);
+  if(i===-2)WEEKLY=makeWeekly();else if(i<0)DAILY=makeDaily();
+  const L=i===-2?WEEKLY:i<0?DAILY:LEVELS[i];window._GL=L;setTimeout(()=>{window._GL=null},0);
   const map=L.map||Array(N).fill('........');
   const gs=L.goals.map(g=>g[0]==='c'?{t:'c',color:g[1],need:g[2]}:{t:g[0],need:needOf(L,g[0])});
-  $('card').innerHTML=`<div class="stamp">${BICON.mailc}</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${fixTileText(L.text)}</p>${goalsHTML(gs)}${i>=0&&(streakBonus(P.winStreak||0).length||failHelp(i))?`<p class="streakwin">${streakBonus(P.winStreak||0).length?`${bi('flame')} Серия побед ${P.winStreak}: на старте ${streakBonus(P.winStreak).map(x=>x[1]).join(', ')}. `:''}${failHelp(i)?`Тиша поможет: +${failHelp(i)} хода.`:''}</p>`:''}${boostChips()}${i>=3||i<0?`<button class="btn adfree" id="bFreeBoost">${bi('ad')} Бесплатный бустер за рекламу</button>`:''}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
+  $('card').innerHTML=`<div class="stamp">${BICON.mailc}</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i===-2?'Турнир недели · от':i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${fixTileText(L.text)}</p>${goalsHTML(gs)}${i>=0&&(streakBonus(P.winStreak||0).length||failHelp(i))?`<p class="streakwin">${streakBonus(P.winStreak||0).length?`${bi('flame')} Серия побед ${P.winStreak}: на старте ${streakBonus(P.winStreak).map(x=>x[1]).join(', ')}. `:''}${failHelp(i)?`Тиша поможет: +${failHelp(i)} хода.`:''}</p>`:''}${boostChips()}${i>=3||i<0?`<button class="btn adfree" id="bFreeBoost">${bi('ad')} Бесплатный бустер за рекламу</button>`:''}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
   bindBoostChips();
@@ -2466,6 +2480,7 @@ function showIntro(i){
 }
 function win(){
   clearHint();
+  if(LI===-2)return tourWin();
   if(LI<0)return dailyWin();
   const frac=moves/LV.moves;const stars=frac>=.3?3:frac>=.12?2:1;
   score+=moves*50;
@@ -3031,7 +3046,7 @@ function applyBoosts(){
 }
 
 /* ---------- письмо дня ---------- */
-let DAILY=null;
+let DAILY=null,WEEKLY=null;
 const dayNum=d=>Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
 function seeded(seed){let x=seed%2147483647;if(x<=0)x+=2147483646;return()=>(x=x*16807%2147483647)/2147483647}
 function makeDaily(){
@@ -3136,6 +3151,68 @@ function checkAch(){const r=achReady().filter(a=>!(P.achSeen||[]).includes(a[0])
 function achHTML(){const got=new Set(P.achGot||[]);
   return `<div class="achlist">${ACH.map(a=>{const v=Math.min(achVal(a),a[4]),done=v>=a[4],claimed=got.has(a[0]);
     return `<div class="ach${claimed?' got':done?' ready':''}"><span class="am${claimed||done?'':' off'}">${done&&!claimed?'<img src="assets/obs/chest.png" alt="">':BICON.medal}</span><div class="ad"><b>${a[1]}</b><span>${a[2]}</span><span class="abar"><i style="width:${(v/a[4]*100).toFixed(0)}%"></i></span><small>${v.toLocaleString('ru-RU')} / ${a[4].toLocaleString('ru-RU')}</small></div>${claimed?'<span class="ddone">✓</span>':done?`<button class="btn main small" data-ach="${a[0]}">${COIN} +${a[5]}</button>`:`<span class="arw">${COIN} ${a[5]}</span>`}</div>`}).join('')}</div>`}
+
+
+/* ---------- турнир недели (сервер Supabase, функция lp-tour) ---------- */
+const TOUR_URL='https://auequuxfcwdshblqrwbd.supabase.co/functions/v1/lp-tour',TOUR_KEY='sb_publishable_ZF67r4UX91_n180NPFQuvA_0D_-8Ya2';
+const tourWeek=()=>Math.floor((Math.floor((Date.now()+3*3600e3)/864e5)+3)/7);
+const tourOpen=()=>P.stars.filter(Boolean).length>=10;
+const TOUR_PRIZE=r=>r===1?500:r<=3?300:r<=10?150:r<=50?60:20;
+function tourPid(){if(!P.pid){P.pid='lp-'+Array.from({length:16},()=>'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)]).join('');save()}return P.pid}
+function tourName(){if(!P.tourName){P.tourName='Почтальон '+String(Math.floor(1000+Math.random()*9000));save()}return P.tourName}
+async function tourFetch(body){
+  const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),9000);
+  try{const r=await fetch(body?TOUR_URL:TOUR_URL+'?pid='+tourPid(),{method:body?'POST':'GET',headers:{apikey:TOUR_KEY,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined,signal:ctl.signal});
+    const j=await r.json().catch(()=>null);if(j&&!j.error){P.tourCache={week:j.week,rank:j.me&&j.me.rank,best:j.me&&j.me.score,total:j.total};save()}return j}
+  catch(e){return null}finally{clearTimeout(tm)}}
+function makeWeekly(){
+  const w=tourWeek(),bosses=LEVELS.map((L,i)=>[L,i]).filter(([L,i])=>L.tier==='boss'&&i>=40);
+  const [B]=bosses[w%bosses.length],rnd=seeded(w*104729+7);
+  const pets=[...new Set(LEVELS.filter(L=>L.pet).map(L=>L.pet))],pet=pets[Math.floor(rnd()*pets.length)];
+  return {...JSON.parse(JSON.stringify(B)),pet,name:PET_NAMES[pet],to:'турнира · '+PET_NAMES[pet],moves:(B.moves||25)+6,tut:null,weekly:true,week:w,
+    text:'«Турнир недели! Набери как можно больше очков: каждый оставшийся ход превращается в салют.» — '+PET_NAMES[pet]+'.'};
+}
+function tourChip(){if(!tourOpen())return '';const c=P.tourCache&&P.tourCache.week===tourWeek()?P.tourCache:null;
+  return `<button class="tourchip" id="bTour"><img src="assets/ui/i-trophy.png" alt=""><span>Турнир недели</span><b>${c&&c.rank?c.rank+'-е место из '+c.total:'Участвуй!'}</b></button>`}
+function tourLeft(ends){const ms=Math.max(0,ends-Date.now()),d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5);return d?`${d} д ${h} ч`:`${h} ч ${Math.floor(ms%36e5/6e4)} мин`}
+async function showTour(){
+  $('card').innerHTML=`<div class="to">Турнир недели</div><h2><img class="ttro" src="assets/ui/i-trophy.png" alt=""> Загружаю таблицу…</h2>`;$('card').classList.add('wide');openOv();
+  if(P.tourPending&&P.tourPending.week===tourWeek()){const r=await tourFetch({pid:tourPid(),name:tourName(),score:P.tourPending.score,week:P.tourPending.week});if(r&&!r.error)P.tourPending=null;save()}
+  const j=await tourFetch();if($('ov').hidden)return;
+  const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+  let body;
+  if(!j||j.error)body=`<p>Не получилось связаться с турниром. Проверь интернет и попробуй ещё раз. Сыграть можно и сейчас — результат отправится позже.</p>`;
+  else{
+    const rows=j.top.slice(0,10).map((r,k)=>`<li class="${r.me?'me':''}"><span class="tr">${k+1}</span><span class="tn">${esc(r.n)}</span><b>${r.s.toLocaleString('ru-RU')}</b></li>`).join('');
+    const meRow=j.me&&j.me.rank>10?`<li class="me gap"><span class="tr">${j.me.rank}</span><span class="tn">${esc(tourName())}</span><b>${j.me.score.toLocaleString('ru-RU')}</b></li>`:'';
+    const last=j.last&&!(P.tourGot||[]).includes(j.last.week)?`<div class="tourlast">Прошлая неделя: <b>${j.last.rank}-е место из ${j.last.total}</b>. Награда: ${COIN} <b>${TOUR_PRIZE(j.last.rank)}</b> <button class="btn main small" id="tClaim">Забрать</button></div>`:'';
+    body=`${last}<p class="note">До конца: <b>${tourLeft(j.ends)}</b> · участников: <b>${j.total}</b>. В зачёт идёт лучший результат за неделю, играть можно сколько угодно.</p>
+      <ol class="tourtop">${rows||'<li class="empty">Пока никто не сыграл — стань первым!</li>'}${meRow}</ol>
+      <p class="note">Призы по итогам недели: 1 место — ${COIN} 500, 2–3 — 300, до 10 — 150, до 50 — 60, остальным — 20.</p>
+      <div class="tname"><label for="tName">Имя в таблице</label><input id="tName" class="pcinput" maxlength="20" value="${esc(tourName())}"></div>`;
+    window._tourLast=j.last;
+  }
+  $('card').innerHTML=`<div class="to">Турнир недели</div><h2><img class="ttro" src="assets/ui/i-trophy.png" alt=""> ${j&&j.me?`Ты на ${j.me.rank}-м месте`:'Турнир недели'}</h2>${body}
+    <div class="row"><button class="btn" id="tBack">Назад</button><button class="btn main" id="tPlay">Играть</button></div>`;
+  const nm=$('tName');if(nm)nm.onchange=()=>{const v=nm.value.replace(/[<>"'`]/g,'').trim().slice(0,20);if(v.length>=2){P.tourName=v;save();toast('Имя сохранено, обновится после следующей игры')}};
+  if($('tClaim'))$('tClaim').onclick=()=>{const L=window._tourLast;if(!L)return;P.tourGot=[...(P.tourGot||[]),L.week].slice(-20);P.coins=(P.coins||0)+TOUR_PRIZE(L.rank);save();sfx('build',.8);toast('+'+TOUR_PRIZE(L.rank)+' монет за турнир');showTour()};
+  $('tBack').onclick=()=>{$('card').classList.remove('wide');closeOv();renderHome()};
+  $('tPlay').onclick=()=>{$('card').classList.remove('wide');showIntro(-2)};
+}
+async function tourWin(){
+  track('tour_win',{score});duck(2600);fanfare();
+  const best=Math.max(score,(P.tourBest&&P.tourBest.week===tourWeek()?P.tourBest.score:0));P.tourBest={week:tourWeek(),score:best};save();
+  if(!SPEED)return;
+  $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Турнир недели</div><h2>${score.toLocaleString('ru-RU')} очков!</h2></div></div>
+    <p id="tRes">Отправляю результат…</p>
+    <div class="row"><button class="btn" id="tTable">Таблица</button><button class="btn main" id="tAgain">Ещё раз</button></div>
+    <div class="row"><button class="btn" id="bHome">На почту</button></div>`;
+  openOv();confetti(50);
+  $('tTable').onclick=()=>showTour();$('tAgain').onclick=()=>maybeInter('tour_again',()=>startLevel(-2));$('bHome').onclick=()=>maybeInter('tour_home',renderHome);
+  const r=await tourFetch({pid:tourPid(),name:tourName(),score,week:LV.week});const el=$('tRes');
+  if(r&&!r.error){if(el)el.innerHTML=`Твоё место: <b>${r.me.rank}</b> из ${r.total}. Лучший результат недели: <b>${r.me.score.toLocaleString('ru-RU')}</b>.`}
+  else{P.tourPending={week:tourWeek(),score:Math.max(score,(P.tourPending&&P.tourPending.score)||0)};save();if(el)el.textContent=r&&r.error==='too fast'?'Результат придёт через несколько секунд — сыграй ещё!':'Нет связи с турниром — результат отправится, когда появится интернет.'}
+}
 
 /* ---------- открытки друзьям ---------- */
 const GAME_URL='https://minionslaba-ux.github.io/korot/pochta/';
