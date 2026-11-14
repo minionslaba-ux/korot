@@ -717,7 +717,38 @@ img[src*="pets/bunny"]{filter:var(--tisha,saturate(1)) drop-shadow(0 3px 2px #00
 .ititle h1{margin:0;color:#fff;font-size:clamp(34px,7vw,72px);text-shadow:0 5px 0 #1f5fae,0 10px 30px #0b3a7a;animation:logo .9s cubic-bezier(.3,1.6,.5,1) backwards}
 .ititle .btn.main{font-size:22px;min-height:56px;padding:0 28px;animation:logo .9s .3s cubic-bezier(.3,1.6,.5,1) backwards}
 @keyframes logo{from{transform:scale(.3) rotate(-6deg);opacity:0}}
-.igate{display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
+.igate{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;position:relative;z-index:2;max-width:560px;padding:0 4px}
+#intro.gate{background:#0b1a2e;justify-content:flex-start;gap:0}
+#intro.gate .igate{margin-top:auto}
+#intro.gate .legalbar{position:relative;bottom:auto;margin:auto auto 0;padding-top:12px}
+.gbg{position:absolute;inset:-24px;background:center/cover no-repeat;filter:blur(3px) saturate(1.15);transform:scale(1.04);animation:gbgpan 30s ease-in-out infinite alternate;z-index:0}
+.gshade{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 70% 55% at 50% 42%,#0b1a2e40,#0b1a2ecc 70%),linear-gradient(#0b1a2e00 40%,#0b1a2ef0)}
+#intro.gate .sfx{z-index:1}
+@keyframes gbgpan{from{transform:scale(1.04) translate(-1.5%,0)}to{transform:scale(1.1) translate(1.5%,-1%)}}
+.ghero{position:relative;width:min(36vw,190px);aspect-ratio:1;margin-bottom:-6px}
+.gglow{position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,#ffd23f66,#ffd23f00 65%);animation:gglow 3s ease-in-out infinite}
+@keyframes gglow{50%{transform:scale(1.12);opacity:.7}}
+.ghero .gbun{position:relative;width:100%;animation:gatehop 1.6s ease-in-out infinite;filter:drop-shadow(0 12px 14px #0008)}
+.genv{position:absolute;right:-8%;top:8%;width:34%;aspect-ratio:1;display:grid;place-items:center;background:#fff;border-radius:22%;box-shadow:0 6px 0 #c9d6ea,0 10px 20px #0006;transform:rotate(14deg);animation:genv 2.4s ease-in-out infinite}
+.genv svg{width:70%;height:70%;stroke:#e5484d;fill:none}
+@keyframes genv{50%{transform:rotate(4deg) translateY(-8px)}}
+.igate .gsub{color:#e3eeff;font-size:clamp(15px,2.2vw,18px);line-height:1.45;margin:0 0 4px;max-width:470px;text-shadow:0 2px 8px #000a}
+.gplay{font-size:clamp(20px,3vw,26px)!important;padding:4px 34px!important;min-width:min(78vw,300px);animation:gpulse 2.2s ease-in-out infinite}
+@keyframes gpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.gchips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px}
+.gchips span{display:inline-flex;align-items:center;gap:6px;background:#ffffff1f;border:1px solid #ffffff33;backdrop-filter:blur(6px);color:#fff;border-radius:999px;padding:5px 12px 5px 7px;font:700 13px var(--body)}
+#intro .gchips span>img,#intro .gchips span>svg{width:20px;height:20px;flex:none;display:block}
+#intro .gchips>span{flex:0 0 auto;width:auto}
+.igate .gsound{display:flex;align-items:center;gap:6px;color:#b9cbe8;font-size:13px;margin:2px 0 0}
+.igate .gsound img{width:18px;height:18px;opacity:.85}
+.gpets{position:relative;z-index:2;display:flex;justify-content:center;gap:clamp(2px,1.2vw,12px);margin-top:clamp(8px,3vh,30px)}
+.gpets img{width:clamp(34px,7.5vw,62px);animation:gpet 1.4s ease-in-out infinite;filter:drop-shadow(0 6px 6px #0007)}
+@keyframes gpet{0%,55%,100%{transform:none}70%{transform:translateY(-22%)}85%{transform:scaleY(.92)}}
+#intro.gate{overflow-y:auto}
+@media (max-height:700px){.igate .gsound{display:none}.ghero{width:min(26vh,150px)}#intro .igate h1{font-size:clamp(34px,7vw,60px)}.gpets{margin-top:10px}}
+@media (max-height:600px){.gpets{display:none}.igate .gsub{font-size:14px}}
+@media (max-height:460px){.ghero{width:min(22vh,90px)}.igate{gap:7px}#intro .igate h1{font-size:34px}#intro .gplay{font-size:19px!important;min-width:220px}.igate .gsub{display:none}.gchips span{padding:3px 10px 3px 6px;font-size:12px}}
+@media (prefers-reduced-motion:reduce){.gbg,.gglow,.genv,.gplay,.gpets img,.ghero .gbun{animation:none}}
 .igate h1{color:#fff;font-size:clamp(36px,8vw,76px);text-shadow:0 5px 0 #1f5fae,0 10px 30px #000}
 .igate img{width:min(42vw,220px);animation:gatehop 1.6s ease-in-out infinite}
 @keyframes gatehop{0%,60%,100%{transform:none}75%{transform:translateY(-14%)}88%{transform:scaleY(.94)}}
@@ -725,7 +756,7 @@ img[src*="pets/bunny"]{filter:var(--tisha,saturate(1)) drop-shadow(0 3px 2px #00
 .legalbar{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 12px;font:600 12px/1.6 var(--body);color:#ffffffa8;text-align:center;padding:4px 10px 10px;max-width:640px}
 .legalbar a{color:#ffffffc8;text-decoration:none}.legalbar a:hover{text-decoration:underline;color:#fff}
 .legalbar span{flex-basis:100%;font-weight:400;opacity:.8}
-#intro .legalbar{position:absolute;left:0;right:0;bottom:6px;margin:0 auto}
+#intro .legalbar{position:absolute;left:0;right:0;bottom:6px;margin:0 auto;z-index:2}
 .hm .legalbar{grid-column:1/-1;background:#0d1b33b8;border-radius:14px;padding:6px 14px;margin:18px 12px 12px;color:#ffffffc0}
 .replay{font-size:14px;min-height:40px;text-shadow:none}
 @media (prefers-reduced-motion:reduce){.irain{animation:none}.istage.shake{animation:none}}
@@ -3364,19 +3395,31 @@ function legalBar(){if(Platform.name!=='demo')return '';const L=[['about','Об 
   return `<nav class="legalbar" aria-label="Документы">${L.map(([u,t])=>`<a href="../${u}/" target="_blank" rel="noopener">${t}</a>`).join('')}<span>Моисеенко К. И. · ИНН 470313493504</span></nav>`}
 function showIntroGate(){
   const el=$('intro');el.hidden=false;
-  el.innerHTML=`<div class="igate"><img src="${petSrc('bunny')}" alt="Зайчик Тиша"><h1>Лесная почта</h1><button class="btn main" id="iGo">Начать ▶</button><p>Включи звук: в игре есть музыка</p></div>${legalBar()}`;
+  const gp=['chick','hog','bee','fox','deer','dog','cat','penguin'];
+  el.innerHTML=`<div class="gbg" style="background-image:url(${seasonBase()})"></div><div class="gshade"></div>
+    <div class="igate">
+      <div class="ghero"><span class="gglow"></span><img class="gbun" src="${petSrc('bunny')}" alt="Зайчик Тиша"><span class="genv">${SVG.mail}</span></div>
+      <h1>Лесная почта</h1>
+      <p class="gsub">Уютная головоломка «три в ряд». Доставь письма лесным жителям — и отстрой свою почту, деревню и звёздный холм.</p>
+      <button class="btn main gplay" id="iGo">Играть ▶</button>
+      <div class="gchips"><span>${STAR_IMG}350 писем</span><span>${ICO('wrench')}49 построек</span><span><img src="assets/ui/i-trophy.png" alt="">Турнир недели</span></div>
+      <p class="gsound">${ICO('musicOn')} Включи звук — в игре есть музыка</p>
+    </div>
+    <div class="gpets">${gp.map((p,i)=>`<img src="${petSrc(p)}" alt="" style="animation-delay:${(i*.23).toFixed(2)}s">`).join('')}</div>
+    ${legalBar()}`;
+  el.classList.add('gate');seasonFx(el,SEASON==='summer'?12:26,false);
   $('iGo').onclick=()=>{ac();playIntro()};
 }
 function endIntro(){
   introRun++;rainSound(false);
   P.introSeen=true;save();
-  $('intro').hidden=true;$('intro').innerHTML='';
+  $('intro').hidden=true;$('intro').innerHTML='';$('intro').classList.remove('gate');
   renderHome();
 }
 async function playIntro(){
   const run=++introRun;const alive=()=>run===introRun;
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
-  const el=$('intro');el.hidden=false;
+  const el=$('intro');el.hidden=false;el.classList.remove('gate');
   const show=['walls','roof','flag','ladder','fence','plants','tent','bridge'];
   const pets=[['chick',0],['hog',1],['bee',2],['fox',4],['deer',8],['dog',7],['cat',3],['penguin',5]];
   el.innerHTML=`<button class="iskip" id="iSkip">Пропустить ›</button>

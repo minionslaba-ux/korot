@@ -9,7 +9,7 @@ INN='470313493504'
 PHONE='+7 911 037-48-55'
 REQ=f'{FIO} (самозанятый, плательщик налога на профессиональный доход), ИНН {INN}'
 PAGES=[('', 'Главная','1.0','weekly'),('pochta/','Играть','0.9','weekly'),('about/','Об игре','0.8','monthly'),('pravila/','Правила игры','0.7','monthly'),('tseny/','Цены','0.6','monthly'),('kontakty/','Контакты и реквизиты','0.6','monthly'),('oferta/','Публичная оферта','0.5','monthly'),('politika/','Политика обработки персональных данных','0.5','monthly'),('cookies/','Политика cookie','0.4','monthly'),('karta/','Карта сайта','0.3','monthly')]
-def page(path,title,desc,body,root=''):
+def page(path,title,desc,body,root='',wide=False):
     foot=f'''<footer><div class="in">
 <div><h4>Игра</h4><ul><li><a href="{root}pochta/">Играть</a></li><li><a href="{root}about/">Об игре</a></li><li><a href="{root}pravila/">Правила игры</a></li><li><a href="{root}about/#faq">Вопросы и ответы</a></li></ul></div>
 <div><h4>Покупателям</h4><ul><li><a href="{root}tseny/">Цены</a></li><li><a href="{root}oferta/">Публичная оферта</a></li><li><a href="{root}kontakty/">Контакты и реквизиты</a></li></ul></div>
@@ -28,7 +28,7 @@ def page(path,title,desc,body,root=''):
 <link rel="stylesheet" href="{root}site.css">
 </head><body>
 <header class="top"><a class="brand" href="{root or './'}"><img src="{root}pochta/assets/pets/bunny.png" alt="">Лесная почта</a><span class="sp"></span><a class="btn sm" href="{root}pochta/">Играть</a></header>
-<main>{body}</main>
+<main{' class="wide"' if wide else ''}>{body}</main>
 {foot}
 <div id="ck" class="ck" hidden><p>Сайт использует только технически необходимое локальное хранилище браузера для сохранения игры и настроек; сторонних счётчиков нет. Игровые платформы могут использовать свои cookie. <a href="{root}cookies/">Подробнее</a></p><button class="btn sm" id="ckOk">Понятно</button></div>
 <script>(function(){{try{{if(localStorage.getItem('lp-cookie-ok'))return}}catch(e){{}}var c=document.getElementById('ck');c.hidden=false;document.getElementById('ckOk').onclick=function(){{try{{localStorage.setItem('lp-cookie-ok','1')}}catch(e){{}}c.hidden=true}}}})()</script>
@@ -37,27 +37,62 @@ def page(path,title,desc,body,root=''):
     os.makedirs(os.path.dirname(R+'/'+path),exist_ok=True);open(R+'/'+path,'w').write(html)
 
 PETS=['bunny','fox','deer','hog','beaver','bee','cat','dog','koala','panda','penguin','parrot']
-page('index.html','Лесная почта — уютная игра «три в ряд»','Бесплатная игра «три в ряд»: собирай фишки, разноси письма зверятам и отстраивай лесную почту, деревню и звёздный холм. 350 писем, турнир недели.',f'''
+page('index.html','Лесная почта — уютная игра «три в ряд»','Бесплатная игра «три в ряд» в браузере: доставляй письма лесным жителям, отстраивай почту, деревню и звёздный холм. 350 писем, 35 препятствий, турнир недели.',f'''
 <script>if(/^#card-/.test(location.hash))location.replace('pochta/'+location.hash)</script>
-<section class="hero">
-<h1>Лесная почта</h1>
-<p class="lead">Уютная головоломка «три в ряд». Собирай фишки, доставляй письма лесным жителям и восстанавливай старую почту, а за ней — целую деревню.</p>
-<img class="pic" src="pochta/assets/scene/base.jpg" alt="Лесная почта на поляне" width="1200" height="750">
-<a class="btn" href="pochta/">Играть бесплатно ▶</a>
-<p class="mute">Работает в браузере на телефоне и компьютере, без установки.</p>
+<section class="lhero">
+  <div class="lbg" style="background-image:url(pochta/assets/scene/base.jpg)"></div><div class="lshade"></div>
+  <div class="lfx" aria-hidden="true">{''.join(f'<i style="left:{(k*37)%100}%;animation-delay:-{(k*1.7)%12:.1f}s;animation-duration:{9+(k*3)%7}s"></i>' for k in range(16))}</div>
+  <div class="lin">
+    <div class="lbun"><span class="lglow"></span><img src="pochta/assets/pets/bunny.png" alt="Зайчик Тиша" width="192" height="192"><span class="lenv"><svg viewBox="0 0 100 100" fill="none" stroke="#e5484d" stroke-width="9" stroke-linejoin="round"><rect x="12" y="24" width="76" height="54" rx="8"/><path d="M14 28l36 28 36-28"/></svg></span></div>
+    <h1 class="ltitle">Лесная почта</h1>
+    <p class="llead">Уютная головоломка «три в ряд». Доставляй письма лесным жителям — и отстрой свою почту, деревню и звёздный холм.</p>
+    <a class="btn lplay" href="pochta/">Играть бесплатно ▶</a>
+    <div class="lchips"><span><img src="pochta/assets/star.png" alt="">350 писем</span><span>🏡 49 построек</span><span><img src="pochta/assets/ui/i-trophy.png" alt="">Турнир недели</span></div>
+    <p class="lnote">В браузере на телефоне и компьютере · без установки · без регистрации</p>
+  </div>
+  <div class="lpets">{''.join(f'<img src="pochta/assets/pets/{p}.png" alt="" width="64" height="64" style="animation-delay:{k*.18:.2f}s">' for k,p in enumerate(PETS))}</div>
 </section>
-<div class="pets">{''.join(f'<img src="pochta/assets/pets/{p}.png" alt="" loading="lazy" width="52" height="52">' for p in PETS)}</div>
-<h2>Что внутри</h2>
-<div class="grid">
-<div class="card"><h3>350 писем</h3><p>23 главы с новыми механиками: мох, лёд, ульи, кроты, ветер, порталы, ночь и ещё три десятка препятствий.</p></div>
-<div class="card"><h3>Своя почта</h3><p>За звёзды и монеты чини почту, затем строй деревню и звёздный холм — почти 50 построек.</p></div>
-<div class="card"><h3>Турнир недели</h3><p>Особый уровень раз в неделю, общая таблица и призы для лучших почтальонов.</p></div>
-<div class="card"><h3>Открытки друзьям</h3><p>Отправь открытку со зверятами и своим пожеланием.</p></div>
-<div class="card"><h3>Звёздный сундук</h3><p>Каждые 20 звёзд — сундук с подарками, а ещё звания и 28 достижений.</p></div>
-<div class="card"><h3>Времена года</h3><p>Весна, лето, осень и зима в лесу меняются по календарю.</p></div>
-</div>
-<p style="text-align:center;margin-top:28px"><a class="btn" href="pochta/">Начать играть</a></p>
-''')
+
+<section class="lsec">
+  <h2>Как это выглядит</h2>
+  <p class="lsub">Собирай три в ряд, выполняй цели писем и обустраивай лесную почту.</p>
+  <div class="lshots">
+    <figure><div class="phone"><img src="img/shot-level.jpg" alt="Уровень с цветами" width="540" height="800" loading="lazy"></div><figcaption>Письма-уровни с целями</figcaption></figure>
+    <figure class="mid"><div class="phone"><img src="img/shot-home.jpg" alt="Лесная почта с жителями" width="540" height="900" loading="lazy"></div><figcaption>Своя почта и жители</figcaption></figure>
+    <figure><div class="phone"><img src="img/shot-level2.jpg" alt="Уровень с пнями" width="540" height="800" loading="lazy"></div><figcaption>35 видов препятствий</figcaption></figure>
+  </div>
+</section>
+
+<section class="lsec">
+  <h2>Что внутри</h2>
+  <div class="lfeat">
+    <div class="fc"><img src="pochta/assets/pets/fox.png" alt="" loading="lazy"><h3>350 писем</h3><p>23 главы, и в каждой — новая механика: мох, лёд, ульи, кроты, ветер, порталы, ночь.</p></div>
+    <div class="fc"><img src="pochta/assets/pets/beaver.png" alt="" loading="lazy"><h3>Стройка</h3><p>За звёзды чини почту, а потом строй деревню и звёздный холм — 49 построек.</p></div>
+    <div class="fc"><img src="pochta/assets/pets/lion.png" alt="" loading="lazy"><h3>Турнир недели</h3><p>Одно письмо для всех, общая таблица и призы лучшим почтальонам.</p></div>
+    <div class="fc"><img src="pochta/assets/pets/cat.png" alt="" loading="lazy"><h3>Открытки</h3><p>Отправь другу открытку со зверятами и своим пожеланием.</p></div>
+    <div class="fc"><img src="pochta/assets/pets/bee.png" alt="" loading="lazy"><h3>Сундуки и звания</h3><p>Каждые 20 звёзд — сундук с подарками, звания и 28 достижений.</p></div>
+    <div class="fc"><img src="pochta/assets/pets/penguin.png" alt="" loading="lazy"><h3>Можно без покупок</h3><p>Вся игра проходится бесплатно, покупки — только по желанию.</p></div>
+  </div>
+</section>
+
+<section class="lsec">
+  <h2>Четыре времени года</h2>
+  <p class="lsub">Лес меняется по календарю: весной цветёт, летом зеленеет, осенью желтеет, зимой засыпает снегом.</p>
+  <div class="lseasons">
+    <figure><img src="img/season-spring.jpg" alt="Весна" width="480" height="300" loading="lazy"><figcaption>Весна</figcaption></figure>
+    <figure><img src="img/season-summer.jpg" alt="Лето" width="480" height="300" loading="lazy"><figcaption>Лето</figcaption></figure>
+    <figure><img src="img/season-autumn.jpg" alt="Осень" width="480" height="300" loading="lazy"><figcaption>Осень</figcaption></figure>
+    <figure><img src="img/season-winter.jpg" alt="Зима" width="480" height="300" loading="lazy"><figcaption>Зима</figcaption></figure>
+  </div>
+</section>
+
+<section class="lcta">
+  <img src="pochta/assets/pets/bunny.png" alt="" width="96" height="96" loading="lazy">
+  <h2>Письма уже ждут!</h2>
+  <p>Тиша собрал сумку — осталось только начать.</p>
+  <a class="btn lplay" href="pochta/">Играть ▶</a>
+</section>
+''',wide=True)
 
 page('about/index.html','Об игре — Лесная почта','Как играть в «Лесную почту», ответы на частые вопросы, авторы и лицензии.',f'''
 <div class="doc">
