@@ -534,6 +534,9 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .evcounts{display:flex;flex-wrap:wrap;gap:6px}.evcounts span{background:#eef4fb;border-radius:999px;padding:3px 10px;font-size:12px}
 .evlist{margin:0;padding-left:18px;font-size:12px;line-height:1.5;color:var(--ink-dim);max-height:200px;overflow:auto}
 
+/* наборы фишек */
+.tsprev{display:flex;gap:4px;justify-content:center}.tsprev img{width:34px;height:34px;object-fit:contain}
+.sitem.locked .tsprev{filter:grayscale(.85) opacity(.55)}
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
@@ -655,10 +658,35 @@ const sleep=ms=>SPEED===0?Promise.resolve():new Promise(r=>setTimeout(r,ms*SPEED
 let SPEED=1;
 
 /* ---------- графика ---------- */
-const TILE=[0,1,2,3,4].map(i=>`<img src="assets/g${i}.png" alt="" draggable="false">`);
-const TILE_SP=[0,1,2,3,4].map(i=>`<img src="assets/s${i}.png" alt="" draggable="false">`);
-const GEM_COL=['#ff6b6b','#ffd23f','#4aa8ff','#7ed957','#ff8fd0'];
-const COLOR_NAME=['сердечки','звёзды','кристаллы','изумруды','жемчужины'];
+// Наборы фишек: у каждой главы свой (5 фишек, все разной формы и цвета), плюс «Праздничные» из магазина. 7×5 = 35 фишек
+const HEX={red:'#ff6b6b',yellow:'#ffd23f',blue:'#4aa8ff',green:'#7ed957',pink:'#ff8fd0',orange:'#ff9f43'};
+const TILESETS=[
+  {id:'spring',name:'Весенние',items:[['red','сердечки','сердечек'],['yellow','звёзды','звёзд'],['blue','кристаллы','кристаллов'],['green','изумруды','изумрудов'],['pink','жемчужины','жемчужин']]},
+  {id:'summer',name:'Летние',items:[['blue','капельки','капелек'],['green','листики','листиков'],['orange','медальки','медалек'],['pink','сердечки','сердечек'],['yellow','искорки','искорок']]},
+  {id:'autumn',name:'Осенние',items:[['orange','звёзды','звёзд'],['red','рябинки','рябинок'],['yellow','листики','листиков'],['green','яблочки','яблочек'],['pink','кристаллы','кристаллов']]},
+  {id:'winter',name:'Зимние',items:[['blue','снежинки','снежинок'],['pink','леденцы','леденцов'],['yellow','фонарики','фонариков'],['red','рубины','рубинов'],['green','изумруды','изумрудов']]},
+  {id:'fair',name:'Ярмарочные',items:[['red','пряники','пряников'],['yellow','сердечки','сердечек'],['green','искорки','искорок'],['blue','значки','значков'],['orange','апельсинки','апельсинок']]},
+  {id:'big',name:'Большая доставка',items:[['pink','звёзды','звёзд'],['orange','ромбики','ромбиков'],['blue','флажки','флажков'],['red','ягодки','ягодок'],['green','изумруды','изумрудов']]},
+  {id:'fest',name:'Праздничные',price:600,items:[['red','искры','искр'],['yellow','топазы','топазов'],['blue','сердечки','сердечек'],['green','медальки','медалек'],['pink','колпачки','колпачков']]},
+];
+let TILE,TILE_SP,GEM_COL,COLOR_NAME,COLOR_GEN,TSET=null;
+function applyTileSet(id){
+  const ts=TILESETS.find(t=>t.id===id)||TILESETS[0];if(TSET===ts)return;TSET=ts;
+  TILE=ts.items.map((_,i)=>`<img src="assets/tiles/${ts.id}/g${i}.png" alt="" draggable="false">`);
+  TILE_SP=ts.items.map((_,i)=>`<img src="assets/tiles/${ts.id}/s${i}.png" alt="" draggable="false">`);
+  GEM_COL=ts.items.map(x=>HEX[x[0]]);COLOR_NAME=ts.items.map(x=>x[1]);COLOR_GEN=ts.items.map(x=>x[2]);
+}
+const chapterOfLevel=i=>{const k=CHAPTERS.findIndex(c=>i>=c.from&&i<=c.to);return k<0?0:k};
+const tilesetOpen=k=>k===0||(TILESETS[k].price?owns('tiles:'+TILESETS[k].id):P.stars.slice(0,CHAPTERS[k].from).filter(Boolean).length>=CHAPTERS[k].from);
+// набор для уровня i (-1 — письмо дня): выбранный игроком или набор главы
+function tileSetFor(i){if(P.tiles&&P.tiles!=='auto')return P.tiles;return TILESETS[chapterOfLevel(i<0?nextLevel():i)].id}
+// в текстах писем фишки названы по весеннему набору — подставляем названия текущего
+const BASE_NAMES=[['сердечк','сердечек'],['звёзд','звёзд'],['кристалл','кристаллов'],['изумруд','изумрудов'],['жемчужин','жемчужин']];
+function fixTileText(t){if(!TSET||TSET.id==='spring'||!t)return t;
+  return t.replace(/(сердечки|сердечек|звёзды|звёзд|кристаллы|кристаллов|изумруды|изумрудов|жемчужины|жемчужин)/g,w=>{
+    const k=BASE_NAMES.findIndex(([st])=>w.startsWith(st));const gen=['сердечек','звёзд','кристаллов','изумрудов','жемчужин'].includes(w)&&!(w==='звёзд'&&false);
+    return gen?COLOR_GEN[k]:COLOR_NAME[k]})}
+applyTileSet('spring');
 const STONE='<img src="assets/stone.png" alt="" draggable="false">';
 const BOULDER='<img src="assets/boulder.png" alt="" draggable="false">';
 const ICE='<div class="ice"></div>';
@@ -1093,7 +1121,7 @@ function goalAdd(t,color){
 const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
-  reveal();hideTut();
+  reveal();hideTut();applyTileSet(tileSetFor(i));
   LI=i;LV=i<0?DAILY:LEVELS[i];track('level_start',{level:i<0?'daily':i+1});playMusic(i%2?'level2':'level1');moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
   $('home').hidden=true;$('map').hidden=true;$('level').hidden=false;closeOv();try{scrollTo(0,0)}catch(e){}
   $('level').innerHTML=`<div class="game" id="game">
@@ -1460,11 +1488,12 @@ function openOv(){$('ov').hidden=false}
 function closeOv(){$('ov').hidden=true}
 function goalsHTML(gs){return `<div class="goals">${gs.map(g=>`<div class="goal"><span class="ic">${goalIcon(g)}</span>${g.need}</div>`).join('')}</div>`}
 function showIntro(i){
+  applyTileSet(tileSetFor(i));
   if(i<0)DAILY=makeDaily();
   const L=i<0?DAILY:LEVELS[i];window._GL=L;setTimeout(()=>{window._GL=null},0);
   const map=L.map||Array(N).fill('........');
   const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLxM'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++;if(g[0]==='p'&&ch==='p')need++;if(g[0]==='h'&&ch==='h')need++}return {t:g[0],need}});
-  $('card').innerHTML=`<div class="stamp">${BICON.mailc}</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${L.text}</p>${goalsHTML(gs)}${boostChips()}${i>=3||i<0?`<button class="btn adfree" id="bFreeBoost">${bi('ad')} Бесплатный бустер за рекламу</button>`:''}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
+  $('card').innerHTML=`<div class="stamp">${BICON.mailc}</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${fixTileText(L.text)}</p>${goalsHTML(gs)}${boostChips()}${i>=3||i<0?`<button class="btn adfree" id="bFreeBoost">${bi('ad')} Бесплатный бустер за рекламу</button>`:''}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
   bindBoostChips();
@@ -1649,7 +1678,7 @@ function reveal(){
 /* ---------- загрузка ---------- */
 function preloadList(){
   const L=['assets/coin.png','assets/star.png','assets/star_off.png','assets/cell.png',seasonBase()];
-  for(let i=0;i<5;i++)L.push(`assets/g${i}.png`,`assets/s${i}.png`);
+  for(const ts of TILESETS)for(let i=0;i<5;i++)L.push(`assets/tiles/${ts.id}/g${i}.png`,`assets/tiles/${ts.id}/s${i}.png`);
   for(const it of ITEMS)L.push(layerSrc(it.id));
   for(const k of new Set(LEVELS.map(l=>l.pet).filter(Boolean).concat('bunny')))L.push(petSrc(k));
   for(const c of ['yellow','green','blue','red','grey'])L.push(`assets/ui/round_${c}.png`,`assets/btn_${c}.png`);
@@ -1930,7 +1959,7 @@ function spend(price){if((P.coins||0)<price){toast('Не хватает моне
 let shopTab='boosters',shopBack=null;
 function showShop(tab,back){
   if(tab)shopTab=tab;if(back!==undefined)shopBack=back;
-  const tabs=[['boosters','Бустеры'],['tisha','Наряды Тиши'],['frames','Открытки'],['coins','Монеты']];
+  const tabs=[['boosters','Бустеры'],['tiles','Фишки'],['tisha','Наряды Тиши'],['frames','Открытки'],['coins','Монеты']];
   let body='';
   if(shopTab==='boosters'){
     const d=dealOfDay();const dealBought=P.dealDay===todayKey();
@@ -1943,6 +1972,14 @@ function showShop(tab,back){
     body=`<p class="note">Наряд виден везде: на поле, у почты, в ролике и на открытках.</p><div class="sgrid">${SHOP.tisha.map(t=>{const k='tisha:'+t.id,own=owns(k)||(t.price===0&&!t.passOnly),on=P.tisha===t.id;
       return `<div class="sitem${on?' on':''}"><img class="tprev" src="assets/pets/bunny.png" alt="" style="filter:${t.filter} drop-shadow(0 3px 2px #0003)!important"><b>${t.name}</b>
       ${on?'<span class="ddone">✓ Надет</span>':own?`<button class="btn" data-wear="${t.id}">Надеть</button>`:t.passOnly?'<button class="btn" data-tab="coins">В «Почтовом сезоне»</button>':`<button class="btn buy" data-t="${t.id}" ${P.coins<t.price?'disabled':''}>${COIN} ${t.price}</button>`}</div>`}).join('')}</div>`;
+  }
+  if(shopTab==='tiles'){
+    const cur=P.tiles||'auto';const prev=ts=>`<span class="tsprev">${ts.items.map((_,i)=>`<img src="assets/tiles/${ts.id}/g${i}.png" alt="">`).join('')}</span>`;
+    body=`<p class="note">У каждой главы свои фишки. Можно играть всеми любимыми: открытые наборы выбираются здесь.</p><div class="sgrid">
+      <div class="sitem wide${cur==='auto'?' on':''}"><b>По главам</b><span class="sd">Фишки меняются вместе с главой</span>${cur==='auto'?'<span class="ddone">✓ Выбрано</span>':'<button class="btn" data-ts="auto">Выбрать</button>'}</div>
+      ${TILESETS.map((ts,k)=>{const open=tilesetOpen(k),on=cur===ts.id;
+        return `<div class="sitem wide${on?' on':''}${open?'':' locked'}">${prev(ts)}<b>${ts.name}</b><span class="sd">${ts.items.map(x=>x[1]).join(', ')}</span>
+        ${on?'<span class="ddone">✓ Выбрано</span>':open?`<button class="btn" data-ts="${ts.id}">Выбрать</button>`:ts.price?`<button class="btn buy" data-tsb="${ts.id}" ${P.coins<ts.price?'disabled':''}>${COIN} ${ts.price}</button>`:`<span class="sd">Откроется в главе ${k+1}</span>`}</div>`}).join('')}</div>`;
   }
   if(shopTab==='frames'){
     body=`<p class="note">Рамка для открыток друзьям.</p><div class="sgrid">${SHOP.frames.map(f=>{const k='frame:'+f.id,own=owns(k)||(f.price===0&&!f.passOnly),on=P.frame===f.id;
@@ -1973,6 +2010,8 @@ function showShop(tab,back){
   c.querySelectorAll('[data-wear]').forEach(b=>b.onclick=()=>{P.tisha=b.dataset.wear;save();applyTisha();showShop()});
   c.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=SHOP.frames.find(x=>x.id===b.dataset.f);if(spend(f.price)){P.owned=[...(P.owned||[]),'frame:'+f.id];P.frame=f.id;save();showShop()}});
   c.querySelectorAll('[data-frame]').forEach(b=>b.onclick=()=>{P.frame=b.dataset.frame;save();showShop()});
+  c.querySelectorAll('[data-ts]').forEach(b=>b.onclick=()=>{P.tiles=b.dataset.ts;save();track('tileset',{id:P.tiles});showShop()});
+  c.querySelectorAll('[data-tsb]').forEach(b=>b.onclick=()=>{const ts=TILESETS.find(x=>x.id===b.dataset.tsb);if(spend(ts.price)){P.owned=[...(P.owned||[]),'tiles:'+ts.id];P.tiles=ts.id;save();sfx('build',.7);showShop()}});
   c.querySelectorAll('canvas[data-fp]').forEach(async cv=>{const src=await drawPostcard('bunny','Привет!',cv.dataset.fp);cv.width=src.width;cv.height=src.height;cv.getContext('2d').drawImage(src,0,0)});
   if($('bAd'))$('bAd').onclick=async()=>{const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;if(a>=3)return;if(!(await Platform.rewarded('shop_coins')))return;P.ads={day:todayKey(),n:a+1};addCoins(30);sfx('build',.6);showShop()};
   c.querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{if(await buyProduct(b.dataset.p))showShop()});
@@ -2019,7 +2058,7 @@ function makeDaily(){
   const kinds=['colors','moss','ice','stones','parcels','hero'];const kind=kinds[Math.floor(rnd()*kinds.length)];
   let goals=[],moves=26,house=null,text='';
   const col=()=>Math.floor(rnd()*N);
-  if(kind==='colors'){const a=Math.floor(rnd()*5);let b=(a+1+Math.floor(rnd()*4))%5;goals=[['c',a,22],['c',b,22]];text='Мне бы немного '+COLOR_NAME[a]+' и '+COLOR_NAME[b]+'. Поможешь?'}
+  if(kind==='colors'){const a=Math.floor(rnd()*5);let b=(a+1+Math.floor(rnd()*4))%5;goals=[['c',a,22],['c',b,22]];text='Мне бы немного '+COLOR_GEN[a]+' и '+COLOR_GEN[b]+'. Поможешь?'}
   if(kind==='moss'){for(let r=5;r<8;r++)for(let c=0;c<N;c++)if(rnd()<.8)put(r,c,'m');goals=[['m']];moves=28;text='У моего домика всё заросло мхом. Расчистишь?'}
   if(kind==='ice'){for(let k=0;k<10;k++)put(2+Math.floor(rnd()*5),col(),'l');goals=[['l'],['c',Math.floor(rnd()*5),15]];text='Ночью подморозило, и мои вещи вмёрзли в лёд.'}
   if(kind==='stones'){for(let k=0;k<8;k++)put(1+Math.floor(rnd()*6),col(),rnd()<.3?'S':'s');goals=[['s']];moves=28;text='Камнепад! Помоги разобрать завал у моей норки.'}
