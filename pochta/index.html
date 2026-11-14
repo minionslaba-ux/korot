@@ -258,9 +258,9 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .panel h2{color:var(--ink)}
 .story{color:var(--ink-dim)}
 .home>div>.story{color:#f2f9ff;text-shadow:0 1px 2px #0b3a7a80}
-.home h1{color:#fff;-webkit-text-stroke:6px #1f5fae;paint-order:stroke fill;text-shadow:0 4px 0 #1f5fae,0 8px 16px #0b3a7a80;letter-spacing:.01em}
+.home h1{color:#fff;-webkit-text-stroke:.11em #1f5fae;paint-order:stroke fill;text-shadow:0 4px 0 #1f5fae,0 8px 16px #0b3a7a80;letter-spacing:.01em}
 .home h1 .btn{-webkit-text-stroke:0}
-.igate h1,.ititle h1{-webkit-text-stroke:8px #1f5fae;paint-order:stroke fill}
+.igate h1,.ititle h1{-webkit-text-stroke:.11em #1f5fae;paint-order:stroke fill;letter-spacing:.03em}
 .home h1 small{color:#eaf6ff;text-shadow:none}
 .scene{border:0;box-shadow:0 6px 0 #1f5fae,0 14px 30px -10px #0b3a7a99;border-radius:22px}
 .bank b{color:var(--ink)}
@@ -426,8 +426,9 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .pill{display:inline-flex;align-items:center;gap:6px;background:#ffffffee;border-radius:999px;padding:4px 14px 4px 6px;font:700 19px var(--display);color:var(--ink);box-shadow:0 3px 0 #9fb8d6;border:0;min-height:40px;cursor:pointer}
 .pill .ico,.pill .coin{width:28px;height:28px;vertical-align:0}
 .pill .plus{margin-left:2px;width:20px;height:20px;border-radius:50%;background:#4cbf4c;color:#fff;font-size:16px;line-height:20px;text-align:center}
-.logo{margin:0;font-family:var(--display);font-weight:700;color:#fff;font-size:clamp(34px,8vw,56px);line-height:1;-webkit-text-stroke:7px #1f5fae;paint-order:stroke fill;text-shadow:0 5px 0 #1f5fae,0 10px 20px #0b3a7a80;text-align:center}
-.hm .scene{width:min(100%,calc((100vh - 360px) * 1.6),900px);min-width:min(100%,320px);border-radius:24px}
+.logo{margin:0;font-family:var(--display);font-weight:700;color:#fff;font-size:clamp(34px,8vw,56px);line-height:1;-webkit-text-stroke:.11em #1f5fae;paint-order:stroke fill;text-shadow:0 .08em 0 #1f5fae,0 .16em .3em #0b3a7a80;text-align:center;letter-spacing:.03em}
+.hm .scene{width:min(100%,calc((100dvh - 480px) * 1.6),900px);min-width:min(100%,320px);border-radius:24px}
+@supports not (height:100dvh){.hm .scene{width:min(100%,calc((100vh - 480px) * 1.6),900px)}}
 .actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
 .playrow{display:flex;gap:16px;align-items:center;justify-content:center;width:100%;max-width:560px;margin-bottom:14px}
 .playbtn{flex:1;min-height:76px;display:flex!important;align-items:center;justify-content:center;gap:12px;font-size:30px!important}
@@ -449,7 +450,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 #map{padding-left:0;padding-right:0}
 .mapc{box-shadow:0 0 0 6px #ffffff55,0 20px 50px -10px #0b3a7a80;margin-bottom:24px!important}
 .maphead{position:sticky;top:env(safe-area-inset-top,0px);z-index:40000;display:flex;align-items:center;gap:10px;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));background:linear-gradient(#5ab4f5ee,#5ab4f500)}
-.maphead h2{margin:0;color:#fff;font-size:24px;-webkit-text-stroke:5px #1f5fae;paint-order:stroke fill}
+.maphead h2{margin:0;color:#fff;font-size:24px;-webkit-text-stroke:.16em #1f5fae;letter-spacing:.02em;paint-order:stroke fill}
 .mapc{position:relative;margin:0 auto;overflow:hidden;border-radius:28px}
 .band{position:absolute;left:0;right:0}
 .band.b0{background:linear-gradient(#a6e68a,#7cc95b)}.band.b1{background:linear-gradient(#8fd8ff,#79c55a 30%,#6cbf4c)}.band.b2{background:linear-gradient(#ffd9a8,#d9b14c 30%,#c99a3a)}
@@ -489,7 +490,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 #loading{position:fixed;inset:0;z-index:70000;display:flex;align-items:center;justify-content:center;background:linear-gradient(#8fd3ff,#2f7fd6);transition:opacity .45s}
 #loading.done{opacity:0;pointer-events:none}
 .ldbox{display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px}
-.ldbox h1{margin:0;color:#fff;font-family:var(--display);font-size:clamp(34px,9vw,60px);-webkit-text-stroke:7px #1f5fae;paint-order:stroke fill;text-shadow:0 5px 0 #1f5fae}
+.ldbox h1{margin:0;color:#fff;font-family:var(--display);font-size:clamp(34px,9vw,60px);-webkit-text-stroke:.11em #1f5fae;paint-order:stroke fill;text-shadow:0 .08em 0 #1f5fae;letter-spacing:.03em}
 .ldbun{width:120px;animation:gatehop 1.4s ease-in-out infinite}
 .ldbar{width:min(280px,70vw);height:18px;border-radius:999px;background:#ffffff55;box-shadow:inset 0 2px 0 #0002;overflow:hidden}
 .ldbar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(#ffe68a,#ffc83d);transition:width .2s}
@@ -595,7 +596,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .streakwin .bi,.streakwin svg{width:20px;height:20px}
 .playbtn,.playbtn .pt{min-width:0}.playbtn small{max-width:100%}
 @media (max-width:360px){.playrow{gap:8px}.playbtn{font-size:22px!important;gap:8px}.playbtn small{font-size:11px}.playbtn .playpet{width:44px;height:44px}}
-@media (orientation:landscape) and (max-height:480px){
+@media (orientation:landscape) and (max-height:480px),(orientation:landscape) and (max-height:640px) and (min-aspect-ratio:13/10){
   .hm{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"top top" "scene act" "scene play";column-gap:16px;row-gap:6px;align-items:center;justify-items:center;padding-top:4px!important}
   .hm .topbar{grid-area:top;width:100%}
   .hm .logo{display:none}
@@ -753,6 +754,8 @@ img[src*="pets/bunny"]{filter:var(--tisha,saturate(1)) drop-shadow(0 3px 2px #00
 .igate img{width:min(42vw,220px);animation:gatehop 1.6s ease-in-out infinite}
 @keyframes gatehop{0%,60%,100%{transform:none}75%{transform:translateY(-14%)}88%{transform:scaleY(.94)}}
 .igate p{color:#cfe3ff;margin:0;font-size:15px}
+/* полоса прокрутки не видна (карта писем листается колесом и пальцем) */
+html{scrollbar-width:none}html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
 .legalbar{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 12px;font:600 12px/1.6 var(--body);color:#ffffffa8;text-align:center;padding:4px 10px 10px;max-width:640px}
 .legalbar a{color:#ffffffc8;text-decoration:none}.legalbar a:hover{text-decoration:underline;color:#fff}
 .legalbar span{flex-basis:100%;font-weight:400;opacity:.8}
@@ -1681,6 +1684,7 @@ function renderHome(){
       <button class="pill" id="pStars" aria-label="Звёзды на ремонт">${STAR_IMG}<b>${avail}</b></button>
       <button class="pill" id="pCoins" aria-label="Монеты">${COIN}<b>${P.coins}</b><span class="plus">+</span></button>
       <span class="sp"></span>
+      <button class="rbtn small grey" id="bSound" aria-label="Звук: включить или выключить">${sndIco()}</button>
       <button class="rbtn small grey" id="bSettings" aria-label="Настройки">${ICO('gear')}</button>
     </div>
     <h1 class="logo">Лесная почта</h1>
@@ -1711,6 +1715,7 @@ function renderHome(){
   $('bAlbum').onclick=()=>{ac();showAlbum()};
   $('bShop').onclick=()=>{ac();showShop('boosters',null)};
   $('bSettings').onclick=()=>{ac();showSettings(false)};
+  $('bSound').onclick=()=>{ac();toggleSound()};
   passDaily();showStarterOffer();
   const sc=$('home').querySelector('.scene');if(sc)seasonFx(sc,SEASON==='summer'?10:22,true);
   if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>{toast(n.name+' теперь живёт у почты!');sfx('friend',.8)},500)}
@@ -1797,8 +1802,8 @@ function showMap(){
 /* ---------- настройки и пауза ---------- */
 function toggleRow(id,label,on){return `<div class="setrow"><span>${label}</span><button class="tog${on?' on':''}" id="${id}" role="switch" aria-checked="${on}" aria-label="${label}"><i></i></button></div>`}
 function bindToggles(){
-  $('sMusic').onclick=()=>{setMusic(!!P.musicOff);$('sMusic').classList.toggle('on',!P.musicOff);$('sMusic').setAttribute('aria-checked',!P.musicOff)};
-  $('sSfx').onclick=()=>{setSfx(!!P.sfxOff);$('sSfx').classList.toggle('on',!P.sfxOff);$('sSfx').setAttribute('aria-checked',!P.sfxOff)};
+  $('sMusic').onclick=()=>{setMusic(!!P.musicOff);updSoundBtns();$('sMusic').classList.toggle('on',!P.musicOff);$('sMusic').setAttribute('aria-checked',!P.musicOff)};
+  $('sSfx').onclick=()=>{setSfx(!!P.sfxOff);updSoundBtns();$('sSfx').classList.toggle('on',!P.sfxOff);$('sSfx').setAttribute('aria-checked',!P.sfxOff)};
 }
 function showSettings(){
   $('card').innerHTML=`<div class="to">Настройки</div><h2>Настройки</h2>
@@ -1862,6 +1867,7 @@ function startLevel(i){
         <button class="rbtn hb yellow" id="tHammer" aria-label="Молоток: разбить одну клетку">${SVG.hammer}<b id="nH" class="badge cnt"></b></button>
         <button class="rbtn hb green" id="tShuffle" aria-label="Перемешать поле">${SVG.shuffle}<b id="nS" class="badge cnt"></b></button>
         <button class="rbtn hb blue" id="tMenu" aria-label="Пауза">${SVG.pause}</button>
+        <button class="rbtn hb grey" id="tSound" aria-label="Звук: включить или выключить">${sndIco()}</button>
       </div>
     </div>
     <div class="boardwrap"><div class="board" id="board"></div>${LV.house!=null?`<div class="houserow"><div class="house" style="left:calc(${LV.house} * var(--cell))"><span class="arrow">▼</span>${petImg(LV.pet||'polar',"housepet").replace('<img','<img id="housePet"')}</div></div>`:""}</div>
@@ -1883,6 +1889,7 @@ function startLevel(i){
     tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
   $('tShuffle').onclick=async()=>{if(busy)return;if(P.shuffles<=0)return quickBuy('shuffle');P.shuffles--;save();track('booster_use',{id:'shuffle',level:LI+1});busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
   $('tMenu').onclick=()=>showPause();
+  $('tSound').onclick=()=>{ac();toggleSound()};
   startBonuses();
   armHint();
 }
@@ -1906,7 +1913,7 @@ function layout(){
   const portrait=vw<760||vh>vw*1.05;
   const g=$('game');if(g)g.classList.toggle('portrait',portrait);
   const avW=portrait?vw-32-16:vw-32-16-220-18;
-  const avH=(portrait?vh-28-16-170:vh-28-16)-(LV&&LV.house!=null?CELL_H:0);
+  const avH=(portrait?vh-28-16-170:vh-28-16-12)-(LV&&LV.house!=null?CELL_H:0);
   CELL=Math.max(24,Math.floor(Math.min(avW/N,avH/N,72)));
   document.documentElement.style.setProperty('--cell',CELL+'px');
 }
@@ -2599,6 +2606,11 @@ function duck(ms=2200){
 }
 document.addEventListener('pointerdown',()=>{ac();if(mus.want&&!mus.cur)playMusic(mus.want)},{passive:true});
 document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden)AC.suspend();else AC.resume()});
+// одна кнопка звука на главном экране и в письме: выключает и музыку, и звуки (требование площадок)
+const soundOn=()=>!(P.musicOff&&P.sfxOff);
+const sndIco=()=>ICO(soundOn()?'audioOn':'audioOff');
+function updSoundBtns(){for(const id of ['bSound','tSound']){const b=$(id);if(b){b.innerHTML=sndIco();b.setAttribute('aria-pressed',String(!soundOn()))}}}
+function toggleSound(){const on=!soundOn();setMusic(on);setSfx(on);updSoundBtns();toast(on?'Звук включён':'Звук выключен')}
 function setMusic(on){P.musicOff=!on;save();if(!on)stopMusic();else{ac();if(mus.want)playMusic(mus.want)}}
 function setSfx(on){P.sfxOff=!on;save();if(on){ac();sfx('tap')}}
 function toast(t){if(!SPEED)return;const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),1500)}
@@ -2713,7 +2725,7 @@ function preloadList(all){
   if(!P.introSeen){for(const id of ['walls','roof','flag','ladder','fence','plants','tent','bridge'])L.push(layerSrc(id));for(const n of ['chick','hog','bee','fox','deer','dog','cat','penguin'])pets.add(n)}
   for(const k of pets)L.push(petSrc(k));
   for(const c of ['yellow','green','blue','red','grey'])L.push(`assets/ui/round_${c}.png`,`assets/btn_${c}.png`);
-  for(const n of ['gear','wrench','shoppingCart','home','locked','movie','trashcan','return'])L.push(`assets/ui/i-${n}.png`);
+  for(const n of ['gear','wrench','shoppingCart','home','locked','movie','trashcan','return','audioOn','audioOff'])L.push(`assets/ui/i-${n}.png`);
   if(all)for(const o of Object.values(OBJ))L.push(`assets/obs/${o.img}.png`);
   return L;
 }
