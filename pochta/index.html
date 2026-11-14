@@ -1896,6 +1896,7 @@ const PRODUCTS={
   noads:{name:'Игра без рекламы',rub:'149 ₽',consumable:false,grant:()=>{P.noAds=true}},
   pass:{name:'Почтовый сезон на 30 дней',rub:'199 ₽',consumable:true,grant:()=>{P.passUntil=Math.max(P.passUntil||0,Date.now())+30*864e5;own('tisha:pass');own('frame:season')}},
 };
+const mvAdLeft=()=>2-(P.mvAds&&P.mvAds.day===todayKey()?P.mvAds.n:0);
 const passActive=()=>(P.passUntil||0)>Date.now();
 async function buyProduct(id){const pr=PRODUCTS[id];const ok=await Platform.buy(id,Platform.price(id));if(ok==='granted')return true;if(ok){pr.grant();save();sfx('win',.7);toast(pr.name+': готово!')}return !!ok}
 function passDaily(){
@@ -2001,7 +2002,7 @@ function showShop(tab,back){
       <div class="sitem wide pass${passActive()?' on':''}"><span class="bi">${BICON.medal}</span><b>Почтовый сезон</b><span class="sd">30 дней: каждый день +60 монет и молоток, наряд «Почтальон сезона» и сезонная рамка открыток.</span>
         ${passActive()?`<span class="ddone">✓ Активен до ${until}</span><button class="btn buy" data-p="pass">Продлить · ${Platform.price('pass')}</button>`:`<button class="btn main buy" data-p="pass">${Platform.price('pass')}</button>`}</div>
       <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${BICON.bag}</span><b>${k.name}</b><span class="have">${COIN} ${k.coins}</span><button class="btn buy" data-p="${k.id}">${Platform.price(k.id)}</button></div>`).join('')}
-        <div class="sitem"><span class="bi">${BICON.moves3||BICON.bag}</span><b>+5 ходов</b><span class="sd">Когда ходы кончились, письмо можно дотянуть до конца.</span><span class="have">Есть: ${P.moves5||0}</span><button class="btn buy" data-p="moves5">${Platform.price('moves5')}</button></div>
+        <div class="sitem"><span class="bi">${BICON.moves3||BICON.bag}</span><b>+5 ходов</b><span class="sd">Когда ходы кончились, письмо можно дотянуть до конца.</span><span class="have">Есть: ${P.moves5||0}</span>${mvAdLeft()>0?`<button class="btn main" id="bMvAd">За рекламу <small>${mvAdLeft()}/2</small></button>`:'<span class="sd">За рекламу — завтра снова</span>'}<button class="btn buy" data-p="moves5">${Platform.price('moves5')}</button></div>
         <div class="sitem${P.noAds?' on':''}"><span class="bi">${BICON.noads}</span><b>Игра без рекламы</b><span class="sd">Без рекламы между уровнями. Награды за рекламу остаются по желанию.</span>${P.noAds?'<span class="ddone">✓ Куплено</span>':`<button class="btn buy" data-p="noads">${Platform.price('noads')}</button>`}</div></div>
       <p class="note">${Platform.name==='yandex'?'Оплата через Яндекс Игры.':PIKABU?'Оплата через Пикабу. Покупки сохраняются в твоём аккаунте.':'Прототип: реклама и покупки работают в демо-режиме, без настоящих денег.'}</p>`;
   }
@@ -2021,6 +2022,8 @@ function showShop(tab,back){
   c.querySelectorAll('[data-ts]').forEach(b=>b.onclick=()=>{P.tiles=b.dataset.ts;save();track('tileset',{id:P.tiles});showShop()});
   c.querySelectorAll('[data-tsb]').forEach(b=>b.onclick=()=>{const ts=TILESETS.find(x=>x.id===b.dataset.tsb);if(spend(ts.price)){P.owned=[...(P.owned||[]),'tiles:'+ts.id];P.tiles=ts.id;save();sfx('build',.7);showShop()}});
   c.querySelectorAll('canvas[data-fp]').forEach(async cv=>{const src=await drawPostcard('bunny','Привет!',cv.dataset.fp);cv.width=src.width;cv.height=src.height;cv.getContext('2d').drawImage(src,0,0)});
+  if($('bMvAd'))$('bMvAd').onclick=async()=>{const b=$('bMvAd');b.disabled=true;if(!(await Platform.rewarded('shop_moves')))return showShop();
+    P.mvAds={day:todayKey(),n:2-mvAdLeft()+1};P.moves5=(P.moves5||0)+1;save();sfx('build',.6);toast('+5 ходов в запасе');showShop()};
   if($('bAd'))$('bAd').onclick=async()=>{const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;if(a>=3)return;if(!(await Platform.rewarded('shop_coins')))return;P.ads={day:todayKey(),n:a+1};addCoins(30);sfx('build',.6);showShop()};
   c.querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{if(await buyProduct(b.dataset.p))showShop()});
   track('shop_open',{tab:shopTab});
