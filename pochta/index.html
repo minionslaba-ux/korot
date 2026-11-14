@@ -577,6 +577,7 @@ img[src*="pets/bunny"]{filter:var(--tisha,saturate(1)) drop-shadow(0 3px 2px #00
 .bchip.on{background:#fff3c4;box-shadow:inset 0 0 0 3px #ffc83d;transform:scale(1.06)}
 .card .btn.buy5{border-image-source:url(assets/btn_green.png);color:#fff;text-shadow:0 1px 0 #2a7a2a}
 .card .btn.buy5 small{font-size:11px;opacity:.9}
+.card .btn.buy5.rub{border-image-source:url(assets/btn_blue.png);text-shadow:0 1px 0 #1b5fa8}
 .frames{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font:700 13px var(--display);color:var(--ink-dim)}
 .chap{font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink-dim);margin:4px 0 -4px}
 
@@ -1537,10 +1538,15 @@ function lose(){
   const left=goals.filter(g=>g.have<g.need).map(g=>({...g,need:g.need-g.have}));
   $('card').innerHTML=`<div class="who">${petImg(LV.pet,'petport sad')}<div><div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2></div></div><p>Осталось совсем немного:</p>${goalsHTML(left)}
     ${extraUsed?'':'<button class="btn main" id="bExtra">'+bi('ad')+' +5 ходов за рекламу</button><p class="note">Один раз за уровень.</p>'}
-    <button class="btn buy5" id="bBuy5" ${P.coins<120?'disabled':''}>+5 ходов за ${COIN} 120 <small>(у тебя ${P.coins})</small></button>
-    <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn" id="bRetry">Заново</button></div>`;
+    ${(P.moves5||0)>0?`<button class="btn main" id="bUse5">Использовать +5 ходов <small>(есть ${P.moves5})</small></button>`:''}
+    ${P.coins>=120?`<button class="btn buy5" id="bBuy5">+5 ходов за ${COIN} 120 <small>(у тебя ${P.coins})</small></button>`:`<p class="note">На +5 ходов за монеты не хватает: нужно ${COIN} 120, у тебя ${P.coins}. Можно купить ходы или начать письмо заново.</p>`}
+    <button class="btn buy5 rub" id="bBuyRub">+5 ходов за ${Platform.price('moves5')}</button>
+    <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn${P.coins<120&&!(P.moves5>0)?' main':''}" id="bRetry">Заново</button></div>`;
   if($('bExtra'))$('bExtra').onclick=async()=>{if(await Platform.rewarded('lose_moves')){extraUsed=true;track('extra_moves',{how:'ad',level:LI+1});moves+=5;updateHUD();closeOv();armHint()}};
-  $('bBuy5').onclick=()=>{if(spend(120)){track('extra_moves',{how:'coins',level:LI+1});moves+=5;updateHUD();closeOv();armHint()}};
+  const add5=how=>{track('extra_moves',{how,level:LI+1});moves+=5;updateHUD();closeOv();armHint()};
+  if($('bBuy5'))$('bBuy5').onclick=()=>{if(spend(120))add5('coins')};
+  if($('bUse5'))$('bUse5').onclick=()=>{P.moves5--;save();add5('stock')};
+  $('bBuyRub').onclick=async()=>{const b=$('bBuyRub');b.disabled=true;if(await buyProduct('moves5')&&P.moves5>0){P.moves5--;save();add5('rub')}else if($('bBuyRub'))b.disabled=false};
   $('bHome').onclick=()=>maybeInter('lose_home',renderHome);$('bRetry').onclick=()=>maybeInter('lose_retry',()=>startLevel(LI));
   openOv();
 }
@@ -1886,6 +1892,7 @@ const PRODUCTS={
   coins500:{name:'Мешочек монет',rub:'79 ₽',consumable:true,grant:()=>{P.coins+=500}},
   coins1500:{name:'Сундучок монет',rub:'199 ₽',consumable:true,grant:()=>{P.coins+=1500}},
   coins4000:{name:'Клад: 4000 монет и Золотой Тиша',rub:'449 ₽',consumable:true,grant:()=>{P.coins+=4000;own('tisha:gold')}},
+  moves5:{name:'+5 ходов',rub:'55 ₽',consumable:true,grant:()=>{P.moves5=(P.moves5||0)+1}},
   noads:{name:'Игра без рекламы',rub:'149 ₽',consumable:false,grant:()=>{P.noAds=true}},
   pass:{name:'Почтовый сезон на 30 дней',rub:'199 ₽',consumable:true,grant:()=>{P.passUntil=Math.max(P.passUntil||0,Date.now())+30*864e5;own('tisha:pass');own('frame:season')}},
 };
@@ -1994,6 +2001,7 @@ function showShop(tab,back){
       <div class="sitem wide pass${passActive()?' on':''}"><span class="bi">${BICON.medal}</span><b>Почтовый сезон</b><span class="sd">30 дней: каждый день +60 монет и молоток, наряд «Почтальон сезона» и сезонная рамка открыток.</span>
         ${passActive()?`<span class="ddone">✓ Активен до ${until}</span><button class="btn buy" data-p="pass">Продлить · ${Platform.price('pass')}</button>`:`<button class="btn main buy" data-p="pass">${Platform.price('pass')}</button>`}</div>
       <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${BICON.bag}</span><b>${k.name}</b><span class="have">${COIN} ${k.coins}</span><button class="btn buy" data-p="${k.id}">${Platform.price(k.id)}</button></div>`).join('')}
+        <div class="sitem"><span class="bi">${BICON.moves3||BICON.bag}</span><b>+5 ходов</b><span class="sd">Когда ходы кончились, письмо можно дотянуть до конца.</span><span class="have">Есть: ${P.moves5||0}</span><button class="btn buy" data-p="moves5">${Platform.price('moves5')}</button></div>
         <div class="sitem${P.noAds?' on':''}"><span class="bi">${BICON.noads}</span><b>Игра без рекламы</b><span class="sd">Без рекламы между уровнями. Награды за рекламу остаются по желанию.</span>${P.noAds?'<span class="ddone">✓ Куплено</span>':`<button class="btn buy" data-p="noads">${Platform.price('noads')}</button>`}</div></div>
       <p class="note">${Platform.name==='yandex'?'Оплата через Яндекс Игры.':PIKABU?'Оплата через Пикабу. Покупки сохраняются в твоём аккаунте.':'Прототип: реклама и покупки работают в демо-режиме, без настоящих денег.'}</p>`;
   }
