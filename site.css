@@ -104,3 +104,10 @@ main.wide{max-width:none;padding:0}
 .lcta p{color:var(--mute);margin:0 0 20px}
 .lcta img{animation:lhop 1.6s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){.lbg,.lbun img,.lglow,.lenv,.lfx i,.lpets img,.btn.lplay,.lcta img{animation:none}}
+/* подвал на телефонах — по центру */
+@media(max-width:640px){
+footer .in{grid-template-columns:1fr 1fr;text-align:center;gap:20px 12px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+footer .copy{text-align:center}
+}
+@media(max-width:360px){footer .in{grid-template-columns:1fr}}
+html{overflow-x:hidden}
