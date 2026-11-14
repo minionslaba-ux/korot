@@ -17,9 +17,10 @@ def page(path,title,desc,body,root=''):
 <div><h4>Связь</h4><ul><li><a href="{root}kontakty/">Контакты и реквизиты</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>{PHONE}</li><li>Возраст: 0+</li></ul></div>
 <div class="copy">© 2026 «Лесная почта». {FIO} · самозанятый · ИНН {INN}. Игра бесплатная; покупки внутри игры необязательны. Графика и звуки — Kenney (CC0), шрифты — SIL Open Font License.</div>
 </div></footer>'''
+    CANON='<meta name="robots" content="noindex">' if path=='404.html' else f'<link rel="canonical" href="https://forestpost.games/{path.replace("index.html","")}">'
     html=f'''<!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{title}</title><meta name="description" content="{desc}"><link rel="canonical" href="https://forestpost.games/{path.replace('index.html','')}">
+<title>{title}</title><meta name="description" content="{desc}">{CANON}
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}"><meta property="og:type" content="website">
 <meta property="og:image" content="https://forestpost.games/pochta/assets/icons/icon-512.png">
 <link rel="icon" href="{root}pochta/favicon.ico" sizes="48x48"><link rel="icon" type="image/png" sizes="32x32" href="{root}pochta/assets/icons/favicon-32.png">
@@ -244,3 +245,14 @@ xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.
 open(R+'/sitemap.xml','w').write(xml)
 open(R+'/robots.txt','w').write('User-agent: *\nAllow: /\nDisallow: /server/\nDisallow: /tools/\n\nSitemap: https://forestpost.games/sitemap.xml\n')
 print('ok2')
+
+# страница 404 (вместо стандартной страницы хостинга); пути от корня, т.к. 404 отдаётся на любом адресе
+page('404.html','Страница не найдена — Лесная почта','Такой страницы нет.','''
+<div class="doc" style="text-align:center">
+<img src="/pochta/assets/pets/fox.png" alt="" width="120" height="120" style="margin-top:20px">
+<h1>Письмо потерялось</h1>
+<p>Такой страницы нет — возможно, адрес набран с ошибкой или страница переехала.</p>
+<p style="margin-top:24px"><a class="btn" href="/pochta/">Играть</a></p>
+<p><a href="/">На главную</a> · <a href="/karta/">Карта сайта</a></p>
+</div>''',root='/')
+print('ok3')

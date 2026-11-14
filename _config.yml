@@ -1,0 +1,9 @@
+# Служебные файлы репозитория не публикуются на сайте
+exclude:
+  - README.md
+  - server
+  - tools
+  - "*.py"
+  - "*.ts"
+  - "*.sql"
+include: []
