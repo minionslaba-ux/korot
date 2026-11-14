@@ -722,6 +722,11 @@ img[src*="pets/bunny"]{filter:var(--tisha,saturate(1)) drop-shadow(0 3px 2px #00
 .igate img{width:min(42vw,220px);animation:gatehop 1.6s ease-in-out infinite}
 @keyframes gatehop{0%,60%,100%{transform:none}75%{transform:translateY(-14%)}88%{transform:scaleY(.94)}}
 .igate p{color:#cfe3ff;margin:0;font-size:15px}
+.legalbar{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 12px;font:600 12px/1.6 var(--body);color:#ffffffa8;text-align:center;padding:4px 10px 10px;max-width:640px}
+.legalbar a{color:#ffffffc8;text-decoration:none}.legalbar a:hover{text-decoration:underline;color:#fff}
+.legalbar span{flex-basis:100%;font-weight:400;opacity:.8}
+#intro .legalbar{position:absolute;left:0;right:0;bottom:6px;margin:0 auto}
+.hm .legalbar{grid-column:1/-1;background:#0d1b33b8;border-radius:14px;padding:6px 14px;margin:18px 12px 12px;color:#ffffffc0}
 .replay{font-size:14px;min-height:40px;text-shadow:none}
 @media (prefers-reduced-motion:reduce){.irain{animation:none}.istage.shake{animation:none}}
 .need{font-size:12px;color:var(--ink-dim);font-weight:700}
@@ -1661,6 +1666,7 @@ function renderHome(){
       ${rbtn('bMap','blue big',SVG.map,'Карта','')}
       <button class="btn main playbtn" id="bPlay">${petImg(NL.pet,'playpet')}<span class="pt"><small>${done?'Все письма доставлены!':'Письмо '+(nl+1)+' · '+NL.name}</small>Играть</span></button>
     </div>
+    ${legalBar()}
   </div>`;
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
   if($('bTour'))$('bTour').onclick=()=>{ac();showTour()};
@@ -1770,7 +1776,7 @@ function showSettings(){
     <button class="btn" id="sAn">${ICO('information')} События аналитики</button>
     <button class="btn danger" id="sReset">${ICO('trashcan')} Сбросить прогресс</button>
     <p class="note">Сейчас в лесу ${SEASONS[SEASON].name}. Графика и звуки: Kenney, шрифты Balsamiq Sans и Nunito (свободные лицензии).</p>
-    ${Platform.name==='demo'||(!PIKABU&&Platform.name!=='yandex')?`<p class="note"><a href="../about/" target="_blank" rel="noopener">Об игре</a> · <a href="../oferta/" target="_blank" rel="noopener">Соглашение</a> · <a href="../privacy/" target="_blank" rel="noopener">Конфиденциальность</a> · <a href="../kontakty/" target="_blank" rel="noopener">Контакты</a></p>`:''}
+    ${Platform.name==='demo'||(!PIKABU&&Platform.name!=='yandex')?`<p class="note"><a href="../about/" target="_blank" rel="noopener">Об игре</a> · <a href="../pravila/" target="_blank" rel="noopener">Правила</a> · <a href="../tseny/" target="_blank" rel="noopener">Цены</a> · <a href="../oferta/" target="_blank" rel="noopener">Оферта</a> · <a href="../politika/" target="_blank" rel="noopener">Персональные данные</a> · <a href="../kontakty/" target="_blank" rel="noopener">Контакты</a></p>`:''}
     <div class="row"><button class="btn main" id="sClose">Готово</button></div>`;
   openOv();bindToggles();
   $('sClose').onclick=closeOv;
@@ -3353,9 +3359,12 @@ function thunder(){if(!AC||P.sfxOff)return;const s=AC.createBufferSource();s.buf
 let rainNode=null;
 function rainSound(on){if(!AC)return;if(on&&!P.sfxOff){if(rainNode)return;const s=AC.createBufferSource();s.buffer=noise(3);s.loop=true;const f=AC.createBiquadFilter();f.type='bandpass';f.frequency.value=2200;f.Q.value=.5;const g=AC.createGain();g.gain.value=0;g.gain.setTargetAtTime(.12,AC.currentTime,.6);s.connect(f);f.connect(g);g.connect(AC.destination);s.start();rainNode={s,g}}
   else if(rainNode){const n=rainNode;rainNode=null;n.g.gain.setTargetAtTime(0,AC.currentTime,.5);setTimeout(()=>{try{n.s.stop()}catch(e){}},2500)}}
+// документы сайта — только в версии на сайте (на платформах внешние ссылки запрещены)
+function legalBar(){if(Platform.name!=='demo')return '';const L=[['about','Об игре'],['pravila','Правила'],['tseny','Цены'],['oferta','Оферта'],['kontakty','Контакты'],['politika','Персональные данные']];
+  return `<nav class="legalbar" aria-label="Документы">${L.map(([u,t])=>`<a href="../${u}/" target="_blank" rel="noopener">${t}</a>`).join('')}<span>Моисеенко К. И. · ИНН 470313493504</span></nav>`}
 function showIntroGate(){
   const el=$('intro');el.hidden=false;
-  el.innerHTML=`<div class="igate"><img src="${petSrc('bunny')}" alt="Зайчик Тиша"><h1>Лесная почта</h1><button class="btn main" id="iGo">Начать ▶</button><p>Включи звук: в игре есть музыка</p></div>`;
+  el.innerHTML=`<div class="igate"><img src="${petSrc('bunny')}" alt="Зайчик Тиша"><h1>Лесная почта</h1><button class="btn main" id="iGo">Начать ▶</button><p>Включи звук: в игре есть музыка</p></div>${legalBar()}`;
   $('iGo').onclick=()=>{ac();playIntro()};
 }
 function endIntro(){
