@@ -3,6 +3,8 @@ exclude:
   - README.md
   - server
   - tools
+  - promo
+  - docs
   - "*.py"
   - "*.ts"
   - "*.sql"
