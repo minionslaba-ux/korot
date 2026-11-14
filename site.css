@@ -73,7 +73,7 @@ main.wide{max-width:none;padding:0}
 @keyframes lpulse{50%{transform:scale(1.05)}}
 .lchips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .lchips span{display:inline-flex;align-items:center;gap:6px;background:#ffffff1f;border:1px solid #ffffff33;backdrop-filter:blur(6px);border-radius:999px;padding:6px 14px 6px 8px;font-weight:700;font-size:14px;color:#fff}
-.lchips img{width:20px;height:20px}
+.lchips img{width:20px;height:20px;object-fit:contain}
 .lnote{color:#b9cbe8;font-size:14px;margin:0}
 .lpets{display:flex;justify-content:center;gap:clamp(2px,1.2vw,14px);margin-top:28px;flex-wrap:nowrap}
 .lpets img{width:clamp(30px,6.5vw,64px);height:auto;animation:lpet 1.4s ease-in-out infinite;filter:drop-shadow(0 6px 6px #0008)}

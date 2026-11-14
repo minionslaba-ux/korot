@@ -405,7 +405,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 :root[data-season="spring"] body::after{background:radial-gradient(60% 100% at 20% 100%,#97e070 60%,transparent 61%),radial-gradient(70% 100% at 85% 100%,#7ccf5a 60%,transparent 61%)}
 
 /* ---------- полировка: главный экран, карта, иконки ---------- */
-.ico2{width:56%;height:56%;display:block;pointer-events:none}
+.ico2{width:56%;height:56%;display:block;pointer-events:none;object-fit:contain}
 .ib{display:inline-block;width:1.3em;height:1.3em;vertical-align:-.28em}
 .ib svg{width:100%;height:100%;display:block}
 .bi svg{width:52px;height:52px;display:block}
@@ -737,7 +737,7 @@ img[src*="pets/bunny"]{filter:var(--tisha,saturate(1)) drop-shadow(0 3px 2px #00
 @keyframes gpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .gchips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px}
 .gchips span{display:inline-flex;align-items:center;gap:6px;background:#ffffff1f;border:1px solid #ffffff33;backdrop-filter:blur(6px);color:#fff;border-radius:999px;padding:5px 12px 5px 7px;font:700 13px var(--body)}
-#intro .gchips span>img,#intro .gchips span>svg{width:20px;height:20px;flex:none;display:block}
+#intro .gchips span>img,#intro .gchips span>svg{width:20px;height:20px;flex:none;display:block;object-fit:contain}
 #intro .gchips>span{flex:0 0 auto;width:auto}
 .igate .gsound{display:flex;align-items:center;gap:6px;color:#b9cbe8;font-size:13px;margin:2px 0 0}
 .igate .gsound img{width:18px;height:18px;opacity:.85}
