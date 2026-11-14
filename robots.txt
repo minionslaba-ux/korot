@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /server/
+Disallow: /tools/
 
 Sitemap: https://forestpost.games/sitemap.xml
