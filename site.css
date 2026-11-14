@@ -1,0 +1,42 @@
+@font-face{font-family:"Balsamiq Sans";font-weight:400 700;font-display:swap;src:url(pochta/assets/fonts/BalsamiqSans-700-cyrillic.woff2) format("woff2");unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Balsamiq Sans";font-weight:400 700;font-display:swap;src:url(pochta/assets/fonts/BalsamiqSans-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+:root{--bg:#0d1b33;--card:#13264a;--ink:#f3f6ff;--mute:#a9b8d6;--acc:#ffd23f;--acc2:#5ab4f5;--line:#24406e}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;display:flex;flex-direction:column;min-height:100vh}
+a{color:var(--acc2)}
+main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:24px 16px 48px}
+h1,h2,.brand{font-family:"Balsamiq Sans",system-ui,sans-serif;font-weight:700;line-height:1.2}
+h1{font-size:clamp(28px,6vw,44px);margin:.4em 0 .3em}
+h2{font-size:clamp(21px,4vw,26px);margin:1.6em 0 .5em}
+h3{font-size:18px;margin:1.3em 0 .4em}
+p,li{color:#dfe6f6}
+.mute{color:var(--mute)}
+.top{display:flex;align-items:center;gap:10px;max-width:860px;margin:0 auto;padding:14px 16px;width:100%}
+.top a.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-size:20px}
+.top img{width:36px;height:36px}
+.top .sp{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--acc);color:#3a2a00;font:700 18px "Balsamiq Sans",system-ui,sans-serif;text-decoration:none;border-radius:14px;padding:12px 26px;box-shadow:0 5px 0 #c99a00;transition:transform .1s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #c99a00}
+.btn.sm{font-size:15px;padding:8px 16px;box-shadow:0 3px 0 #c99a00}
+.hero{text-align:center;padding:12px 0 8px}
+.hero .pic{width:min(100%,720px);border-radius:20px;display:block;margin:0 auto 18px;box-shadow:0 10px 40px #0008}
+.hero p.lead{font-size:18px;max-width:620px;margin:0 auto 22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.card img{width:56px;height:56px;float:right;margin:0 0 6px 8px}
+.card h3{margin-top:0}
+.card p{margin:.3em 0 0}
+.pets{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:18px 0}
+.pets img{width:52px;height:52px}
+.doc h2{border-top:1px solid var(--line);padding-top:1em}
+.doc ol,.doc ul{padding-left:1.3em}
+.note{background:var(--card);border-left:4px solid var(--acc);padding:10px 14px;border-radius:8px}
+footer{background:#081326;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+footer .in{max-width:860px;margin:0 auto;padding:24px 16px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
+footer h4{margin:0 0 6px;color:var(--ink);font:700 15px "Balsamiq Sans",system-ui,sans-serif}
+footer ul{list-style:none;margin:0;padding:0}
+footer li{margin:3px 0;color:var(--mute)}
+footer a{color:var(--mute);text-decoration:none}
+footer a:hover{color:var(--ink);text-decoration:underline}
+footer .copy{grid-column:1/-1;border-top:1px solid var(--line);padding-top:14px;font-size:13px}

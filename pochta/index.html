@@ -1770,6 +1770,7 @@ function showSettings(){
     <button class="btn" id="sAn">${ICO('information')} События аналитики</button>
     <button class="btn danger" id="sReset">${ICO('trashcan')} Сбросить прогресс</button>
     <p class="note">Сейчас в лесу ${SEASONS[SEASON].name}. Графика и звуки: Kenney, шрифты Balsamiq Sans и Nunito (свободные лицензии).</p>
+    ${Platform.name==='demo'||(!PIKABU&&Platform.name!=='yandex')?`<p class="note"><a href="../about/" target="_blank" rel="noopener">Об игре</a> · <a href="../oferta/" target="_blank" rel="noopener">Соглашение</a> · <a href="../privacy/" target="_blank" rel="noopener">Конфиденциальность</a></p>`:''}
     <div class="row"><button class="btn main" id="sClose">Готово</button></div>`;
   openOv();bindToggles();
   $('sClose').onclick=closeOv;
