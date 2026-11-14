@@ -610,6 +610,21 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
   .game:not(.portrait) .moves{font-size:28px;line-height:1}
   .game:not(.portrait) .hud .rbtn{transform:scale(.8);margin:-5px}
 }
+.chestpill{position:absolute;right:8px;bottom:8px;z-index:310;display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#ffffffe6;padding:4px 10px 4px 6px;box-shadow:0 3px 0 #0002;font:800 13px var(--body);color:var(--ink);cursor:pointer}
+.chestpill img{width:26px;height:26px;object-fit:contain}
+.chestpill .cbar{width:40px;height:8px;border-radius:9px;background:#0002;overflow:hidden;display:inline-block}
+.chestpill .cbar i{display:block;height:100%;background:linear-gradient(90deg,#ffd23f,#ff9f43);border-radius:9px}
+.chestpill b{font-size:13px}
+.chestpill.ready{animation:chestglow 1.2s ease-in-out infinite;background:#fff3c4!important}
+.chestpill .badge{position:absolute;right:-6px;top:-6px}
+@keyframes chestglow{50%{box-shadow:0 0 0 4px #ffd23f99,0 4px 0 #c9a020}}
+.chestbox{display:flex;justify-content:center;margin:8px 0}.chestbox img{width:120px;height:120px;object-fit:contain;filter:drop-shadow(0 6px 4px #0003)}
+.chestbox.big img{width:150px;height:150px}
+.chestbox.shake img{animation:nopes .25s 3}
+.chestbox.open img{animation:popin .45s cubic-bezier(.3,1.6,.6,1)}
+.loot{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0}.loot>span{background:#fff4e0;border-radius:12px;padding:6px 12px;display:flex;align-items:center;gap:6px;font-size:15px}
+.loot .ib svg,.loot .ib img{width:22px;height:22px}
+@media (max-width:380px){.chestpill .cbar{width:26px}.chestpill b{font-size:11px}}
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
@@ -1555,7 +1570,18 @@ const ITEMS=[
  {id:'windmill',name:'Ветряная мельница',cost:28,ch:16,v:1},
  {id:'stage',name:'Сцена фестиваля',cost:28,ch:17,v:1},
  {id:'ferris',name:'Колесо обозрения',cost:32,ch:17,v:1},
+ {id:'pumpkin',name:'Тыквенная лавка',cost:30,ch:18,v:2},
+ {id:'scarecrow',name:'Пугало',cost:30,ch:18,v:2},
+ {id:'stilthouse',name:'Домик на сваях',cost:32,ch:19,v:2},
+ {id:'observatory',name:'Обсерватория',cost:34,ch:20,v:2},
+ {id:'crane',name:'Подъёмный кран',cost:34,ch:21,v:2},
+ {id:'brick',name:'Кирпичный дом',cost:34,ch:21,v:2},
+ {id:'weather',name:'Метеостанция',cost:36,ch:22,v:2},
+ {id:'fireworks',name:'Салютная башня',cost:36,ch:23,v:2},
+ {id:'statue',name:'Памятник Тише',cost:40,ch:23,v:2},
 ];
+const HLAYERS={"brick": [68.94, 46.3, 15.44], "crane": [76.88, 15.7, 23.12], "fireworks": [18.25, 37.0, 31.5], "observatory": [47.5, 3.8, 12.69], "pumpkin": [8.81, 32.8, 20.5], "scarecrow": [16.75, 41.0, 17.19], "statue": [45.81, 67.0, 15.38], "stilthouse": [71.62, 60.1, 24.0], "weather": [21.75, 13.9, 13.12]};
+const H_ORDER=["observatory", "weather", "crane", "pumpkin", "scarecrow", "brick", "fireworks", "stilthouse", "statue"];
 const VLAYERS={"apiary": [0.0, 52.3, 14.88], "clover": [1.12, 71.3, 21.62], "dock": [67.44, 66.9, 20.06], "dovecote": [60.31, 9.1, 13.81], "ferris": [78.5, 32.0, 21.5], "gazebo": [17.06, 30.9, 24.19], "hut": [49.62, 61.9, 24.69], "lighthouse": [88.69, 14.1, 11.31], "mushroom": [3.69, 24.9, 23.56], "squirreltree": [70.0, 6.2, 23.62], "stage": [56.06, 31.7, 21.31], "vpost": [36.31, 20.9, 22.38], "watermill": [84.75, 52.1, 14.56], "well": [25.62, 49.9, 17.44], "windmill": [17.62, 7.0, 25.19]};
 const V_ORDER=["windmill", "dovecote", "squirreltree", "vpost", "mushroom", "lighthouse", "gazebo", "stage", "ferris", "well", "apiary", "watermill", "dock", "clover", "hut"];
 let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2,coins:100,inv:{},owned:['tisha:classic','frame:classic'],tisha:'classic',frame:'classic'};
@@ -1570,12 +1596,16 @@ const nextLevel=()=>{const i=P.stars.findIndex(s=>!s);return i<0?LEVELS.length-1
 
 /* ---------- сцена почты ---------- */
 const villageOpen=()=>itemOpen(ITEMS.find(i=>i.id==='vpost'));
+const hillOpen=()=>itemOpen(ITEMS.find(i=>i.id==='pumpkin'));
+const curView=()=>P.view==='h'&&hillOpen()?'h':P.view==='v'&&villageOpen()?'v':'p';
+function hillSVG(){return `<img class="sbase" src="assets/hill/base.jpg" alt="Звёздный холм с обсерваторией" draggable="false">`+H_ORDER.map(id=>{const [l,t,w]=HLAYERS[id];return `<img class="part${P.built.includes(id)?'':' off'}" data-part="${id}" src="${layerSrc(id)}" alt="" draggable="false" style="left:${l}%;top:${t}%;width:${w}%">`}).join('')}
 function villageSVG(){
   return `<img class="sbase" src="assets/village/base.jpg" alt="Почтовая деревня у пруда" draggable="false">`+
     V_ORDER.map(id=>{const [l,t,w]=VLAYERS[id];return `<img class="part${P.built.includes(id)?'':' off'}" data-part="${id}" src="${layerSrc(id)}" alt="" draggable="false" style="left:${l}%;top:${t}%;width:${w}%">`}).join('');
 }
 function sceneSVG(){
-  if(P.view==='v'&&villageOpen())return villageSVG();
+  if(curView()==='h')return hillSVG();
+  if(curView()==='v')return villageSVG();
   return `<img class="sbase" src="${seasonBase()}" alt="Лесная почта: башня-почта у ручья в лесу" draggable="false">`+
     DRAW_ORDER.map(id=>ITEMS.find(x=>x.id===id)).map(it=>{const [l,t,w]=LAYERS[it.id];return `<img class="part${P.built.includes(it.id)?'':' off'}" data-part="${it.id}" src="${layerSrc(it.id)}" alt="" draggable="false" style="left:${l}%;top:${t}%;width:${w}%">`}).join('');
 }
@@ -1595,7 +1625,7 @@ function renderHome(){
       <button class="rbtn small grey" id="bSettings" aria-label="Настройки">${ICO('gear')}</button>
     </div>
     <h1 class="logo">Лесная почта</h1>
-    <div class="scene">${sceneSVG()}${P.view==='v'&&villageOpen()?'':petsLayer()}${villageOpen()?`<div class="vtabs"><button class="vtab${P.view!=='v'?' on':''}" data-view="p">Почта</button><button class="vtab${P.view==='v'?' on':''}" data-view="v">Деревня</button></div>`:''}</div>
+    <div class="scene">${chestPill()}${sceneSVG()}${curView()==='p'?petsLayer():''}${villageOpen()?`<div class="vtabs"><button class="vtab${curView()==='p'?' on':''}" data-view="p">Почта</button><button class="vtab${curView()==='v'?' on':''}" data-view="v">Деревня</button>${hillOpen()?`<button class="vtab${curView()==='h'?' on':''}" data-view="h">Холм</button>`:''}</div>`:''}</div>
     <div class="actions">
       ${rbtn('bRepair','yellow',ICO('wrench'),'Ремонт',canBuild||'')}
       ${rbtn('bDaily','red',SVG.mail,'Письмо дня',st.done?'':'!')}
@@ -1613,6 +1643,7 @@ function renderHome(){
   $('bRepair').onclick=()=>{ac();showRepair()};
   $('pStars').onclick=()=>{ac();showRepair()};
   $('pCoins').onclick=()=>{ac();showShop('coins',null)};
+  $('pChest').onclick=()=>{ac();openChest()};
   $('bDaily').onclick=()=>{ac();if(dailyState().done)toast('Письмо дня уже доставлено. Завтра придёт новое!');else showIntro(-1)};
   $('bAlbum').onclick=()=>{ac();showAlbum()};
   $('bShop').onclick=()=>{ac();showShop('boosters',null)};
@@ -1622,8 +1653,35 @@ function renderHome(){
   if(P.newPet!=null){const n=LEVELS[P.newPet];P.newPet=null;save();if(n.pet)setTimeout(()=>{toast(n.name+' теперь живёт у почты!');sfx('friend',.8)},500)}
 }
 
+
+/* ---------- звёздный сундук: каждые 20 звёзд ---------- */
+const CHEST_STEP=20;
+const chestState=()=>{const t=totalStars();let c=P.chests||0;if(c*CHEST_STEP>t){c=Math.floor(t/CHEST_STEP);P.chests=c}const ready=Math.floor(t/CHEST_STEP)-c;return {ready:Math.max(0,ready),prog:ready>0?CHEST_STEP:Math.max(0,t-c*CHEST_STEP),next:c+1}};
+function chestPill(){const st=chestState();const k=Math.min(1,st.prog/CHEST_STEP);
+  return `<button class="pill chestpill${st.ready?' ready':''}" id="pChest" aria-label="Звёздный сундук: ${st.ready?'можно открыть':st.prog+' из '+CHEST_STEP+' звёзд'}"><img src="assets/obs/chest.png" alt=""><span class="cbar"><i style="width:${(k*100).toFixed(0)}%"></i></span><b>${st.ready?'Открыть!':st.prog+'/'+CHEST_STEP}</b>${st.ready>1?`<span class="badge">${st.ready}</span>`:''}</button>`}
+function chestLoot(n){const big=n%5===0;const R=[];const coins=40+10*Math.min(n,10)+(big?150:0);R.push(['coins',coins]);
+  const pool=['shuffle','rocket','bomb','moves3'];const k=big?3:1+(n%2);
+  for(let i=0;i<k;i++)R.push(['item',pool[(n*7+i*3)%pool.length]]);return {big,R}}
+function openChest(){
+  const st=chestState();
+  if(!st.ready){toast(`До сундука ещё ${CHEST_STEP-st.prog} ${STAR_WORD(CHEST_STEP-st.prog)}`);return}
+  const n=st.next,{big,R}=chestLoot(n);
+  for(const [t,v] of R){if(t==='coins')P.coins=(P.coins||0)+v;else if(v==='shuffle')P.shuffles++;else invAdd(v,1)}
+  P.chests=(P.chests||0)+1;save();track('chest_open',{n,big});
+  const name=v=>({shuffle:'Перемешивание',rocket:'Ракета',bomb:'Бомба',moves3:'+3 хода'})[v];
+  const icon=v=>v==='shuffle'?BICON.shuffle||'':BICON[v]||'';
+  $('card').innerHTML=`<div class="to">${big?'Большой звёздный сундук':'Звёздный сундук'} №${n}</div><h2>${STAR_IMG} ${CHEST_STEP*n} звёзд собрано!</h2>
+    <div class="chestbox${big?' big':''}"><img src="assets/obs/chest.png" alt="Сундук"></div>
+    <div class="loot">${R.map(([t,v])=>t==='coins'?`<span>${COIN} <b>+${v}</b></span>`:`<span><span class="ib">${icon(v)}</span> <b>${name(v)}</b></span>`).join('')}</div>
+    <p class="note">Следующий сундук — через ${CHEST_STEP} звёзд.${(n+1)%5===0?' Он будет большим!':''}</p>
+    <div class="row"><button class="btn main" id="chOk">Забрать</button></div>`;
+  openOv();sfx('build',.8);if(SPEED){const b=document.querySelector('.chestbox');b.classList.add('shake');setTimeout(()=>{b.classList.remove('shake');b.classList.add('open');confetti&&confetti()},700)}
+  $('chOk').onclick=()=>{closeOv();renderHome();if(chestState().ready)setTimeout(openChest,300)};
+}
+const STAR_WORD=n=>n%10===1&&n%100!==11?'звезда':[2,3,4].includes(n%10)&&![12,13,14].includes(n%100)?'звезды':'звёзд';
+
 /* ---------- окно ремонта ---------- */
-const ITEM_GROUPS=[{title:'Почта',ch:1},{title:'Лето у ручья',ch:2},{title:'Зима',ch:4},{title:'Весенняя ярмарка',ch:5},{title:'Большая доставка',ch:6},...[7,8,9,10,11,12,13,14,15,16,17].map(ch=>({title:'Деревня · '+CHAPTERS[ch-1].title.split(' · ')[1],ch}))];
+const ITEM_GROUPS=[{title:'Почта',ch:1},{title:'Лето у ручья',ch:2},{title:'Зима',ch:4},{title:'Весенняя ярмарка',ch:5},{title:'Большая доставка',ch:6},...[7,8,9,10,11,12,13,14,15,16,17].map(ch=>({title:'Деревня · '+CHAPTERS[ch-1].title.split(' · ')[1],ch})),...[18,19,20,21,22,23].map(ch=>({title:'Холм · '+CHAPTERS[ch-1].title.split(' · ')[1],ch}))];
 const itemCh=it=>it.ch||1;
 function itemOpen(it){const ch=itemCh(it);if(ch<=2)return true;const from=CHAPTERS[ch-1].from;return P.stars.slice(from-1).some(Boolean)}
 function showRepair(){
@@ -1637,7 +1695,7 @@ function showRepair(){
   $('bRepClose').onclick=()=>{$('card').classList.remove('wide');closeOv()};
   $('card').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
     const it=ITEMS.find(i=>i.id===b.dataset.build);if(totalStars()-spent()<it.cost)return;
-    P.built.push(it.id);P.view=it.v?'v':'p';save();ac();chime();$('card').classList.remove('wide');track('building',{id:it.id,cost:it.cost});
+    P.built.push(it.id);P.view=it.v===2?'h':it.v?'v':'p';save();ac();chime();$('card').classList.remove('wide');track('building',{id:it.id,cost:it.cost});
     renderHome();const nb=$('home').querySelector(`[data-part="${it.id}"]`);if(nb){nb.classList.add('off');void nb.offsetWidth;nb.classList.remove('off');nb.classList.add('built')}
     toast(it.name+': готово!');
     if(P.built.length===ITEMS.length)setTimeout(()=>toast('Почта полностью отстроена!'),1600);
@@ -2420,7 +2478,7 @@ function lose(reason){
 const MUS_VOL={home:.5,village:.42,level1:.28,level2:.26,level3:.27,level4:.27};
 const LTR=['level1','level2','level3','level4'];
 const levelTrack=i=>{const ch=chapterOfLevel(i<0?nextLevel():i);return LTR[(ch+(Math.abs(i)%2))%LTR.length]};
-const homeTrack=()=>P.view==='v'&&villageOpen()?'village':'home';
+const homeTrack=()=>curView()==='p'?'home':'village';
 const mus={buf:{},src:null,gain:null,cur:null,want:null};
 const musExt=(()=>{try{return new Audio().canPlayType('audio/ogg; codecs="vorbis"')?'ogg':'mp3'}catch(e){return 'mp3'}})();
 async function loadMus(n){
@@ -2476,7 +2534,7 @@ const SEASONS={winter:{name:'зима',icon:'❄️'},spring:{name:'весна',
 const SEASON=(()=>{const m=/season-(winter|spring|summer|autumn)/.exec(location.hash||'');if(m)return m[1];const mo=new Date().getMonth();return mo===11||mo<2?'winter':mo<5?'spring':mo<8?'summer':'autumn'})();
 const SEASON_LAYERS=['pines','plants','garden'];
 const seasonBase=()=>SEASON==='summer'?'assets/scene/base.jpg':`assets/scene/base-${SEASON}.jpg`;
-const layerSrc=id=>VLAYERS[id]?`assets/village/${id}.png`:SEASON!=='summer'&&SEASON_LAYERS.includes(id)?`assets/scene/${id}-${SEASON}.png`:`assets/scene/${id}.png`;
+const layerSrc=id=>HLAYERS[id]?`assets/hill/${id}.png`:VLAYERS[id]?`assets/village/${id}.png`:SEASON!=='summer'&&SEASON_LAYERS.includes(id)?`assets/scene/${id}-${SEASON}.png`:`assets/scene/${id}.png`;
 function seasonFx(host,n,inScene){
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce)return;
   const box=document.createElement('div');box.className='sfx'+(inScene?' inscene':'');
@@ -2553,10 +2611,10 @@ function reveal(){
 function preloadList(all){
   // для первого экрана: интерфейс, текущий набор фишек, сцена с построенным, жители и адресат следующего письма; остальное догружается в фоне
   const L=['assets/coin.png','assets/star.png','assets/star_off.png','assets/cell.png'];
-  const vil=P.view==='v'&&villageOpen();L.push(vil?'assets/village/base.jpg':seasonBase());
+  const cv=curView(),vil=cv!=='p';L.push(cv==='h'?'assets/hill/base.jpg':cv==='v'?'assets/village/base.jpg':seasonBase());
   const sets=all?TILESETS.map(t=>t.id):[tileSetFor(nextLevel())];
   for(const id of sets)for(let i=0;i<5;i++)L.push(`assets/tiles/${id}/g${i}.png`,`assets/tiles/${id}/s${i}.png`);
-  for(const it of ITEMS)if(all||(P.built.includes(it.id)&&!!it.v===vil))L.push(layerSrc(it.id));
+  for(const it of ITEMS)if(all||(P.built.includes(it.id)&&(it.v===2?'h':it.v?'v':'p')===cv))L.push(layerSrc(it.id));
   const pets=new Set(['bunny']);LEVELS.forEach((l,i)=>{if(l.pet&&(all||(!vil&&P.stars[i]&&SLOTS[i])))pets.add(l.pet)});const nl=LEVELS[nextLevel()];if(nl&&nl.pet)pets.add(nl.pet);
   if(!P.introSeen){for(const id of ['walls','roof','flag','ladder','fence','plants','tent','bridge'])L.push(layerSrc(id));for(const n of ['chick','hog','bee','fox','deer','dog','cat','penguin'])pets.add(n)}
   for(const k of pets)L.push(petSrc(k));
@@ -3199,7 +3257,7 @@ async function playIntro(){
 /* ---------- старт ---------- */
 addEventListener('resize',()=>{if($('level').hidden||!grid)return;layout();
   for(let r=0;r<N;r++)for(let c=0;c<N;c++){mossEl[r][c].style.transform=`translate(${c*CELL}px,${r*CELL}px)`;if(grid[r][c])place(grid[r][c],0)}relayoutObs()});
-load();applyTisha();
+load();if(P.chests==null){P.chests=Math.max(0,Math.floor(P.stars.reduce((a,b)=>a+(b||0),0)/20)-1);save()}applyTisha();
 Platform.init();
 preload().then(()=>{
 seasonFx(document.body,SEASON==='summer'?14:30,false);renderHome();
