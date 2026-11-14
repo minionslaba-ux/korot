@@ -7,6 +7,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Лесная почта</title>
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 @font-face {
@@ -598,6 +604,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .vtabs{position:absolute;left:50%;top:8px;transform:translateX(-50%);display:flex;gap:4px;background:#ffffffcc;border-radius:999px;padding:3px;z-index:300;box-shadow:0 3px 0 #0002}
 .vtab{border:0;background:transparent;font:800 13px var(--body);color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer}
 .vtab.on{background:#2f7fd6;color:#fff}
+.rbtn.hb.used{filter:grayscale(.85);opacity:.6}
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
@@ -1401,7 +1408,7 @@ function sceneSVG(){
 /* ---------- главная ---------- */
 function renderHome(){
   if(typeof Platform!=='undefined'&&Platform.pkPending){const d=Platform.pkPending;Platform.pkPending=null;Platform.pkApply(d);Platform.pkSave(true);if(!$('home').hidden)return}
-  reveal();$('level').hidden=true;$('map').hidden=true;$('home').hidden=false;closeOv();playMusic('home');try{scrollTo(0,0)}catch(e){}
+  reveal();$('level').hidden=true;$('map').hidden=true;$('home').hidden=false;closeOv();playMusic(homeTrack());try{scrollTo(0,0)}catch(e){}
   const avail=Math.max(0,totalStars()-spent()),nl=nextLevel(),done=P.stars.every(Boolean),NL=LEVELS[nl];
   const canBuild=ITEMS.filter(it=>itemOpen(it)&&!P.built.includes(it.id)&&(!it.req||P.built.includes(it.req))&&it.cost<=avail).length;
   const st=dailyState();
@@ -1529,7 +1536,7 @@ function showPause(){
 }
 
 /* ---------- состояние уровня ---------- */
-let LV=null,LI=0,grid,moss,mossEl,goals,moves,score,busy=false,sel=null,tool=null,extraUsed=false,uid=0,hintTimer=null,CELL=56;
+let hammerState='none',LV=null,LI=0,grid,moss,mossEl,goals,moves,score,busy=false,sel=null,tool=null,extraUsed=false,uid=0,hintTimer=null,CELL=56;
 const inb=(r,c)=>r>=0&&c>=0&&r<N&&c<N;
 const D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const randColor=()=>Math.floor(Math.random()*LV.colors);
@@ -1547,7 +1554,7 @@ const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
   reveal();hideTut();applyTileSet(tileSetFor(i));
-  LI=i;LV=i<0?DAILY:LEVELS[i];track('level_start',{level:i<0?'daily':i+1});playMusic(i%2?'level2':'level1');moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
+  LI=i;LV=i<0?DAILY:LEVELS[i];hammerState='none';track('level_start',{level:i<0?'daily':i+1});playMusic(levelTrack(i));moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
   $('home').hidden=true;$('map').hidden=true;$('level').hidden=false;closeOv();try{scrollTo(0,0)}catch(e){}
   $('level').innerHTML=`<div class="game" id="game">
     <div class="hud">
@@ -1573,7 +1580,10 @@ function startLevel(i){
   goals=[];setupObs(map);fillBoard(map);postObs();
   goals=LV.goals.map(g=>g[0]==='c'?{t:'c',color:g[1],need:g[2],have:0}:{t:g[0],need:needOf(LV,g[0]),have:0});
   bindBoard();updateHUD();
-  $('tHammer').onclick=()=>{if(busy)return;if(P.hammers<=0)return quickBuy('hammer');tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
+  $('tHammer').onclick=async()=>{if(busy)return;
+    if(hammerState==='used'){toast('Молоток уже использован в этом письме');return}
+    if(hammerState==='none'){const b=$('tHammer');b.disabled=true;const ok=await Platform.rewarded('hammer');b.disabled=false;if(!ok)return;hammerState='ready';track('hammer_ad',{level:LI+1})}
+    tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
   $('tShuffle').onclick=async()=>{if(busy)return;if(P.shuffles<=0)return quickBuy('shuffle');P.shuffles--;save();track('booster_use',{id:'shuffle',level:LI+1});busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
   $('tMenu').onclick=()=>showPause();
   armHint();
@@ -1626,9 +1636,9 @@ function updateHUD(){
   mv.textContent=moves;mv.classList.toggle('low',moves<=5);
   $('gl').innerHTML=goals.map(g=>{const left=Math.max(0,g.need-g.have);return `<div class="goal ${left?'':'done'}"><span class="ic">${goalIcon(g)}</span>${left?left:'✓'}</div>`}).join('');
   $('sc').textContent=score.toLocaleString('ru-RU');
-  $('nH').textContent=P.hammers;$('nS').textContent=P.shuffles;
   $('tHammer').classList.toggle('on',tool==='hammer');
-  $('nH').textContent=P.hammers||'+';$('nS').textContent=P.shuffles||'+';
+  $('nH').innerHTML=hammerState==='none'?'▶':hammerState==='ready'?'1':'✓';$('nS').textContent=P.shuffles||'+';
+  $('tHammer').classList.toggle('used',hammerState==='used');$('tHammer').setAttribute('aria-label',hammerState==='none'?'Молоток за рекламу: разбить одну клетку':hammerState==='ready'?'Молоток: выбери клетку':'Молоток уже использован');
 }
 
 /* ---------- усложнения глав 7–16 ---------- */
@@ -2087,7 +2097,7 @@ async function hammerAt(r,c){
   if(grid[r][c].hero){toast('Тишу молотком? Ни за что!');return}
   if(grid[r][c].obj==='key'||grid[r][c].obj==='lock'||grid[r][c].obj==='lantern'){toast('Это молотком не взять');return}
   if(grid[r][c].obj==='seg'&&!grid[r][c].head){toast('Бей гусеницу по голове!');return}
-  tool=null;P.hammers--;save();busy=true;clearHint();track('booster_use',{id:'hammer',level:LI+1});
+  tool=null;hammerState='used';busy=true;clearHint();track('booster_use',{id:'hammer',level:LI+1});
   if(SPEED)fx({sp:'bomb'},r,c);
   await applyHits([[r,c]],[],false,1);await gravity();await resolve(null);updNight();
   busy=false;updateHUD();await afterMove();
@@ -2162,14 +2172,14 @@ function win(){
   const before=P.stars[LI];P.stars[LI]=Math.max(before,stars);
   const moved=!before&&LV.pet&&!!SLOTS[LI];if(moved)P.newPet=LI;
   const gained=P.stars[LI]-before;
-  if(stars===3)P.hammers++;
+  if(stars===3)P.shuffles++;
   const coinGain=10+moves+(!before?10:0);P.coins=(P.coins||0)+coinGain;
   track('level_win',{level:LI+1,stars,moves_left:moves,score,first:!before});
   save();duck(2600);fanfare();
   if(!SPEED)return;
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
-    <p>Очки: <b data-roll="${score}">0</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 молоток</b>.':''} Монеты: <b>+<span data-roll="${coinGain}" data-tick="1">0</span> ${COIN}</b>.${!before?' Новая марка в альбоме!':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
+    <p>Очки: <b data-roll="${score}">0</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 перемешивание</b>.':''} Монеты: <b>+<span data-roll="${coinGain}" data-tick="1">0</span> ${COIN}</b>.${!before?' Новая марка в альбоме!':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
     ${newStampsNote()}
     <div class="row"><button class="btn adx2" id="bX2" data-gain="${coinGain}">${bi('ad')} ×2 монеты: ещё +${coinGain}</button></div>
     <div class="row"><button class="btn pcbtn" id="bCard">${bi("postcard")} Открытка другу</button></div>
@@ -2181,7 +2191,7 @@ function rebindWin(){
   if($('bHome'))$('bHome').onclick=()=>maybeInter('win_home',renderHome);
   if($('bNext'))$('bNext').onclick=()=>maybeInter('win_next',()=>showIntro(LI+1));
   if($('bX2'))$('bX2').onclick=async()=>{const b=$('bX2');b.disabled=true;const g=+b.dataset.gain;if(await Platform.rewarded('win_x2')){P.coins+=g;save();b.innerHTML=`Получено +${g} ${COIN}`;sfx('build',.7)}else b.disabled=false};
-  if($('bDX2'))$('bDX2').onclick=async()=>{const b=$('bDX2');b.disabled=true;if(await Platform.rewarded('daily_x2')){P.coins+=50;P.hammers++;save();b.innerHTML='Получено: +50 '+COIN+' и молоток';sfx('build',.7)}else b.disabled=false};
+  if($('bDX2'))$('bDX2').onclick=async()=>{const b=$('bDX2');b.disabled=true;if(await Platform.rewarded('daily_x2')){P.coins+=50;P.shuffles++;save();b.innerHTML='Получено: +50 '+COIN+' и перемешивание';sfx('build',.7)}else b.disabled=false};
   if($('bCard'))$('bCard').onclick=()=>openPostcard(LV.pet||'bunny');
 }
 function lose(reason){
@@ -2204,7 +2214,10 @@ function lose(reason){
 }
 
 /* ---------- фоновая музыка: бесшовный повтор через Web Audio ---------- */
-const MUS_VOL={home:.5,level1:.28,level2:.26};
+const MUS_VOL={home:.5,village:.42,level1:.28,level2:.26,level3:.27,level4:.27};
+const LTR=['level1','level2','level3','level4'];
+const levelTrack=i=>{const ch=chapterOfLevel(i<0?nextLevel():i);return LTR[(ch+(Math.abs(i)%2))%LTR.length]};
+const homeTrack=()=>P.view==='v'&&villageOpen()?'village':'home';
 const mus={buf:{},src:null,gain:null,cur:null,want:null};
 const musExt=(()=>{try{return new Audio().canPlayType('audio/ogg; codecs="vorbis"')?'ogg':'mp3'}catch(e){return 'mp3'}})();
 async function loadMus(n){
@@ -2553,8 +2566,8 @@ const passActive=()=>(P.passUntil||0)>Date.now();
 async function buyProduct(id){const pr=PRODUCTS[id];const ok=await Platform.buy(id,Platform.price(id));if(ok==='granted')return true;if(ok){pr.grant();save();sfx('win',.7);toast(pr.name+': готово!')}return !!ok}
 function passDaily(){
   if(!passActive()||P.passDay===todayKey())return;
-  P.passDay=todayKey();P.coins+=60;P.hammers++;save();track('pass_daily');
-  setTimeout(()=>{toast('Почтовый сезон: +60 монет и молоток');sfx('build',.6)},700);
+  P.passDay=todayKey();P.coins+=60;P.shuffles++;save();track('pass_daily');
+  setTimeout(()=>{toast('Почтовый сезон: +60 монет и перемешивание');sfx('build',.6)},700);
 }
 function showStarterOffer(){
   if(P.starterBought||P.starterOffered||!P.stars[9])return;
@@ -2584,7 +2597,6 @@ const invN=id=>(P.inv&&P.inv[id])||0;
 const invAdd=(id,n)=>{P.inv={...(P.inv||{})};P.inv[id]=invN(id)+n};
 const SHOP={
   boosters:[
-    {id:'hammer',name:'Молоток',icon:BICON.hammer,desc:'Разбивает любую клетку. Ход не тратится.',price:60,give:()=>P.hammers++,count:()=>P.hammers},
     {id:'shuffle',name:'Перемешивание',icon:BICON.shuffle,desc:'Перемешивает фишки, когда ходов не видно.',price:40,give:()=>P.shuffles++,count:()=>P.shuffles},
     {id:'rocket',name:'Ракета',icon:BICON.rocket,desc:'Перед уровнем: на поле сразу появляется полосатая фишка.',price:70,give:()=>invAdd('rocket',1),count:()=>invN('rocket')},
     {id:'bomb',name:'Бомба',icon:BICON.bomb,desc:'Перед уровнем: на поле сразу появляется бомба.',price:90,give:()=>invAdd('bomb',1),count:()=>invN('bomb')},
@@ -2651,7 +2663,7 @@ function showShop(tab,back){
     body=`<div class="sitem wide adv"><span class="bi">${BICON.ad}</span><b>Посмотреть рекламу</b><span class="sd">+30 монет. Осталось сегодня: ${3-a} из 3.</span>
       <button class="btn main" id="bAd" ${a>=3?'disabled':''}>+30 ${COIN}</button></div>
       ${P.starterBought?'':`<div class="deal"><span class="dealtag">Выгодно</span><span class="bi">${BICON.bag}</span><div class="dtxt"><b>Стартовый набор</b><span>1000 монет, по 3 ракеты, бомбы и «+3 хода», золотая рамка</span></div><button class="btn main buy" data-p="starter">${Platform.price('starter')}</button></div>`}
-      <div class="sitem wide pass${passActive()?' on':''}"><span class="bi">${BICON.medal}</span><b>Почтовый сезон</b><span class="sd">30 дней: каждый день +60 монет и молоток, наряд «Почтальон сезона» и сезонная рамка открыток.</span>
+      <div class="sitem wide pass${passActive()?' on':''}"><span class="bi">${BICON.medal}</span><b>Почтовый сезон</b><span class="sd">30 дней: каждый день +60 монет и перемешивание, наряд «Почтальон сезона» и сезонная рамка открыток.</span>
         ${passActive()?`<span class="ddone">✓ Активен до ${until}</span><button class="btn buy" data-p="pass">Продлить · ${Platform.price('pass')}</button>`:`<button class="btn main buy" data-p="pass">${Platform.price('pass')}</button>`}</div>
       <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${BICON.bag}</span><b>${k.name}</b><span class="have">${COIN} ${k.coins}</span><button class="btn buy" data-p="${k.id}">${Platform.price(k.id)}</button></div>`).join('')}
         <div class="sitem"><span class="bi">${BICON.moves3||BICON.bag}</span><b>+5 ходов</b><span class="sd">Когда ходы кончились, письмо можно дотянуть до конца.</span><span class="have">Есть: ${P.moves5||0}</span>${mvAdLeft()>0?`<button class="btn main" id="bMvAd">За рекламу <small>${mvAdLeft()}/2</small></button>`:'<span class="sd">За рекламу — завтра снова</span>'}<button class="btn buy" data-p="moves5">${Platform.price('moves5')}</button></div>
@@ -2740,11 +2752,11 @@ function dailyWin(){
   track('daily_win');
   const t=todayKey();const y=new Date();y.setDate(y.getDate()-1);const yk=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();
   const d=P.daily||{};const first=d.last!==t;
-  if(first){const streak=d.last===yk?(d.streak||0)+1:1;P.daily={last:t,streak,best:Math.max(d.best||0,streak)};P.hammers++;P.shuffles++;P.coins=(P.coins||0)+50}
+  if(first){const streak=d.last===yk?(d.streak||0)+1:1;P.daily={last:t,streak,best:Math.max(d.best||0,streak)};P.shuffles++;P.coins=(P.coins||0)+80}
   save();duck(2600);fanfare();if(!SPEED)return;
   const st=dailyState();
   $('card').innerHTML=`<div class="stamp">✓</div><div class="who">${petImg(LV.pet,'petport happy')}<div><div class="to">Письмо дня доставлено</div><h2>«Спасибо, Тиша!»</h2></div></div>
-    <p>${first?'Награда: <b>+1 молоток</b>, <b>+1 перемешивание</b> и <b>+50 '+COIN+'</b>.':'Сегодняшнюю награду ты уже получил.'} Серия: <b>${bi('flame')} ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд</b>.</p>
+    <p>${first?'Награда: <b>+1 перемешивание</b> и <b>+80 '+COIN+'</b>.':'Сегодняшнюю награду ты уже получил.'} Серия: <b>${bi('flame')} ${st.streak} ${plural(st.streak,'день','дня','дней')} подряд</b>.</p>
     ${newStampsNote()}
     <p class="note">Завтра напишет кто-то ещё. Заходи!</p>
     ${first?'<div class="row"><button class="btn adx2" id="bDX2">'+bi('ad')+' ×2 награда за рекламу</button></div>':''}
@@ -2832,7 +2844,7 @@ async function openPostcard(pet){
     <div class="row"><button class="btn main" id="pcShare">Отправить</button></div>
     <div class="row pcsocial"><a class="btn" id="pcVK" target="_blank" rel="noopener">VK</a><a class="btn" id="pcTG" target="_blank" rel="noopener">Telegram</a><a class="btn" id="pcWA" target="_blank" rel="noopener">WhatsApp</a></div>
     <input id="pcLink" class="pcinput pclink" readonly aria-label="Ссылка на открытку">
-    <p class="note">Друг получит в подарок молоток и перемешивание. А тебе раз в день за открытку дают перемешивание и 20 монет.</p>
+    <p class="note">Друг получит в подарок перемешивание и 30 монет. А тебе раз в день за открытку дают перемешивание и 20 монет.</p>
     <div class="row"><button class="btn" id="pcBack">Назад</button></div>`;
   if(PIKABU){   // на Пикабу нельзя ссылок на другие сайты и соцсети: открытка уходит картинкой
     document.querySelector('.pcsocial').remove();$('pcLink').remove();
@@ -2876,9 +2888,9 @@ async function receivePostcard(code){
   const pet=m[1],msg=fromHex(m[2]).slice(0,60);
   if(!PET_NAMES[pet])return false;
   const fresh=!(P.gifts||[]).includes(code);
-  if(fresh){P.gifts=[...(P.gifts||[]),code].slice(-50);P.hammers++;P.shuffles++;save()}
+  if(fresh){P.gifts=[...(P.gifts||[]),code].slice(-50);P.coins=(P.coins||0)+30;P.shuffles++;save()}
   $('card').innerHTML=`<div class="to">Тебе пришло письмо</div><h2>${bi("postcard")} Открытка от друга!</h2><div class="pcwrap"><canvas id="pcIn"></canvas></div>
-    ${fresh?'<p><b>Подарок:</b> молоток и перемешивание уже у тебя.</p>':'<p class="note">Подарок по этой открытке ты уже получил.</p>'}
+    ${fresh?'<p><b>Подарок:</b> перемешивание и 30 монет уже у тебя.</p>':'<p class="note">Подарок по этой открытке ты уже получил.</p>'}
     <div class="row"><button class="btn main" id="pcOk">${P.introSeen?'Играть':'Начать игру'} ▶</button></div>`;
   openOv();
   const cv=await drawPostcard(pet,msg);const pv=$('pcIn');pv.width=cv.width;pv.height=cv.height;pv.getContext('2d').drawImage(cv,0,0);
