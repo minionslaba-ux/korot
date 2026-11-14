@@ -466,7 +466,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .band.b8{background:linear-gradient(#e6c89a,#a9cf6a 35%,#8cc45a)}.band.b9{background:linear-gradient(#ffd9a0,#e0a84c 35%,#c9903a)}
 .band.b10{background:linear-gradient(#b8e0cc,#6ab88a 35%,#4a9a6a)}.band.b11{background:linear-gradient(#a8e0ff,#7cc8e8 30%,#79c55a)}
 .band.b12{background:linear-gradient(#5a6aa0,#34407a 35%,#2a3466)}.band.b13{background:linear-gradient(#f4faff,#ffffff 30%,#cfe2f4)}
-.band.b14{background:linear-gradient(#f4dc98,#c8d46a 35%,#a6c95a)}.band.b15{background:linear-gradient(#e0f4ff,#b6e69a 35%,#8fd46c)}
+.band.b14{background:linear-gradient(#f4dc98,#c8d46a 35%,#a6c95a)}.band.b15{background:linear-gradient(#e0f4ff,#b6e69a 35%,#8fd46c)}.band.b16{background:linear-gradient(#ffe0f4,#ffd9a0 30%,#a6e68a)}
 .node.boss{width:76px;height:76px;margin:-38px 0 0 -38px;box-shadow:0 5px 0 #0002,0 0 0 4px #ff5a5a}
 .node.boss.cur{box-shadow:0 5px 0 #0002,0 0 0 4px #ff5a5a,0 0 22px 6px #ffd23f}
 .bossb{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#ff5a5a;color:#fff;font:700 11px var(--display);border-radius:999px;padding:1px 8px;box-shadow:0 2px 0 #a33}
@@ -595,6 +595,9 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .t.hop .g{animation:hopf .5s ease-out 2}
 .t.nope .g{animation:nopes .3s}
 @keyframes nopes{25%{transform:translateX(-8%)}75%{transform:translateX(8%)}}
+.vtabs{position:absolute;left:50%;top:8px;transform:translateX(-50%);display:flex;gap:4px;background:#ffffffcc;border-radius:999px;padding:3px;z-index:300;box-shadow:0 3px 0 #0002}
+.vtab{border:0;background:transparent;font:800 13px var(--body);color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer}
+.vtab.on{background:#2f7fd6;color:#fff}
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
@@ -738,7 +741,7 @@ function applyTileSet(id){
 const chapterOfLevel=i=>{const k=CHAPTERS.findIndex(c=>i>=c.from&&i<=c.to);return k<0?0:k};
 const tilesetOpen=k=>k===0||(TILESETS[k].price?owns('tiles:'+TILESETS[k].id):P.stars.slice(0,CHAPTERS[k].from).filter(Boolean).length>=CHAPTERS[k].from);
 // набор для уровня i (-1 — письмо дня): выбранный игроком или набор главы
-const CH_TS=[0,1,2,3,4,5,1,2,4,2,5,1,5,3,4,0];
+const CH_TS=[0,1,2,3,4,5,1,2,4,2,5,1,5,3,4,0,4];
 function tileSetFor(i){if(P.tiles&&P.tiles!=='auto')return P.tiles;return TILESETS[CH_TS[chapterOfLevel(i<0?nextLevel():i)]||0].id}
 // в текстах писем фишки названы по весеннему набору — подставляем названия текущего
 const BASE_NAMES=[['сердечк','сердечек'],['звёзд','звёзд'],['кристалл','кристаллов'],['изумруд','изумрудов'],['жемчужин','жемчужин']];
@@ -906,7 +909,7 @@ const LEVELS=[
  {'moves':25,'colors':5,'goals':[['j'],['d'],['c',1,28],['c',2,28]],'map':['........','...j....','..j..j.j','........','........','........','........','........'],'lay':['........','........','........','........','........','...d.ddd','d.d..ddd','.dddd...'],'tier':'normal'},
  {'moves':25,'colors':5,'goals':[['j'],['m'],['c',0,29],['c',2,29]],'map':['........','j.j...j.','....j...','........','........','m.m.mmmm','.mm.m.mm','.m.mm.mm'],'tier':'normal'},
  {'moves':25,'colors':5,'goals':[['j'],['c',0,43],['d']],'map':['........','.j.j....','.....j.j','........','........','.......y','.y......','........'],'lay':['........','........','........','........','........','..ddddd.','d..dd..d','.dd.dddd'],'bush':0,'tier':'boss'},
- {'moves':12,'colors':5,'goals':[['O'],['c',2,20],['c',1,20]],'map':['........','........','........','........','......O.','........','...O..O.','........'],'tier':'normal','tut':'Крот каждые три хода перепрыгивает и оставляет кучку земли. Бей рядом с ним три раза.'},
+ {'moves':12,'colors':5,'goals':[['O'],['c',2,20],['c',1,20]],'map':['........','........','........','........','......O.','........','...O..O.','........'],'tier':'normal','tut':'Крот каждые два хода перепрыгивает и оставляет кучку земли. Бей рядом с ним три раза.'},
  {'moves':14,'colors':5,'goals':[['O'],['c',0,21],['c',2,21]],'map':['........','...O....','........','........','.....O..','........','...O....','........'],'tier':'normal'},
  {'moves':16,'colors':5,'goals':[['O'],['c',4,22],['c',2,22]],'map':['........','...O....','........','.....O..','........','.......O','........','........'],'tier':'normal'},
  {'moves':18,'colors':5,'goals':[['log'],['c',2,22],['c',3,22]],'map':['........','........','........','........','........','........','........','........'],'big':[['log',5,0],['log',6,1],['log',4,6],['log',2,0]],'tier':'normal','tut':'Бревно занимает две клетки и выдерживает два удара.'},
@@ -1026,6 +1029,21 @@ const LEVELS=[
  {'moves':25,'colors':5,'goals':[['z'],['j'],['c',4,32],['c',3,32]],'map':['...Z....','j......j','.j..j...','........','........','........','........','..z.....'],'tier':'normal'},
  {'moves':18,'colors':5,'goals':[['c',4,37],['c',1,37]],'map':['........','........','........','........','...t.t..','........','........','........'],'portals':[[5,1]],'storm':4,'tier':'normal'},
  {'moves':22,'colors':5,'goals':[['c',2,38],['c',1,38],['s']],'map':['........','........','.sS....s','.t.s....','.....sS.','...S..ts','S.sS....','........'],'portals':[[1,4]],'magpie':true,'tier':'boss'},
+ {'moves':25,'colors':5,'goals':[['basket'],['r'],['c',3,24],['c',4,24]],'map':['........','........','......r.','....Br..','....rA..','.......r','........','........'],'tier':'normal'},
+ {'moves':12,'colors':5,'goals':[['j'],['c',1,34]],'map':['........','......j.','j..j....','......y.','........','...y....','........','........'],'bush':1,'tier':'normal'},
+ {'moves':22,'colors':5,'goals':[['a'],['j'],['c',1,25],['c',3,25]],'map':['........','.j.....j','......j.','........','...a....','........','a..a....','........'],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['w'],['i'],['H']],'map':['..i...i.','.i......','........','........','.......H','...H....','........','........'],'lay':['........','...www..','.ww.w.ww','.ww.....','.w.w....','ww....ww','........','........'],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['c',0,30],['c',3,30],['b']],'map':['........','........','........','........','......b.','........','........','........'],'belts':[{'r':4,'d':-1}],'tier':'breather'},
+ {'moves':38,'colors':5,'goals':[['k'],['t'],['e']],'map':['.e.....e','........','..t.t.t.','........','t...t...','........','t..t....','........'],'lay':['........','........','........','........','..k..k..','k.....Kk','.k......','.k.k.kKk'],'timer':13,'tier':'normal'},
+ {'moves':22,'colors':5,'goals':[['chest'],['cat'],['basket']],'map':['........','........','...EA...','........','........','........','........','........'],'big':[['chest',4,3],['cat',3,7,1]],'tier':'normal'},
+ {'moves':38,'colors':5,'goals':[['u'],['k'],['i']],'map':['....i.i.','.i......','........','.....u..','...u....','........','...u....','........'],'lay':['........','........','........','........','........','Kkk..kKk','....kkk.','...k...k'],'tier':'normal'},
+ {'moves':22,'colors':5,'goals':[['chest'],['H'],['m']],'map':['........','........','........','........','.H......','mmHm...m','m.mmmHmm','m.mmmm..'],'big':[['chest',3,6]],'tier':'normal'},
+ {'moves':24,'colors':5,'goals':[['k']],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','........','........','..kkkk..','.kkKKkk.'],'tier':'breather'},
+ {'moves':18,'colors':5,'goals':[['c',1,36],['c',2,36],['b'],['pic'],['o']],'map':['........','........','........','.b......','........','........','...mmmm.','...mmmm.'],'lay':['ooo..o.o','ooooo.oo','oooooooo','........','........','........','........','........'],'belts':[{'r':3,'d':1}],'pics':[[6,3,2,2],[6,5,2,2]],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['c',1,36],['c',2,36],['n'],['c',0,41]],'map':['........','........','....n...','....t.yt','........','.....n..','y.....n.','........'],'portals':[[0,3]],'bush':0,'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['W'],['r'],['s']],'map':['r....r..','.r.W....','s..r.S..','..W...W.','.sS.S...','..W.S.sr','.S...S.s','........'],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['d'],['c',2,43],['a']],'map':['........','........','........','.a......','...a..y.','........','.a.....y','........'],'lay':['........','........','........','........','........','dd.dd..d','..ddd.d.','dd.ddd.d'],'bush':2,'tier':'normal'},
+ {'moves':38,'colors':5,'goals':[['k'],['a'],['c',2,34],['e']],'map':['....e.e.','........','a.......','........','.....a..','....a...','........','........'],'lay':['........','........','........','........','........','kkKk.k.k','.kkk.kkK','.k.k....'],'magpie':true,'timer':11,'tier':'boss'},
 ];
 const CAST=[
  {pet:'chick',name:'Цыплёнок Пик',to:'Цыплёнку Пику',text:'Пик впервые в жизни получает письмо: от бабушки с соседнего двора. Собери сердечки и кристаллы для посылки.'},
@@ -1207,16 +1225,16 @@ const CAST=[
  {'pet':'tiger','name':'Тигр Полосатик','to':'Тигру Полосатику','text':'Тигр Полосатик живёт за ручьём. Переправь изумруды и жемчужины на другой берег.'},
  {'pet':'fish','name':'Рыбка Буль','to':'Рыбке Буль','text':'Рыбка Буль живёт за ручьём. Переправь сердечки и жемчужины на другой берег.'},
  {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Гусеница Фрося живёт за ручьём. Переправь изумруды и сердечки на другой берег.'},
- {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'По ручью плывёт письмо в бутылке для адресата Краб Капитан. Поймай его! А ещё собери сердечки и изумруды.'},
+ {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'По ручью плывёт письмо в бутылке. Краб Капитан просит его поймать! А ещё собери сердечки и изумруды.'},
  {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Коала Соня живёт за ручьём. Переправь звёзды и жемчужины на другой берег.'},
- {'pet':'cow','name':'Корова Бурёнка','to':'Корове Бурёнке','text':'По ручью плывёт письмо в бутылке для адресата Корова Бурёнка. Поймай его! А ещё собери звёзды и кристаллы, разбей камни.'},
+ {'pet':'cow','name':'Корова Бурёнка','to':'Корове Бурёнке','text':'По ручью плывёт письмо в бутылке. Корова Бурёнка просит его поймать! А ещё собери звёзды и кристаллы, разбей камни.'},
  {'pet':'deer','name':'Олень Арсений','to':'Оленю Арсению','text':'На мельнице кипит работа. Олень Арсений ждёт муку и сердечки и жемчужины.'},
- {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'По ручью плывёт письмо в бутылке для адресата Цыплёнок Пик. Поймай его! А ещё собери изумруды и звёзды, поймай лягушек.'},
+ {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'По ручью плывёт письмо в бутылке. Цыплёнок Пик просит его поймать! А ещё собери изумруды и звёзды, поймай лягушек.'},
  {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'На мельнице кипит работа. Бобр Тихон ждёт муку и звёзды и сердечки. А ещё поймай бутылку.'},
- {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'По ручью плывёт письмо в бутылке для адресата Медведица Глаша. Поймай его! А ещё собери сердечки и звёзды.'},
- {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'По ручью плывёт письмо в бутылке для адресата Кот Мурзик. Поймай его! А ещё собери сердечки и жемчужины, развей туман.'},
- {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'По ручью плывёт письмо в бутылке для адресата Жираф Кузя. Поймай его! А ещё собери кристаллы и сердечки, переселить ульи.'},
- {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'По ручью плывёт письмо в бутылке для адресата Пчела Жужа. Поймай его! А ещё собери звёзды и сердечки.'},
+ {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'По ручью плывёт письмо в бутылке. Медведица Глаша просит его поймать! А ещё собери сердечки и звёзды.'},
+ {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'По ручью плывёт письмо в бутылке. Кот Мурзик просит его поймать! А ещё собери сердечки и жемчужины, развей туман.'},
+ {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'По ручью плывёт письмо в бутылке. Жираф Кузя просит его поймать! А ещё собери кристаллы и сердечки, переселить ульи.'},
+ {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'По ручью плывёт письмо в бутылке. Пчела Жужа просит его поймать! А ещё собери звёзды и сердечки.'},
  {'pet':'hog','name':'Кабан Гоша','to':'Кабану Гоше','text':'На мельнице кипит работа. Кабан Гоша ждёт муку и изумруды и сердечки. А ещё поймай бутылку.'},
  {'pet':'panda','name':'Панда Бао','to':'Панде Бао','text':'Финал главы! На мельнице кипит работа. Панда Бао ждёт муку и кристаллы и изумруды. А ещё поймай бутылку.'},
  {'pet':'fox','name':'Лиса Маргарита','to':'Лисе Маргарите','text':'Ночью Лиса Маргарита боится темноты. Зажги фонари вдоль тропинки! А ещё собери сердечки и звёзды.'},
@@ -1278,10 +1296,25 @@ const CAST=[
  {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Кроты прорыли норки, и фишки путешествуют под землёй. Гусеница Фрося ждёт звёзды и сердечки. А ещё открой замок.'},
  {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'Ключ от сарая укатился. Краб Капитан просит довести его до замка! А ещё поймай божьих коровок, собери жемчужины и изумруды.'},
  {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Кроты прорыли норки, и фишки путешествуют под землёй. Коала Соня ждёт жемчужины и звёзды.'},
- {'pet':null,'name':'Все жители леса','to':'Всему лесу','text':'Последнее письмо: весь лес собирается на большой праздник у почты! Нужно всё и сразу: собери кристаллы и звёзды, разбей камни.'},
+ {'pet':'parrot','name':'Попугай Кеша','to':'Попугаю Кеше','text':'Финал главы! Ветер гонит тучи, а Попугай Кеша ждёт письмо о большом фестивале. Собери кристаллы и звёзды, разбей камни.'},
+ {'pet':'deer','name':'Олень Арсений','to':'Оленю Арсению','text':'Фестиваль! Олень Арсений собирает грибы и ягоды. Наполни корзинки! А ещё поймай лягушек, собери изумруды и жемчужины.'},
+ {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'Фестиваль! Божьи коровки разбежались. Цыплёнок Пик просит собрать их. А ещё собери звёзды.'},
+ {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'Фестиваль! Муравьи строят город прямо у крыльца. Бобр Тихон просит помочь им переехать. А ещё поймай божьих коровок, собери звёзды и изумруды.'},
+ {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'Фестиваль! Пауки сплели паутину над тропинкой. Медведица Глаша просит её убрать. А ещё сбей сосульки, переселить ульи.'},
+ {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'Фестиваль! По ручью плывёт письмо в бутылке. Кот Мурзик просит его поймать! А ещё собери сердечки и изумруды.'},
+ {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'Фестиваль! Жираф Кузя мечтает о клеверной полянке. Засей её! А ещё убери пни, доставь срочное письмо.'},
+ {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'Фестиваль! В лесу нашёлся старый почтовый сундук. Пчела Жужа просит его открыть! А ещё прогони гусеницу, наполни корзинки.'},
+ {'pet':'hog','name':'Кабан Гоша','to':'Кабану Гоше','text':'Фестиваль! Кабан Гоша ждёт, когда распустятся цветы у крыльца. А ещё засей клевер, сбей сосульки.'},
+ {'pet':'panda','name':'Панда Бао','to':'Панде Бао','text':'Фестиваль! Пчёлы поселились прямо у двери! Панда Бао просит переселить ульи. А ещё открой сундук, убери мох.'},
+ {'pet':'fox','name':'Лиса Маргарита','to':'Лисе Маргарите','text':'Фестиваль! Лиса Маргарита мечтает о клеверной полянке. Засей её!'},
+ {'pet':'parrot','name':'Попугай Кеша','to':'Попугаю Кеше','text':'Фестиваль! Кусочки открытки затерялись во мху. Попугай Кеша просит их найти! А ещё собери звёзды и кристаллы, поймай бутылку, развей туман.'},
+ {'pet':'penguin','name':'Пингвин Пип','to':'Пингвину Пипу','text':'Фестиваль! Снеговики загородили перевал. Пингвин Пип ждёт на той стороне. А ещё собери звёзды, кристаллы и сердечки.'},
+ {'pet':'elephant','name':'Слон Тимофей','to':'Слону Тимофею','text':'Фестиваль! Совята проснулись не вовремя. Слон Тимофей просит отправить их спать. А ещё поймай лягушек, разбей камни.'},
+ {'pet':'lion','name':'Лев Лёва','to':'Льву Лёве','text':'Фестиваль! Лев Лёва не может пройти по грязной тропинке. Помоги её расчистить! А ещё собери кристаллы, убери муравейники.'},
+ {'pet':null,'name':'Все жители леса','to':'Всему лесу','text':'Последнее письмо: весь лес собирается на большой праздник у почты! Нужно всё и сразу: засей клевер, убери муравейники, собери кристаллы, доставь срочное письмо.'},
 ];
 CAST.forEach((c,i)=>Object.assign(LEVELS[i],c));
-const CHAPTERS=[{title:'Глава 1 · Весна',from:0,to:14},{title:'Глава 2 · Лето у ручья',from:15,to:29},{title:'Глава 3 · Осень: Тиша в пути',from:30,to:39},{title:'Глава 4 · Зима: снежные письма',from:40,to:59},{title:'Глава 5 · Весенняя ярмарка',from:60,to:79},{title:'Глава 6 · Большая доставка',from:80,to:99},{title:'Глава 7 · Летняя гроза',from:100,to:114},{title:'Глава 8 · Грибная пора',from:115,to:129},{title:'Глава 9 · Кротовые горки',from:130,to:144},{title:'Глава 10 · Белкин переполох',from:145,to:159},{title:'Глава 11 · Болото',from:160,to:174},{title:'Глава 12 · Ручей и мельница',from:175,to:189},{title:'Глава 13 · Ночной лес',from:190,to:204},{title:'Глава 14 · Зимний перевал',from:205,to:219},{title:'Глава 15 · Муравьиный город',from:220,to:234},{title:'Глава 16 · Ветреная долина',from:235,to:249}];
+const CHAPTERS=[{title:'Глава 1 · Весна',from:0,to:14},{title:'Глава 2 · Лето у ручья',from:15,to:29},{title:'Глава 3 · Осень: Тиша в пути',from:30,to:39},{title:'Глава 4 · Зима: снежные письма',from:40,to:59},{title:'Глава 5 · Весенняя ярмарка',from:60,to:79},{title:'Глава 6 · Большая доставка',from:80,to:99},{title:'Глава 7 · Летняя гроза',from:100,to:114},{title:'Глава 8 · Грибная пора',from:115,to:129},{title:'Глава 9 · Кротовые горки',from:130,to:144},{title:'Глава 10 · Белкин переполох',from:145,to:159},{title:'Глава 11 · Болото',from:160,to:174},{title:'Глава 12 · Ручей и мельница',from:175,to:189},{title:'Глава 13 · Ночной лес',from:190,to:204},{title:'Глава 14 · Зимний перевал',from:205,to:219},{title:'Глава 15 · Муравьиный город',from:220,to:234},{title:'Глава 16 · Ветреная долина',from:235,to:249},{title:'Глава 17 · Большой фестиваль',from:250,to:264}];
 const petSrc=p=>`assets/pets/${p||'bunny'}.png`;
 const petImg=(p,cls='')=>`<img class="${cls}" src="${petSrc(p)}" alt="" draggable="false">`;
 // места жителей на диораме (посчитаны из 3D-сцены): x, низ y, высота в процентах кадра
@@ -1325,7 +1358,24 @@ const ITEMS=[
  {id:'archer',name:'Лесной стражник',cost:15,ch:6},
  {id:'boat',name:'Почтовая лодка',cost:16,ch:6},
  {id:'airship',name:'Дирижабль почты',cost:18,ch:6},
+ {id:'vpost',name:'Деревенское почтовое отделение',cost:16,ch:7,v:1},
+ {id:'gazebo',name:'Беседка от дождя',cost:16,ch:7,v:1},
+ {id:'mushroom',name:'Грибной домик',cost:18,ch:8,v:1},
+ {id:'apiary',name:'Пасека',cost:18,ch:8,v:1},
+ {id:'well',name:'Колодец',cost:20,ch:9,v:1},
+ {id:'squirreltree',name:'Беличий дом на дереве',cost:20,ch:10,v:1},
+ {id:'clover',name:'Клеверная поляна',cost:20,ch:10,v:1},
+ {id:'dock',name:'Мостки на пруду',cost:22,ch:11,v:1},
+ {id:'watermill',name:'Водяная мельница',cost:24,ch:12,v:1},
+ {id:'lighthouse',name:'Маяк-фонарь',cost:24,ch:13,v:1},
+ {id:'hut',name:'Тёплая избушка',cost:26,ch:14,v:1},
+ {id:'dovecote',name:'Голубятня',cost:26,ch:15,v:1},
+ {id:'windmill',name:'Ветряная мельница',cost:28,ch:16,v:1},
+ {id:'stage',name:'Сцена фестиваля',cost:28,ch:17,v:1},
+ {id:'ferris',name:'Колесо обозрения',cost:32,ch:17,v:1},
 ];
+const VLAYERS={"apiary": [0.0, 52.3, 14.88], "clover": [1.12, 71.3, 21.62], "dock": [67.44, 66.9, 20.06], "dovecote": [60.31, 9.1, 13.81], "ferris": [78.5, 32.0, 21.5], "gazebo": [17.06, 30.9, 24.19], "hut": [49.62, 61.9, 24.69], "lighthouse": [88.69, 14.1, 11.31], "mushroom": [3.69, 24.9, 23.56], "squirreltree": [70.0, 6.2, 23.62], "stage": [56.06, 31.7, 21.31], "vpost": [36.31, 20.9, 22.38], "watermill": [89.19, 64.6, 10.81], "well": [25.62, 49.9, 17.44], "windmill": [17.62, 7.0, 25.19]};
+const V_ORDER=["windmill", "dovecote", "squirreltree", "vpost", "mushroom", "lighthouse", "gazebo", "stage", "ferris", "well", "apiary", "dock", "clover", "watermill", "hut"];
 let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2,coins:100,inv:{},owned:['tisha:classic','frame:classic'],tisha:'classic',frame:'classic'};
 function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));if(P.muted){P.musicOff=P.sfxOff=true;delete P.muted}while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
 function save(){try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}if(typeof Platform!=='undefined'&&Platform.pk)Platform.pkSave()}
@@ -1334,7 +1384,13 @@ const spent=()=>P.built.reduce((a,id)=>a+ITEMS.find(i=>i.id===id).cost,0);
 const nextLevel=()=>{const i=P.stars.findIndex(s=>!s);return i<0?LEVELS.length-1:i};
 
 /* ---------- сцена почты ---------- */
+const villageOpen=()=>itemOpen(ITEMS.find(i=>i.id==='vpost'));
+function villageSVG(){
+  return `<img class="sbase" src="assets/village/base.jpg" alt="Почтовая деревня у пруда" draggable="false">`+
+    V_ORDER.map(id=>{const [l,t,w]=VLAYERS[id];return `<img class="part${P.built.includes(id)?'':' off'}" data-part="${id}" src="${layerSrc(id)}" alt="" draggable="false" style="left:${l}%;top:${t}%;width:${w}%">`}).join('');
+}
 function sceneSVG(){
+  if(P.view==='v'&&villageOpen())return villageSVG();
   return `<img class="sbase" src="${seasonBase()}" alt="Лесная почта: башня-почта у ручья в лесу" draggable="false">`+
     DRAW_ORDER.map(id=>ITEMS.find(x=>x.id===id)).map(it=>{const [l,t,w]=LAYERS[it.id];return `<img class="part${P.built.includes(it.id)?'':' off'}" data-part="${it.id}" src="${layerSrc(it.id)}" alt="" draggable="false" style="left:${l}%;top:${t}%;width:${w}%">`}).join('');
 }
@@ -1353,7 +1409,7 @@ function renderHome(){
       <button class="rbtn small grey" id="bSettings" aria-label="Настройки">${ICO('gear')}</button>
     </div>
     <h1 class="logo">Лесная почта</h1>
-    <div class="scene">${sceneSVG()}${petsLayer()}</div>
+    <div class="scene">${sceneSVG()}${P.view==='v'&&villageOpen()?'':petsLayer()}${villageOpen()?`<div class="vtabs"><button class="vtab${P.view!=='v'?' on':''}" data-view="p">Почта</button><button class="vtab${P.view==='v'?' on':''}" data-view="v">Деревня</button></div>`:''}</div>
     <div class="actions">
       ${rbtn('bRepair','yellow',ICO('wrench'),'Ремонт',canBuild||'')}
       ${rbtn('bDaily','red',SVG.mail,'Письмо дня',st.done?'':'!')}
@@ -1366,6 +1422,7 @@ function renderHome(){
     </div>
   </div>`;
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
+  $('home').querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{ac();P.view=b.dataset.view;save();renderHome()});
   $('bMap').onclick=()=>{ac();showMap()};
   $('bRepair').onclick=()=>{ac();showRepair()};
   $('pStars').onclick=()=>{ac();showRepair()};
@@ -1380,7 +1437,7 @@ function renderHome(){
 }
 
 /* ---------- окно ремонта ---------- */
-const ITEM_GROUPS=[{title:'Почта',ch:1},{title:'Лето у ручья',ch:2},{title:'Зима',ch:4},{title:'Весенняя ярмарка',ch:5},{title:'Большая доставка',ch:6}];
+const ITEM_GROUPS=[{title:'Почта',ch:1},{title:'Лето у ручья',ch:2},{title:'Зима',ch:4},{title:'Весенняя ярмарка',ch:5},{title:'Большая доставка',ch:6},...[7,8,9,10,11,12,13,14,15,16,17].map(ch=>({title:'Деревня · '+CHAPTERS[ch-1].title.split(' · ')[1],ch}))];
 const itemCh=it=>it.ch||1;
 function itemOpen(it){const ch=itemCh(it);if(ch<=2)return true;const from=CHAPTERS[ch-1].from;return P.stars.slice(from-1).some(Boolean)}
 function showRepair(){
@@ -1394,7 +1451,7 @@ function showRepair(){
   $('bRepClose').onclick=()=>{$('card').classList.remove('wide');closeOv()};
   $('card').querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>{
     const it=ITEMS.find(i=>i.id===b.dataset.build);if(totalStars()-spent()<it.cost)return;
-    P.built.push(it.id);save();ac();chime();$('card').classList.remove('wide');track('building',{id:it.id,cost:it.cost});
+    P.built.push(it.id);P.view=it.v?'v':'p';save();ac();chime();$('card').classList.remove('wide');track('building',{id:it.id,cost:it.cost});
     renderHome();const nb=$('home').querySelector(`[data-part="${it.id}"]`);if(nb){nb.classList.add('off');void nb.offsetWidth;nb.classList.remove('off');nb.classList.add('built')}
     toast(it.name+': готово!');
     if(P.built.length===ITEMS.length)setTimeout(()=>toast('Почта полностью отстроена!'),1600);
@@ -1408,7 +1465,7 @@ function showMap(){
   const W=Math.min(innerWidth-32,680);
   const pos=i=>[W/2+Math.sin(i*0.9)*W*0.27,Hh-PADB-i*SP-SP/2];
   let d='';for(let i=0;i<n;i++){const [x,y]=pos(i);if(!i)d=`M${x} ${y+SP}L${x} ${y}`;else{const [px,py]=pos(i-1);d+=` C${px} ${py-SP*.5},${x} ${y+SP*.5},${x} ${y}`}}
-  const deco={0:['tree','tree-high','plant-spring','rocks-low','tree'],1:['tree-high','tree','plant','stones','tree-high'],2:['tree-autumn','tree-high-autumn','plant-autumn','rocks-low','tree-autumn'],3:['tree-winter','tree-high-winter','rocks-low-winter','tree-winter'],4:['tree','plant-spring','tree-high','plant-spring','plant-spring'],5:['tree-high','tree','stones','rocks-low','plant','tree-autumn'],6:['tree-high','tree','rocks-low','plant'],7:['tree-autumn','plant-autumn','tree','stones'],8:['rocks-low','stones','plant','tree'],9:['tree-autumn','tree-high-autumn','plant-autumn'],10:['plant','tree-high','rocks-low','plant'],11:['tree','plant-spring','stones'],12:['tree-high','tree','rocks-low'],13:['tree-winter','tree-high-winter','rocks-low-winter'],14:['tree','plant','stones','rocks-low'],15:['tree-high','plant','rocks-low']};
+  const deco={0:['tree','tree-high','plant-spring','rocks-low','tree'],1:['tree-high','tree','plant','stones','tree-high'],2:['tree-autumn','tree-high-autumn','plant-autumn','rocks-low','tree-autumn'],3:['tree-winter','tree-high-winter','rocks-low-winter','tree-winter'],4:['tree','plant-spring','tree-high','plant-spring','plant-spring'],5:['tree-high','tree','stones','rocks-low','plant','tree-autumn'],6:['tree-high','tree','rocks-low','plant'],7:['tree-autumn','plant-autumn','tree','stones'],8:['rocks-low','stones','plant','tree'],9:['tree-autumn','tree-high-autumn','plant-autumn'],10:['plant','tree-high','rocks-low','plant'],11:['tree','plant-spring','stones'],12:['tree-high','tree','rocks-low'],13:['tree-winter','tree-high-winter','rocks-low-winter'],14:['tree','plant','stones','rocks-low'],15:['tree-high','plant','rocks-low'],16:['tree','plant-spring','tree-high','plant-spring']};
   const rnd=seeded(4242);let decor='';
   for(let i=0;i<n;i++){const ch=CHAPTERS.findIndex(c=>i>=c.from&&i<=c.to);const [x,y]=pos(i);
     for(const side of [-1,1]){if(rnd()<.25)continue;const list=deco[ch];const k=list[Math.floor(rnd()*list.length)];
@@ -2194,7 +2251,7 @@ const SEASONS={winter:{name:'зима',icon:'❄️'},spring:{name:'весна',
 const SEASON=(()=>{const m=/season-(winter|spring|summer|autumn)/.exec(location.hash||'');if(m)return m[1];const mo=new Date().getMonth();return mo===11||mo<2?'winter':mo<5?'spring':mo<8?'summer':'autumn'})();
 const SEASON_LAYERS=['pines','plants','garden'];
 const seasonBase=()=>SEASON==='summer'?'assets/scene/base.jpg':`assets/scene/base-${SEASON}.jpg`;
-const layerSrc=id=>SEASON!=='summer'&&SEASON_LAYERS.includes(id)?`assets/scene/${id}-${SEASON}.png`:`assets/scene/${id}.png`;
+const layerSrc=id=>VLAYERS[id]?`assets/village/${id}.png`:SEASON!=='summer'&&SEASON_LAYERS.includes(id)?`assets/scene/${id}-${SEASON}.png`:`assets/scene/${id}.png`;
 function seasonFx(host,n,inScene){
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce)return;
   const box=document.createElement('div');box.className='sfx'+(inScene?' inscene':'');
