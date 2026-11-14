@@ -3240,7 +3240,7 @@ async function tourWin(){
 }
 
 /* ---------- открытки друзьям ---------- */
-const GAME_URL='https://minionslaba-ux.github.io/korot/pochta/';
+const GAME_URL='https://forestpost.games/pochta/';
 const PET_NAMES={};LEVELS.forEach(L=>{if(L.pet&&!PET_NAMES[L.pet])PET_NAMES[L.pet]=L.name});PET_NAMES.bunny='Зайчик Тиша';
 const toHex=t=>[...new TextEncoder().encode(t)].map(b=>b.toString(16).padStart(2,'0')).join('');
 const fromHex=h=>{try{return new TextDecoder().decode(new Uint8Array((h.match(/../g)||[]).map(x=>parseInt(x,16))))}catch(e){return ''}};
