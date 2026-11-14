@@ -70,3 +70,14 @@ create table if not exists public.lp_pk_purchases (
 );
 alter table public.lp_pk_purchases enable row level security;
 revoke all on table public.lp_pk_purchases from anon, authenticated;
+
+-- Обезличенная статистика игры (функция lp-ev). Сводка: select public.lp_report(7, true) — за 7 дней по Пикабу.
+create table if not exists public.lp_events (
+  id bigserial primary key, at timestamptz not null default now(), device text not null, session text not null,
+  pk boolean not null default false, ver text not null default '', ev text not null, data jsonb not null default '{}'::jsonb
+);
+create index if not exists lp_events_at on public.lp_events(at);
+create index if not exists lp_events_dev on public.lp_events(device);
+alter table public.lp_events enable row level security;
+revoke all on table public.lp_events from anon, authenticated;
+-- функция public.lp_report(days int, only_pk boolean) — см. миграцию lp_events в Supabase

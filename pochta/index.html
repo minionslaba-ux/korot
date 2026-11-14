@@ -2773,14 +2773,25 @@ function rbtn(id,color,icon,label,badge){return `<button class="rbtn ${color}" i
 
 
 /* ---------- аналитика ---------- */
-const Analytics={buf:[],track(ev,params={}){
+// обезличенная статистика: случайный id устройства и захода, события игры — на наш сервер (функция lp-ev, таблица lp_events)
+const LP_VER='2026.11.14';
+const rid=()=>Array.from({length:16},()=>'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)]).join('');
+const DEV_ID=(()=>{try{let d=localStorage.getItem('lp-dev');if(!/^[a-z0-9]{16}$/.test(d||'')){d=rid();localStorage.setItem('lp-dev',d)}return d}catch(e){return rid()}})(),SES_ID=rid();
+const EV_URL='https://auequuxfcwdshblqrwbd.supabase.co/functions/v1/lp-ev',EV_ON=!/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+const Analytics={buf:[],q:[],flush(){if(!EV_ON||!this.q.length)return;const e=this.q.splice(0,40);
+    try{fetch(EV_URL,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({d:DEV_ID,s:SES_ID,pk:typeof PIKABU!=='undefined'&&PIKABU,v:LP_VER,e})}).catch(()=>{})}catch(x){}},
+  track(ev,params={}){
   const e={ev,t:Date.now(),...params};this.buf.push(e);if(this.buf.length>300)this.buf.shift();
+  if(this.q.length<200)this.q.push([ev,params]);if(this.q.length>=25)this.flush();
   try{localStorage.setItem('lp-analytics',JSON.stringify(this.buf))}catch(x){}
   try{if(window.ym&&window.YM_ID)window.ym(window.YM_ID,'reachGoal',ev,params)}catch(x){}
   if(SPEED)console.debug('[analytics]',ev,params);
 }};
 try{Analytics.buf=JSON.parse(localStorage.getItem('lp-analytics'))||[]}catch(e){}
 const track=(e,p)=>Analytics.track(e,p);
+setInterval(()=>Analytics.flush(),15000);
+addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){track('leave',{screen:!$('level').hidden?'level':'home',sec:Math.round(performance.now()/1000)});Analytics.flush()}});
+addEventListener('pagehide',()=>Analytics.flush());
 
 /* ---------- платформа: реклама и покупки (Яндекс Игры SDK или демо) ---------- */
 function adPause(on){try{if(!AC)return;if(on)AC.suspend();else AC.resume()}catch(e){}}
@@ -3517,7 +3528,10 @@ preload().then(()=>{
 seasonFx(document.body,SEASON==='summer'?14:30,false);renderHome();
 const _hash=(location.hash||'').slice(1);
 if(_hash.startsWith('card-')){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}receivePostcard(_hash).then(ok=>{if(!ok&&!P.introSeen)showIntroGate()})}
-else if(!P.introSeen)showIntroGate();
+else if(!P.introSeen){
+  // Пикабу: у площадки своя кнопка «Играть», поэтому новичок сразу попадает в первое письмо с подсказкой (как в «Мутации»); ролик — в настройках
+  if(PIKABU&&!P.stars.some(Boolean)){P.introSeen=true;save();track('fast_start',{});startLevel(0)}else showIntroGate()}
+track('session_start',{w:innerWidth,h:innerHeight,boot:Math.round(performance.now()),stars:P.stars.filter(Boolean).length,mob:matchMedia('(pointer:coarse)').matches});
 window.BOOTED=true;Platform.started();setTimeout(prefetchRest,1200);
 if(PIKABU&&Platform.pkReady)Platform.pkReady.then(()=>Platform.started());
 });
