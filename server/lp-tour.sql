@@ -24,11 +24,12 @@ begin
 end $$;
 revoke all on function public.lp_tour_submit(int,text,text,int) from public, anon, authenticated;
 
+-- место считается внутри своей таблицы: 'pk-' (Пикабу) и 'lp-' (сайт) не смешиваются
 create or replace function public.lp_tour_rank(p_week int, p_pid text)
 returns table(rank bigint, score int, total bigint) language sql security definer set search_path = public as $$
-  select (select count(*) from lp_tour_scores s2 where s2.week=p_week and s2.score > s.score) + 1,
+  select (select count(*) from lp_tour_scores s2 where s2.week=p_week and split_part(s2.pid,'-',1)=split_part(p_pid,'-',1) and s2.score > s.score) + 1,
          s.score,
-         (select count(*) from lp_tour_scores s3 where s3.week=p_week)
+         (select count(*) from lp_tour_scores s3 where s3.week=p_week and split_part(s3.pid,'-',1)=split_part(p_pid,'-',1))
   from lp_tour_scores s where s.week=p_week and s.pid=p_pid;
 $$;
 revoke all on function public.lp_tour_rank(int,text) from public, anon, authenticated;
@@ -48,7 +49,7 @@ create or replace function public.lp_tour_claim(p_week int, p_pid text)
 returns int language plpgsql security definer set search_path = public as $$
 declare r bigint; pz int; n int;
 begin
-  select (select count(*) from lp_tour_scores s2 where s2.week=p_week and s2.score > s.score) + 1 into r
+  select (select count(*) from lp_tour_scores s2 where s2.week=p_week and split_part(s2.pid,'-',1)=split_part(p_pid,'-',1) and s2.score > s.score) + 1 into r
   from lp_tour_scores s where s.week=p_week and s.pid=p_pid;
   if r is null then return 0; end if;
   pz := case when r=1 then 500 when r<=3 then 300 when r<=10 then 150 when r<=50 then 60 else 20 end;

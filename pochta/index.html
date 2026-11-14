@@ -3157,11 +3157,20 @@ function achHTML(){const got=new Set(P.achGot||[]);
 const TOUR_URL='https://auequuxfcwdshblqrwbd.supabase.co/functions/v1/lp-tour',TOUR_KEY='sb_publishable_ZF67r4UX91_n180NPFQuvA_0D_-8Ya2';
 const tourWeek=()=>Math.floor((Math.floor((Date.now()+3*3600e3)/864e5)+3)/7);
 const tourOpen=()=>P.stars.filter(Boolean).length>=10;
-function tourPid(){if(!P.pid){P.pid='lp-'+Array.from({length:16},()=>'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)]).join('');save()}return P.pid}
-function tourName(){if(!P.tourName){P.tourName='Почтальон '+String(Math.floor(1000+Math.random()*9000));save()}return P.tourName}
+// на Пикабу участник — аккаунт Пикабу: pid 'pk-<id>', сервер проверяет подпись игрока (getSignedData)
+const tourPk=()=>PIKABU&&Platform.pk&&Platform.pk.player?Platform.pk.player:null;
+function tourPkId(){const pl=tourPk();if(!pl||pl.isAuthorized===false)return null;const id=String(pl.id??'').toLowerCase().replace(/[^a-z0-9_]/g,'').slice(0,37);return id?'pk-'+id:null}
+async function tourSigned(){const pl=tourPk();if(!pl)return undefined;
+  try{let d=pl.getSignedData?await pl.getSignedData():null;if(d&&typeof d==='object')d=d.signedData||d.signature||d.token||d.data||d.jwt;return typeof d==='string'&&d?d:(pl.signature||undefined)}catch(e){return pl.signature||undefined}}
+async function tourBody(o){if(PIKABU)o.signed=await tourSigned();return o}
+function tourPid(){if(PIKABU)return tourPkId();
+  if(!P.pid){P.pid='lp-'+Array.from({length:16},()=>'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)]).join('');save()}return P.pid}
+function tourName(){const pl=tourPk();if(pl&&pl.name)return String(pl.name).slice(0,20);
+  if(!P.tourName){P.tourName='Почтальон '+String(Math.floor(1000+Math.random()*9000));save()}return P.tourName}
 async function tourFetch(body){
   const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),9000);
-  try{const r=await fetch(body?TOUR_URL:TOUR_URL+'?pid='+tourPid(),{method:body?'POST':'GET',headers:{apikey:TOUR_KEY,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined,signal:ctl.signal});
+  const pid=tourPid();
+  try{const r=await fetch(body?TOUR_URL:TOUR_URL+'?'+[pid?'pid='+encodeURIComponent(pid):'',PIKABU?'board=pikabu':''].filter(Boolean).join('&'),{method:body?'POST':'GET',headers:{apikey:TOUR_KEY,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined,signal:ctl.signal});
     const j=await r.json().catch(()=>null);if(j&&!j.error){P.tourCache={week:j.week,rank:j.me&&j.me.rank,best:j.me&&j.me.score,total:j.total};save()}return j}
   catch(e){return null}finally{clearTimeout(tm)}}
 function makeWeekly(){
@@ -3176,30 +3185,37 @@ function tourChip(){if(!tourOpen())return '';const c=P.tourCache&&P.tourCache.we
 function tourLeft(ends){const ms=Math.max(0,ends-Date.now()),d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5);return d?`${d} д ${h} ч`:`${h} ч ${Math.floor(ms%36e5/6e4)} мин`}
 async function showTour(){
   $('card').innerHTML=`<div class="to">Турнир недели</div><h2><img class="ttro" src="assets/ui/i-trophy.png" alt=""> Загружаю таблицу…</h2>`;$('card').classList.add('wide');openOv();
-  if(P.tourPending&&P.tourPending.week===tourWeek()){const r=await tourFetch({pid:tourPid(),name:tourName(),score:P.tourPending.score,week:P.tourPending.week});if(r&&!r.error)P.tourPending=null;save()}
+  if(P.tourPending&&P.tourPending.week===tourWeek()){if(tourPid()){const r=await tourFetch(await tourBody({pid:tourPid(),name:tourName(),score:P.tourPending.score,week:P.tourPending.week}));if(r&&(!r.error||r.error==='week over'||r.error==='bad_signature'||r.error==='player_mismatch'))P.tourPending=null;save()}}
   const j=await tourFetch();if($('ov').hidden)return;
   const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
   let body;
   if(!j||j.error)body=`<p>Не получилось связаться с турниром. Проверь интернет и попробуй ещё раз. Сыграть можно и сейчас — результат отправится позже.</p>`;
   else{
     const rows=j.top.slice(0,10).map((r,k)=>`<li class="${r.me?'me':''}"><span class="tr">${k+1}</span><span class="tn">${esc(r.n)}</span><b>${r.s.toLocaleString('ru-RU')}</b></li>`).join('');
+    const guest=PIKABU&&!tourPid();
     const meRow=j.me&&j.me.rank>10?`<li class="me gap"><span class="tr">${j.me.rank}</span><span class="tn">${esc(tourName())}</span><b>${j.me.score.toLocaleString('ru-RU')}</b></li>`:'';
     const last=j.last&&!j.last.claimed?`<div class="tourlast">Прошлая неделя: <b>${j.last.rank}-е место из ${j.last.total}</b>. Награда: ${COIN} <b>${j.last.prize}</b> <button class="btn main small" id="tClaim">Забрать</button></div>`:'';
     body=`${last}<p class="note">До конца: <b>${tourLeft(j.ends)}</b> · участников: <b>${j.total}</b>. В зачёт идёт лучший результат за неделю, играть можно сколько угодно.</p>
       <ol class="tourtop">${rows||'<li class="empty">Пока никто не сыграл — стань первым!</li>'}${meRow}</ol>
       <p class="note">Призы по итогам недели: 1 место — ${COIN} 500, 2–3 — 300, до 10 — 150, до 50 — 60, остальным — 20.</p>
-      <div class="tname"><label for="tName">Имя в таблице</label><input id="tName" class="pcinput" maxlength="20" value="${esc(tourName())}"></div>`;
+      ${guest?`<div class="tourlast">Турнир на Пикабу — для игроков с аккаунтом: так результаты честные, а призы не потеряются. <button class="btn main small" id="tAuth">Войти</button></div>`
+        :PIKABU?`<p class="note">В таблице ты — <b>${esc(tourName())}</b> (имя из аккаунта Пикабу).</p>`
+        :`<div class="tname"><label for="tName">Имя в таблице</label><input id="tName" class="pcinput" maxlength="20" value="${esc(tourName())}"></div>`}
+      ${PIKABU&&j.verify===false?`<p class="note">Турнир скоро откроется — сервер ещё настраивается.</p>`:''}`;
     window._tourLast=j.last;
   }
   $('card').innerHTML=`<div class="to">Турнир недели</div><h2><img class="ttro" src="assets/ui/i-trophy.png" alt=""> ${j&&j.me?`Ты на ${j.me.rank}-м месте`:'Турнир недели'}</h2>${body}
     <div class="row"><button class="btn" id="tBack">Назад</button><button class="btn main" id="tPlay">Играть</button></div>`;
   const nm=$('tName');if(nm)nm.onchange=()=>{const v=nm.value.replace(/[<>"'`]/g,'').trim().slice(0,20);if(v.length>=2){P.tourName=v;save();toast('Имя сохранено, обновится после следующей игры')}};
+  if($('tAuth'))$('tAuth').onclick=async()=>{const sdk=Platform.pk;try{if(sdk&&sdk.auth&&sdk.auth.openAuthDialog)await sdk.auth.openAuthDialog()}catch(e){}
+    if(tourPid())showTour();else toast('Войди в аккаунт Пикабу, чтобы участвовать в турнире')};
   if($('tClaim'))$('tClaim').onclick=async()=>{const b=$('tClaim');b.disabled=true;
     // приз выдаёт сервер: один раз на игрока за неделю, сумма — по месту в его таблице
     const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),9000);let r=null;
-    try{const x=await fetch(TOUR_URL,{method:'POST',headers:{apikey:TOUR_KEY,'Content-Type':'application/json'},body:JSON.stringify({action:'claim',pid:tourPid()}),signal:ctl.signal});r=await x.json().catch(()=>null)}catch(e){r=null}finally{clearTimeout(tm)}
+    try{const x=await fetch(TOUR_URL,{method:'POST',headers:{apikey:TOUR_KEY,'Content-Type':'application/json'},body:JSON.stringify(await tourBody({action:'claim',pid:tourPid()})),signal:ctl.signal});r=await x.json().catch(()=>null)}catch(e){r=null}finally{clearTimeout(tm)}
     if(r&&r.prize>0){P.coins=(P.coins||0)+r.prize;save();sfx('build',.8);track('tour_prize',{week:r.week,prize:r.prize});toast('+'+r.prize+' монет за турнир')}
     else if(r&&r.error==='already claimed')toast('Приз за эту неделю уже получен');
+    else if(r&&(r.error==='bad_signature'||r.error==='player_mismatch'))toast('Пикабу не подтвердил аккаунт — перезайди и попробуй снова');
     else{toast('Не получилось связаться с турниром, попробуй позже');b.disabled=false;return}
     showTour()};
   $('tBack').onclick=()=>{$('card').classList.remove('wide');closeOv();renderHome()};
@@ -3215,9 +3231,12 @@ async function tourWin(){
     <div class="row"><button class="btn" id="bHome">На почту</button></div>`;
   openOv();confetti(50);
   $('tTable').onclick=()=>showTour();$('tAgain').onclick=()=>maybeInter('tour_again',()=>startLevel(-2));$('bHome').onclick=()=>maybeInter('tour_home',renderHome);
-  const r=await tourFetch({pid:tourPid(),name:tourName(),score,week:LV.week});const el=$('tRes');
+  const el0=$('tRes');
+  if(!tourPid()){if(el0)el0.innerHTML='Чтобы результат попал в таблицу, войди в аккаунт Пикабу. <button class="btn main small" id="tAuth2">Войти</button>';
+    if($('tAuth2'))$('tAuth2').onclick=async()=>{try{await Platform.pk.auth.openAuthDialog()}catch(e){}if(tourPid()){P.tourPending={week:tourWeek(),score};save();showTour()}};return}
+  const r=await tourFetch(await tourBody({pid:tourPid(),name:tourName(),score,week:LV.week}));const el=$('tRes');
   if(r&&!r.error){if(el)el.innerHTML=`Твоё место: <b>${r.me.rank}</b> из ${r.total}. Лучший результат недели: <b>${r.me.score.toLocaleString('ru-RU')}</b>.`}
-  else{P.tourPending={week:tourWeek(),score:Math.max(score,(P.tourPending&&P.tourPending.score)||0)};save();if(el)el.textContent=r&&r.error==='too fast'?'Результат придёт через несколько секунд — сыграй ещё!':'Нет связи с турниром — результат отправится, когда появится интернет.'}
+  else{P.tourPending={week:tourWeek(),score:Math.max(score,(P.tourPending&&P.tourPending.score)||0)};save();if(el)el.textContent=r&&(r.error==='bad_signature'||r.error==='player_mismatch')?'Пикабу не подтвердил аккаунт — результат отправится при следующем входе.':r&&r.error==='not_configured'?'Турнир на Пикабу скоро откроется — результат сохранён и отправится позже.':r&&r.error==='too fast'?'Результат придёт через несколько секунд — сыграй ещё!':'Нет связи с турниром — результат отправится, когда появится интернет.'}
 }
 
 /* ---------- открытки друзьям ---------- */
