@@ -8,9 +8,104 @@
 <meta name="mobile-web-app-capable" content="yes">
 <title>Лесная почта</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Nunito:wght@400;700;800;900&display=swap">
+<style>
+@font-face {
+  font-family: 'Balsamiq Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/BalsamiqSans-400-cyrillic.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Balsamiq Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/BalsamiqSans-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Balsamiq Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/BalsamiqSans-700-cyrillic.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Balsamiq Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/BalsamiqSans-700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/Nunito-400-cyrillic.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/Nunito-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/Nunito-400-cyrillic.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/Nunito-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(assets/fonts/Nunito-400-cyrillic.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(assets/fonts/Nunito-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(assets/fonts/Nunito-400-cyrillic.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(assets/fonts/Nunito-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
 <style>
 /* Layout: casual mobile game. Home = restored post office scene + level path; Level = HUD (moves, goals) beside or above an 8×8 board. Single evening-forest look by choice. */
 :root{
@@ -843,7 +938,7 @@ const ITEMS=[
 ];
 let P={stars:Array(LEVELS.length).fill(0),built:[],hammers:3,shuffles:2,coins:100,inv:{},owned:['tisha:classic','frame:classic'],tisha:'classic',frame:'classic'};
 function load(){try{const d=JSON.parse(localStorage.getItem('lesnaya-pochta-v1'));if(d&&Array.isArray(d.stars)){P={...P,...d};P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));if(P.muted){P.musicOff=P.sfxOff=true;delete P.muted}while(P.stars.length<LEVELS.length)P.stars.push(0)}}catch(e){}}
-function save(){try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}}
+function save(){try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}if(typeof Platform!=='undefined'&&Platform.pk)Platform.pkSave()}
 const totalStars=()=>P.stars.reduce((a,b)=>a+b,0);
 const spent=()=>P.built.reduce((a,id)=>a+ITEMS.find(i=>i.id===id).cost,0);
 const nextLevel=()=>{const i=P.stars.findIndex(s=>!s);return i<0?LEVELS.length-1:i};
@@ -957,7 +1052,7 @@ function showSettings(){
     <button class="btn" id="sIntro">${ICO('movie')} Посмотреть ролик</button>
     <button class="btn" id="sAn">${ICO('information')} События аналитики</button>
     <button class="btn danger" id="sReset">${ICO('trashcan')} Сбросить прогресс</button>
-    <p class="note">Сейчас в лесу ${SEASONS[SEASON].name}. Графика, звуки и шрифты: Kenney и Google Fonts (свободные лицензии).</p>
+    <p class="note">Сейчас в лесу ${SEASONS[SEASON].name}. Графика и звуки: Kenney, шрифты Balsamiq Sans и Nunito (свободные лицензии).</p>
     <div class="row"><button class="btn main" id="sClose">Готово</button></div>`;
   openOv();bindToggles();
   $('sClose').onclick=closeOv;
@@ -1628,32 +1723,126 @@ function demoBuy(id,rub,done){
     <div class="row"><button class="btn" id="dbNo">Отмена</button><button class="btn main" id="dbYes">Получить (демо)</button></div></div>`);
   $('dbNo').onclick=()=>{o.hidden=true;done(false)};$('dbYes').onclick=()=>{o.hidden=true;done(true)};
 }
-const Platform={name:'demo',ysdk:null,payments:null,lastInter:0,
+// Площадка: Пикабу Игры (PkbSDK), Яндекс Игры (YaGames) или демо. Пикабу открывает игру в iframe с ?_platform-key=pikabu / pikabu=true
+const QS=new URLSearchParams(location.search);
+const PIKABU=QS.get('_platform-key')==='pikabu'||QS.get('pikabu')==='true'||window.LP_PLATFORM==='pikabu';
+if(PIKABU)document.documentElement.classList.add('pf-pikabu');
+const progScore=d=>d&&Array.isArray(d.stars)?d.stars.reduce((a,b)=>a+(b||0),0)*100+(d.built||[]).length*10+((d.album||[]).length||0):-1;
+const Platform={name:PIKABU?'pikabu':'demo',ysdk:null,payments:null,pk:null,prices:{},lastInter:0,interGap:150000,
   async init(){
+    if(PIKABU)return this.initPikabu();
     if(!window.YaGames)return;
     try{this.ysdk=await window.YaGames.init();this.name='yandex';
       try{this.payments=await this.ysdk.getPayments({signed:false});const ps=await this.payments.getPurchases();for(const p of ps){if(p.productID==='noads')P.noAds=true}save()}catch(e){}
       try{this.ysdk.features.LoadingAPI.ready()}catch(e){}
     }catch(e){}
   },
+  // ---- Пикабу: как в «Ночном тарифе»: SDK грузится с games.pikabu.ru, облачное сохранение, реклама через sdk.ads, покупки через sdk.store
+  initPikabu(){
+    this.interGap=4*60e3;   // площадка разрешает раз в 2 минуты, мы реже — чтобы не раздражать
+    return this.pkReady=new Promise(res=>{
+      const sc=document.createElement('script');sc.async=true;sc.src='https://games.pikabu.ru/sdk/sdk.js';
+      sc.onload=async()=>{
+        try{
+          const sdk=await window.PkbSDK.init();this.pk=sdk;
+          try{sdk.on('storageSaveError',r=>{track('pk_storage_error',{r:String(r)});if(r==='REVISION_CONFLICT'&&!this.pkDead){this.pkDead=true;toast('Прогресс изменён в другой вкладке — перезапусти игру, чтобы его не потерять')}})}catch(e){}
+          try{sdk.on('userAuthorized',()=>this.pkCloudLoad())}catch(e){}
+          this.pkCloudLoad();
+          setTimeout(()=>this.pkStoreInit(),1500);
+        }catch(e){track('pk_init_error',{e:String(e&&e.message||e).slice(0,80)})}
+        res(this.pk);
+      };
+      sc.onerror=()=>{track('pk_init_error',{e:'script'});res(null)};
+      document.head.appendChild(sc);setTimeout(()=>res(this.pk),15000);
+    });
+  },
+  started(){if(this.pk&&!this.pkStarted){this.pkStarted=true;try{this.pk.gameStarted()}catch(e){}}},
+  pkCloudLoad(){
+    const sdk=this.pk;if(!sdk)return;let c=null;try{c=sdk.storage.get('lp')}catch(e){}
+    if(c&&progScore(c.p)>progScore(P)){
+      if(window.BOOTED&&!$('level').hidden){this.pkPending=c.p;return}
+      this.pkApply(c.p);
+    }else this.pkSave(true);
+  },
+  pkApply(d){P={...P,...d};this.pkPending=null;try{localStorage.setItem('lesnaya-pochta-v1',JSON.stringify(P))}catch(e){}
+    P.built=(P.built||[]).filter(id=>ITEMS.some(i=>i.id===id));while(P.stars.length<LEVELS.length)P.stars.push(0);applyTisha();if(window.BOOTED&&$('level').hidden){closeOv();renderHome();toast('Прогресс загружен из облака Пикабу')}},
+  pkSave(now){
+    if(!this.pk||this.pkDead||this.pkPending)return;
+    clearTimeout(this.pkT);this.pkT=setTimeout(()=>{try{this.pk.storage.set('lp',{v:1,t:Date.now(),p:P})}catch(e){}},now?0:2500);
+  },
+  async pkAd(kind){   // 'rewarded' | 'fullscreen' → {reward} или null, если показать нечего
+    const sdk=this.pk||await this.pkReady;const ad=sdk&&sdk.ads&&sdk.ads[kind];
+    if(!ad||!ad.isSupported)return null;
+    try{if(!(await ad.canShow()))return null}catch(e){return null}
+    adPause(true);
+    try{const r=await ad.show();return r&&r.rendered?{reward:!!r.reward}:null}
+    catch(e){return null}
+    finally{adPause(false)}
+  },
+  async pkStoreInit(){
+    const st=this.pk&&this.pk.store;if(!st)return;
+    try{const list=await st.getProducts();for(const x of list||[])this.prices[x.id]=x.formattedPrice||(x.price/100)+' ₽'}catch(e){}
+    try{const ps=await st.getPurchases();for(const x of ps||[])await this.pkGrant(x,false)}catch(e){}
+  },
+  // начисление по покупке: разовые наборы (noads, starter) — один раз, расходуемые — по purchaseId, затем consumePurchase
+  async pkGrant(pc,loud){
+    const id=pc.productId,pid=pc.purchaseId,pr=PRODUCTS[id];if(!pr)return false;
+    P.pkGot=P.pkGot||[];
+    const done=P.pkGot.includes(pid)||(!pr.consumable&&P.pkGot.includes('own:'+id));
+    if(!done){pr.grant();P.pkGot.push(pid);if(!pr.consumable)P.pkGot.push('own:'+id);P.pkGot=P.pkGot.slice(-80);save();
+      track('purchase',{id,rub:pr.rub,platform:'pikabu'});if(loud){sfx('win',.7);toast(pr.name+': готово!')}else toast(pr.name+': покупка зачислена')}
+    if(pr.consumable){try{await this.pk.store.consumePurchase(pid)}catch(e){}}
+    return !done;
+  },
+  price(id){return this.prices[id]||PRODUCTS[id].rub},
   rewarded(placement){
     track('ad_rewarded_request',{placement});
     return new Promise(res=>{
       const done=ok=>{adPause(false);if(ok)track('ad_rewarded',{placement});res(ok)};
+      if(PIKABU){
+        this.pkAd('rewarded').then(r=>{
+          // нет рекламы — награда без неё (как в «Ночном тарифе»: игрок не виноват, что ролика нет)
+          if(!r){toast('Реклама сейчас недоступна — награда без неё');track('ad_unavailable',{placement});return res(true)}
+          if(r.reward)return done(true);
+          toast('Награда — если досмотреть ролик до конца');done(false);
+        });return;
+      }
       if(this.ysdk){let got=false;try{this.ysdk.adv.showRewardedVideo({callbacks:{onOpen:()=>adPause(true),onRewarded:()=>{got=true},onClose:()=>done(got),onError:()=>done(false)}})}catch(e){done(false)}return}
       demoAd('rewarded',()=>done(true));
     });
   },
   interstitial(placement){
     return new Promise(res=>{
-      if(P.noAds||Date.now()-this.lastInter<150000)return res();
-      this.lastInter=Date.now();track('ad_interstitial',{placement});
+      if(P.noAds||Date.now()-this.lastInter<this.interGap)return res();
+      this.lastInter=Date.now();
+      if(PIKABU){this.pkAd('fullscreen').then(r=>{if(r)track('ad_interstitial',{placement});res()});return}
+      track('ad_interstitial',{placement});
       if(this.ysdk){try{this.ysdk.adv.showFullscreenAdv({callbacks:{onOpen:()=>adPause(true),onClose:()=>{adPause(false);res()},onError:()=>{adPause(false);res()}}})}catch(e){res()}return}
       demoAd('inter',res);
     });
   },
+  async pkBuy(id){
+    const sdk=this.pk||await this.pkReady,st=sdk&&sdk.store;
+    if(!st){toast('Магазин Пикабу ещё загружается — попробуй через пару секунд');return false}
+    if(this.buying)return false;this.buying=true;
+    try{
+      if(sdk.player&&sdk.player.isAuthorized===false&&sdk.auth&&sdk.auth.openAuthDialog){
+        toast('Войди в аккаунт Пикабу — после входа откроется оплата');
+        try{await sdk.auth.openAuthDialog()}catch(e){}
+        if(sdk.player.isAuthorized===false){toast('Для покупки нужно войти в аккаунт Пикабу');return false}
+      }
+      const r=await st.purchase({productId:id,developerPayload:JSON.stringify({from:'shop'})});
+      if(!r||!r.success){const why=r&&r.reason;
+        if(why==='NON_CONSUMABLE_ALREADY_OWNED'){toast('Уже куплено — возвращаю покупку');await this.pkStoreInit();return false}
+        toast(why==='USER_CANCELLED'?'Покупка отменена':why==='USER_UNAUTHORIZED'?'Для покупки нужно войти в аккаунт Пикабу':'Покупка не прошла, попробуй ещё раз');
+        track('purchase_cancel',{id,why:String(why||'')});return false}
+      await this.pkGrant(r.purchase,true);return 'granted';
+    }catch(e){toast('Покупка не прошла, попробуй ещё раз');return false}
+    finally{this.buying=false}
+  },
   buy(id,rub){
     track('purchase_request',{id});
+    if(PIKABU)return this.pkBuy(id);
     return new Promise(res=>{
       const done=ok=>{if(ok)track('purchase',{id,rub});else track('purchase_cancel',{id});res(ok)};
       if(this.payments){this.payments.purchase({id}).then(pc=>{done(true);if(PRODUCTS[id].consumable&&pc&&pc.purchaseToken){try{this.payments.consumePurchase(pc.purchaseToken)}catch(e){}}}).catch(()=>done(false));return}
@@ -1672,7 +1861,7 @@ const PRODUCTS={
   pass:{name:'Почтовый сезон на 30 дней',rub:'199 ₽',consumable:true,grant:()=>{P.passUntil=Math.max(P.passUntil||0,Date.now())+30*864e5;own('tisha:pass');own('frame:season')}},
 };
 const passActive=()=>(P.passUntil||0)>Date.now();
-async function buyProduct(id){const pr=PRODUCTS[id];const ok=await Platform.buy(id,pr.rub);if(ok){pr.grant();save();sfx('win',.7);toast(pr.name+': готово!')}return ok}
+async function buyProduct(id){const pr=PRODUCTS[id];const ok=await Platform.buy(id,Platform.price(id));if(ok==='granted')return true;if(ok){pr.grant();save();sfx('win',.7);toast(pr.name+': готово!')}return !!ok}
 function passDaily(){
   if(!passActive()||P.passDay===todayKey())return;
   P.passDay=todayKey();P.coins+=60;P.hammers++;save();track('pass_daily');
@@ -1685,7 +1874,7 @@ function showStarterOffer(){
     $('card').innerHTML=`<div class="to">Только один раз</div><h2>${bi('bag')} Стартовый набор</h2>
       <div class="offerlist"><span>${COIN} 1000 монет</span><span><span class="ib">${BICON.rocket}</span> 3 ракеты</span><span><span class="ib">${BICON.bomb}</span> 3 бомбы</span><span><span class="ib">${BICON.moves3}</span> 3 × «+3 хода»</span><span><span class="ib">${BICON.postcard}</span> золотая рамка открыток</span></div>
       <p class="note">Выгоднее, чем по отдельности, примерно в 3 раза. Предложение больше не повторится, но набор останется в магазине.</p>
-      <div class="row"><button class="btn" id="soNo">Позже</button><button class="btn main" id="soYes">Купить за 99 ₽</button></div>`;
+      <div class="row"><button class="btn" id="soNo">Позже</button><button class="btn main" id="soYes">Купить за ${Platform.price('starter')}</button></div>`;
     openOv();$('soNo').onclick=closeOv;$('soYes').onclick=async()=>{if(await buyProduct('starter')){closeOv();renderHome()}};
   },900);
 }
@@ -1764,12 +1953,12 @@ function showShop(tab,back){
     const a=P.ads&&P.ads.day===todayKey()?P.ads.n:0;const until=P.passUntil?new Date(P.passUntil).toLocaleDateString('ru-RU'):'';
     body=`<div class="sitem wide adv"><span class="bi">${BICON.ad}</span><b>Посмотреть рекламу</b><span class="sd">+30 монет. Осталось сегодня: ${3-a} из 3.</span>
       <button class="btn main" id="bAd" ${a>=3?'disabled':''}>+30 ${COIN}</button></div>
-      ${P.starterBought?'':`<div class="deal"><span class="dealtag">Выгодно</span><span class="bi">${BICON.bag}</span><div class="dtxt"><b>Стартовый набор</b><span>1000 монет, по 3 ракеты, бомбы и «+3 хода», золотая рамка</span></div><button class="btn main buy" data-p="starter">99 ₽</button></div>`}
+      ${P.starterBought?'':`<div class="deal"><span class="dealtag">Выгодно</span><span class="bi">${BICON.bag}</span><div class="dtxt"><b>Стартовый набор</b><span>1000 монет, по 3 ракеты, бомбы и «+3 хода», золотая рамка</span></div><button class="btn main buy" data-p="starter">${Platform.price('starter')}</button></div>`}
       <div class="sitem wide pass${passActive()?' on':''}"><span class="bi">${BICON.medal}</span><b>Почтовый сезон</b><span class="sd">30 дней: каждый день +60 монет и молоток, наряд «Почтальон сезона» и сезонная рамка открыток.</span>
-        ${passActive()?`<span class="ddone">✓ Активен до ${until}</span><button class="btn buy" data-p="pass">Продлить · 199 ₽</button>`:'<button class="btn main buy" data-p="pass">199 ₽</button>'}</div>
-      <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${BICON.bag}</span><b>${k.name}</b><span class="have">${COIN} ${k.coins}</span><button class="btn buy" data-p="${k.id}">${k.rub}</button></div>`).join('')}
-        <div class="sitem${P.noAds?' on':''}"><span class="bi">${BICON.noads}</span><b>Игра без рекламы</b><span class="sd">Без рекламы между уровнями. Награды за рекламу остаются по желанию.</span>${P.noAds?'<span class="ddone">✓ Куплено</span>':'<button class="btn buy" data-p="noads">149 ₽</button>'}</div></div>
-      <p class="note">${Platform.name==='yandex'?'Оплата через Яндекс Игры.':'Прототип: реклама и покупки работают в демо-режиме, без настоящих денег.'}</p>`;
+        ${passActive()?`<span class="ddone">✓ Активен до ${until}</span><button class="btn buy" data-p="pass">Продлить · ${Platform.price('pass')}</button>`:`<button class="btn main buy" data-p="pass">${Platform.price('pass')}</button>`}</div>
+      <div class="sgrid">${SHOP.packs.map(k=>`<div class="sitem"><span class="bi">${BICON.bag}</span><b>${k.name}</b><span class="have">${COIN} ${k.coins}</span><button class="btn buy" data-p="${k.id}">${Platform.price(k.id)}</button></div>`).join('')}
+        <div class="sitem${P.noAds?' on':''}"><span class="bi">${BICON.noads}</span><b>Игра без рекламы</b><span class="sd">Без рекламы между уровнями. Награды за рекламу остаются по желанию.</span>${P.noAds?'<span class="ddone">✓ Куплено</span>':`<button class="btn buy" data-p="noads">${Platform.price('noads')}</button>`}</div></div>
+      <p class="note">${Platform.name==='yandex'?'Оплата через Яндекс Игры.':PIKABU?'Оплата через Пикабу. Покупки сохраняются в твоём аккаунте.':'Прототип: реклама и покупки работают в демо-режиме, без настоящих денег.'}</p>`;
   }
   $('card').innerHTML=`<div class="to">Магазин</div><div class="shophead"><h2>${bi("cart")} Лавка Тиши</h2><span class="wallet">${COIN} <b>${P.coins}</b></span></div>
     <div class="tabs">${tabs.map(([k,n])=>`<button class="tab${k===shopTab?' on':''}" data-tab="${k}">${n}</button>`).join('')}</div>
@@ -1943,13 +2132,18 @@ async function openPostcard(pet){
     <input id="pcLink" class="pcinput pclink" readonly aria-label="Ссылка на открытку">
     <p class="note">Друг получит в подарок молоток и перемешивание. А тебе раз в день за открытку дают перемешивание и 20 монет.</p>
     <div class="row"><button class="btn" id="pcBack">Назад</button></div>`;
+  if(PIKABU){   // на Пикабу нельзя ссылок на другие сайты и соцсети: открытка уходит картинкой
+    document.querySelector('.pcsocial').remove();$('pcLink').remove();
+    $('pcShare').textContent='Сохранить картинку';
+    $('card').querySelector('.note').textContent='Сохрани открытку и отправь её другу картинкой. Раз в день за открытку дают перемешивание и 20 монет.';
+  }
   const msgEl=$('pcMsg');
   const refresh=async()=>{
     const m=msgEl.value.trim(),url=cardLink(pet,m),txt='Тебе открытка из «Лесной почты»!';
-    $('pcLink').value=url;
+    if(!PIKABU){$('pcLink').value=url;
     $('pcVK').href='https://vk.com/share.php?url='+encodeURIComponent(url);
     $('pcTG').href='https://t.me/share/url?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(txt);
-    $('pcWA').href='https://wa.me/?text='+encodeURIComponent(txt+' '+url);
+    $('pcWA').href='https://wa.me/?text='+encodeURIComponent(txt+' '+url);}
     const cv=await drawPostcard(pet,m);const pv=$('pcPrev');if(!pv)return;pv.width=cv.width;pv.height=cv.height;pv.getContext('2d').drawImage(cv,0,0);
   };
   let tmr;msgEl.addEventListener('input',()=>{clearTimeout(tmr);tmr=setTimeout(refresh,250)});
@@ -1957,19 +2151,23 @@ async function openPostcard(pet){
   $('pcMore').onclick=()=>showShop('frames',()=>openPostcard(pet));
   await refresh();
   const reward=()=>{track('postcard_send',{pet});if(P.lastCardDay!==todayKey()){P.lastCardDay=todayKey();P.shuffles++;P.coins=(P.coins||0)+20;save();toast('+1 перемешивание и +20 монет за открытку!')}};
-  ['pcVK','pcTG','pcWA'].forEach(id=>$(id).addEventListener('click',reward));
+  if(!PIKABU)['pcVK','pcTG','pcWA'].forEach(id=>$(id).addEventListener('click',reward));
   $('pcShare').onclick=async()=>{
     const m=msgEl.value.trim(),url=cardLink(pet,m),txt='Тебе открытка из «Лесной почты»!';
     try{
       const cv=await drawPostcard(pet,m);const blob=await new Promise(r=>cv.toBlob(r,'image/png'));
       const file=new File([blob],'otkrytka.png',{type:'image/png'});
+      if(PIKABU){
+        if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:txt,files:[file]});reward();return}
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='otkrytka.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+        toast('Открытка сохранена');reward();return}
       if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:txt,text:txt+' '+url,files:[file]});reward();return}
       if(navigator.share){await navigator.share({title:txt,text:txt,url});reward();return}
     }catch(e){if(e&&e.name==='AbortError')return}
     try{await navigator.clipboard.writeText(url);toast('Ссылка скопирована');reward()}catch(e){const l=$('pcLink');l.focus();l.select();toast('Скопируй ссылку из поля ниже')}
   };
   $('pcBack').onclick=()=>{$('card').innerHTML=prev;rebindWin()};
-  $('pcLink').addEventListener('focus',e=>e.target.select());
+  if(!PIKABU)$('pcLink').addEventListener('focus',e=>e.target.select());
 }
 async function receivePostcard(code){
   const m=/^card-([a-z]+)-([0-9a-f]*)$/.exec(code);if(!m)return false;
@@ -2083,7 +2281,8 @@ seasonFx(document.body,SEASON==='summer'?14:30,false);renderHome();
 const _hash=(location.hash||'').slice(1);
 if(_hash.startsWith('card-')){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}receivePostcard(_hash).then(ok=>{if(!ok&&!P.introSeen)showIntroGate()})}
 else if(!P.introSeen)showIntroGate();
-window.BOOTED=true;
+window.BOOTED=true;Platform.started();
+if(PIKABU&&Platform.pkReady)Platform.pkReady.then(()=>Platform.started());
 });
 </script>
 </body>
