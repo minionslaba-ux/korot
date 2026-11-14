@@ -462,6 +462,11 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .band{position:absolute;left:0;right:0}
 .band.b0{background:linear-gradient(#a6e68a,#7cc95b)}.band.b1{background:linear-gradient(#8fd8ff,#79c55a 30%,#6cbf4c)}.band.b2{background:linear-gradient(#ffd9a8,#d9b14c 30%,#c99a3a)}
 .band.b3{background:linear-gradient(#e9f4ff,#ffffff 30%,#d6e8f6)}.band.b4{background:linear-gradient(#ffe0ef,#b6ec8c 35%,#8fdc66)}.band.b5{background:linear-gradient(#ffc98f,#a8d67a 35%,#6cbf4c)}
+.band.b6{background:linear-gradient(#9fb7d9,#7cbf6a 35%,#5aa84c)}.band.b7{background:linear-gradient(#f2dca0,#c9b05a 35%,#a8c45a)}
+.band.b8{background:linear-gradient(#e6c89a,#a9cf6a 35%,#8cc45a)}.band.b9{background:linear-gradient(#ffd9a0,#e0a84c 35%,#c9903a)}
+.band.b10{background:linear-gradient(#b8e0cc,#6ab88a 35%,#4a9a6a)}.band.b11{background:linear-gradient(#a8e0ff,#7cc8e8 30%,#79c55a)}
+.band.b12{background:linear-gradient(#5a6aa0,#34407a 35%,#2a3466)}.band.b13{background:linear-gradient(#f4faff,#ffffff 30%,#cfe2f4)}
+.band.b14{background:linear-gradient(#f4dc98,#c8d46a 35%,#a6c95a)}.band.b15{background:linear-gradient(#e0f4ff,#b6e69a 35%,#8fd46c)}
 .node.boss{width:76px;height:76px;margin:-38px 0 0 -38px;box-shadow:0 5px 0 #0002,0 0 0 4px #ff5a5a}
 .node.boss.cur{box-shadow:0 5px 0 #0002,0 0 0 4px #ff5a5a,0 0 22px 6px #ffd23f}
 .bossb{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#ff5a5a;color:#fff;font:700 11px var(--display);border-radius:999px;padding:1px 8px;box-shadow:0 2px 0 #a33}
@@ -537,6 +542,59 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 /* наборы фишек */
 .tsprev{display:flex;gap:4px;justify-content:center}.tsprev img{width:34px;height:34px;object-fit:contain}
 .sitem.locked .tsprev{filter:grayscale(.85) opacity(.55)}
+
+/* ---------- усложнения ---------- */
+.lay{position:absolute;left:0;top:0;width:var(--cell);height:var(--cell);pointer-events:none;transition:opacity .3s,transform .3s}
+.lay.gone{opacity:0;transform:scale(.3)}
+.lay.l-d,.layi.l-d{background:radial-gradient(circle at 30% 35%,#8a5a33 0 9%,transparent 10%),radial-gradient(circle at 70% 65%,#8a5a33 0 8%,transparent 9%),linear-gradient(#b07a48,#8a5a33);border-radius:20%;box-shadow:inset 0 -4px 0 #6a4020;clip-path:inset(3% round 20%)}
+.lay.l-k,.layi.l-k{border-radius:22%;box-shadow:inset 0 0 0 3px #57c24799;background:repeating-linear-gradient(45deg,#57c24722 0 6px,transparent 6px 12px);clip-path:inset(4% round 22%)}
+.lay.l-K{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%2357c247' stroke='%23348a2a' stroke-width='3'%3E%3Ccircle cx='38' cy='38' r='16'/%3E%3Ccircle cx='62' cy='38' r='16'/%3E%3Ccircle cx='38' cy='62' r='16'/%3E%3Ccircle cx='62' cy='62' r='16'/%3E%3C/g%3E%3C/svg%3E") center/62% no-repeat,#b8eba4;border-radius:22%;clip-path:inset(4% round 22%)}
+.lay.l-f,.layi.l-f{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='%23804010' stroke-width='3'%3E%3Cpath d='M12 30c20-18 40-8 38 10-18 8-34 6-38-10z' fill='%23e8892a'/%3E%3Cpath d='M55 62c18-22 40-10 36 6-14 12-32 10-36-6z' fill='%23d9642a'/%3E%3Cpath d='M20 70c10-20 32-18 34-4-10 14-26 16-34 4z' fill='%23f2b23a'/%3E%3Cpath d='M58 18c16-6 30 4 26 16-12 6-24 2-26-16z' fill='%23c9502a'/%3E%3C/g%3E%3C/svg%3E") center/100% no-repeat;z-index:3}
+.lay.l-w,.layi.l-w{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23fff' stroke-width='2.4' opacity='.95'%3E%3Cpath d='M0 0L100 100M100 0L0 100M50 0V100M0 50H100'/%3E%3Cpath d='M50 22L70 30L78 50L70 70L50 78L30 70L22 50L30 30Z'/%3E%3Cpath d='M50 6L82 18L94 50L82 82L50 94L18 82L6 50L18 18Z'/%3E%3Cpath d='M50 36L60 40L64 50L60 60L50 64L40 60L36 50L40 40Z'/%3E%3C/g%3E%3C/svg%3E") center/100% no-repeat;z-index:3;filter:drop-shadow(0 0 1px #0006)}
+.lay.l-o,.layi.l-o{background:radial-gradient(circle at 35% 40%,#fff 0 30%,transparent 55%),radial-gradient(circle at 70% 65%,#f4f8fc 0 32%,transparent 58%),#dfe8f2f2;border-radius:30%;z-index:3}
+.layi.l-K{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%2357c247' stroke='%23348a2a' stroke-width='3'%3E%3Ccircle cx='38' cy='38' r='16'/%3E%3Ccircle cx='62' cy='38' r='16'/%3E%3Ccircle cx='38' cy='62' r='16'/%3E%3Ccircle cx='62' cy='62' r='16'/%3E%3C/g%3E%3C/svg%3E") center/80% no-repeat}
+.layi.l-k{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%2357c247' stroke='%23348a2a' stroke-width='3'%3E%3Ccircle cx='38' cy='38' r='16'/%3E%3Ccircle cx='62' cy='38' r='16'/%3E%3Ccircle cx='38' cy='62' r='16'/%3E%3Ccircle cx='62' cy='62' r='16'/%3E%3C/g%3E%3C/svg%3E") center/80% no-repeat,#b8eba4}
+.lay.grow{animation:popin .35s cubic-bezier(.3,1.6,.6,1)}
+.layi{display:block;width:100%;height:100%}
+.layi.l-vine{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40'%3E%3Cpath d='M0 20c12-14 25 14 37 0s25 14 37 0 20 10 26 0' fill='none' stroke='%232f8a2a' stroke-width='8' stroke-linecap='round'/%3E%3Cellipse cx='30' cy='10' rx='9' ry='5' fill='%2357c247'/%3E%3Cellipse cx='68' cy='30' rx='9' ry='5' fill='%2357c247'/%3E%3C/svg%3E") center/100% no-repeat}
+.picpiece{position:absolute;background-size:cover;background-position:center;border-radius:14px;opacity:.95;box-shadow:inset 0 0 0 3px #fff8;background-color:#ffe9b8}
+.picpiece.found{animation:picfound 1.2s ease-out;z-index:6}
+@keyframes picfound{0%{transform:scale(1);filter:brightness(1)}30%{transform:scale(1.08);filter:brightness(1.4)}100%{transform:scale(1);filter:brightness(1)}}
+.fence{position:absolute;left:0;top:0;z-index:3;pointer-events:none;background:linear-gradient(#c88a4a,#8a5a2a);border-radius:4px;box-shadow:0 2px 0 #5a3a1a;transition:opacity .3s}
+.fence.fb{width:var(--cell);height:8px;margin-top:-4px}.fence.fr{width:8px;height:var(--cell);margin-left:-4px}
+.fence.gone,.vine.gone{opacity:0}
+.belt{position:absolute;left:0;width:100%;height:var(--cell);background:repeating-linear-gradient(90deg,#5aa8e6 0 calc(var(--cell)*.5),#7cc0f0 calc(var(--cell)*.5) var(--cell));opacity:.55;animation:belt 1.6s linear infinite}
+.belt.left{animation-direction:reverse}
+@keyframes belt{to{background-position:var(--cell) 0}}
+.burrow{position:absolute;width:var(--cell);height:calc(var(--cell)*.32);background:radial-gradient(ellipse at center,#2a1a0a 0 45%,#6a4020 46% 62%,transparent 64%);z-index:3;pointer-events:none}
+.burrow.in{bottom:-4px}.burrow.out{top:-4px}
+.mill{position:absolute;width:calc(var(--cell)*1.7);height:calc(var(--cell)*1.7);transform:translate(-50%,-50%);border-radius:50%;border:4px dashed #ffffffcc;z-index:2;pointer-events:none;animation:mill 6s linear infinite}
+@keyframes mill{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.windfx{position:absolute;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(90deg,transparent 0 40px,#ffffff55 40px 70px,transparent 70px 120px);background-size:240px 100%;opacity:.5;animation:wind 1.4s linear infinite}
+.windfx.r{animation-direction:reverse}
+@keyframes wind{to{background-position:-240px 0}}
+.vine{position:absolute;left:0;top:0;width:var(--cell);height:var(--cell);z-index:3;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40'%3E%3Cpath d='M0 20c12-14 25 14 37 0s25 14 37 0 20 10 26 0' fill='none' stroke='%232f8a2a' stroke-width='8' stroke-linecap='round'/%3E%3Cellipse cx='30' cy='10' rx='9' ry='5' fill='%2357c247'/%3E%3Cellipse cx='68' cy='30' rx='9' ry='5' fill='%2357c247'/%3E%3C/svg%3E") center/100% 40% no-repeat;transition:opacity .3s}
+.vine.vv{transform-origin:center}.vine.vv{rotate:90deg}
+.dark{position:absolute;left:0;top:0;width:var(--cell);height:var(--cell);background:#0b1430;opacity:0;transition:opacity .5s;z-index:4;pointer-events:none}
+.dark.on{opacity:.55}
+.t.o-lantern{z-index:5}
+.bolt{position:absolute;left:0;top:0;width:var(--cell);height:var(--cell);z-index:5;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M58 4L22 56h24L36 96l42-58H54z' fill='%23ffe14a' stroke='%23c98a00' stroke-width='4'/%3E%3C/svg%3E") center/60% no-repeat;border-radius:20%;box-shadow:inset 0 0 0 3px #ffe14a;animation:boltw .6s ease-in-out infinite alternate}
+@keyframes boltw{from{opacity:.45}to{opacity:1}}
+.t.obj .g{inset:4%}.t.obj .g img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 0 #0003)}
+.t.part{display:none}
+.t.big-log{width:calc(var(--cell)*2)}.t.big-chest{width:calc(var(--cell)*2);height:calc(var(--cell)*2)}
+.t.flip .g{transform:scaleX(-1)}
+.obadge{position:absolute;right:2%;bottom:2%;min-width:calc(var(--cell)*.3);height:calc(var(--cell)*.3);border-radius:99px;background:#fff;color:#2b3a55;font:900 calc(var(--cell)*.2)/calc(var(--cell)*.3) var(--display);text-align:center;box-shadow:0 2px 0 #0003;padding:0 3px;box-sizing:border-box}
+.obadge.timer{background:#ffe14a}.obadge.hot{background:#ff5a5a;color:#fff;animation:boltw .4s infinite alternate}.obadge.lit{background:#ffd23f}
+.bask{position:absolute;left:28%;top:22%;width:44%;height:44%}.bask img{width:100%;height:100%;object-fit:contain}
+.petals{position:absolute;left:0;right:0;bottom:-2%;display:flex;justify-content:center;gap:1px}.petals i{width:30%;height:calc(var(--cell)*.28);opacity:.35;filter:grayscale(.6)}.petals i.ok{opacity:1;filter:none}.petals img{width:100%;height:100%;object-fit:contain}
+.t .frog{position:absolute;right:-4%;top:-6%;width:58%;height:58%;object-fit:contain;filter:drop-shadow(0 2px 0 #0004);animation:hopf 2s ease-in-out infinite}
+@keyframes hopf{0%,80%,100%{transform:none}88%{transform:translateY(-12%)}}
+.t.pop-in .g{animation:popin .35s cubic-bezier(.3,1.6,.6,1)}
+@keyframes popin{from{transform:scale(0)}to{transform:scale(1)}}
+.t.hop .g{animation:hopf .5s ease-out 2}
+.t.nope .g{animation:nopes .3s}
+@keyframes nopes{25%{transform:translateX(-8%)}75%{transform:translateX(8%)}}
 @media (prefers-reduced-motion:reduce){.sfx{display:none}}
 :root[data-season="winter"] .home>div>.story,:root[data-season="winter"] .seasonchip,:root[data-season="autumn"] .home>div>.story,:root[data-season="autumn"] .seasonchip{color:#2b3a55;text-shadow:0 1px 0 #ffffff80}
 .coin{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}
@@ -680,7 +738,8 @@ function applyTileSet(id){
 const chapterOfLevel=i=>{const k=CHAPTERS.findIndex(c=>i>=c.from&&i<=c.to);return k<0?0:k};
 const tilesetOpen=k=>k===0||(TILESETS[k].price?owns('tiles:'+TILESETS[k].id):P.stars.slice(0,CHAPTERS[k].from).filter(Boolean).length>=CHAPTERS[k].from);
 // набор для уровня i (-1 — письмо дня): выбранный игроком или набор главы
-function tileSetFor(i){if(P.tiles&&P.tiles!=='auto')return P.tiles;return TILESETS[chapterOfLevel(i<0?nextLevel():i)].id}
+const CH_TS=[0,1,2,3,4,5,1,2,4,2,5,1,5,3,4,0];
+function tileSetFor(i){if(P.tiles&&P.tiles!=='auto')return P.tiles;return TILESETS[CH_TS[chapterOfLevel(i<0?nextLevel():i)]||0].id}
 // в текстах писем фишки названы по весеннему набору — подставляем названия текущего
 const BASE_NAMES=[['сердечк','сердечек'],['звёзд','звёзд'],['кристалл','кристаллов'],['изумруд','изумрудов'],['жемчужин','жемчужин']];
 function fixTileText(t){if(!TSET||TSET.id==='spring'||!t)return t;
@@ -816,6 +875,157 @@ const LEVELS=[
  {'moves':52,'colors':5,'house':0,'goals':[['l'],['h'],['s']],'map':['....h...','S..S.s.l','.S.SS...','...lssll','l.S...S.','..SS.lsl','..l...s.','l.......'],'tier':'normal'},
  {'moves':37,'colors':5,'house':7,'goals':[['h'],['s'],['m']],'map':['.h......','S..sS..S','s..s.Ss.','S....S..','...sS.sS','mmmmmmmm','mmmmmmmm','mmmmmmmm'],'tier':'normal'},
  {'moves':44,'colors':5,'goals':[['s'],['m'],['l'],['p']],'map':['...p..p.','lSlllSl.','Sss.SSls','s.s.SllS','MMMlSMMM','MMMMSMMM','MMMMMMMM','MMMMM.MM'],'tier':'boss'},
+ // ---------- Главы 7–16 ----------
+ {'moves':18,'colors':5,'goals':[['t'],['c',2,20],['c',4,20]],'map':['........','........','........','..t.t...','.......t','....t...','t.......','........'],'tier':'normal','tut':'Пень выдерживает три удара: собирай ряды рядом с ним.'},
+ {'moves':16,'colors':5,'goals':[['t'],['c',4,20],['c',3,20]],'map':['........','........','t.....t.','........','....t.t.','........','...t....','........'],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['t'],['c',0,21],['c',3,21]],'map':['........','........','t.......','........','...t....','..t.....','....t.t.','........'],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['f'],['c',4,22],['c',0,22]],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','..ff.fff','ff..f..f','....ffff','f.f.f.f.'],'tier':'normal','tut':'Листья сметает любой ряд рядом или прямо на них. Но ветер иногда насыпает новые!'},
+ {'moves':26,'colors':5,'goals':[['t']],'map':['........','........','........','....t...','.t....t.','....t...','.......t','........'],'tier':'breather'},
+ {'moves':20,'colors':5,'goals':[['t'],['c',1,23],['c',2,23]],'map':['........','........','.t......','.....t..','....t...','.......t','....t.t.','........'],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['H'],['c',0,24],['c',1,24]],'map':['........','........','...H....','.......H','........','........','........','........'],'tier':'normal','tut':'Улей крепкий: ему нужно три удара рядом. А спецфишка переселяет пчёл с одного раза!'},
+ {'moves':22,'colors':5,'goals':[['f'],['t'],['c',2,24],['c',3,24]],'map':['........','........','..t.....','........','t.t.t..t','........','t.......','........'],'lay':['f.ff.f..','....f.ff','...fffff','.ffffff.','........','........','........','........'],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['f'],['t'],['c',0,25],['c',1,25]],'map':['........','........','.t.t....','....t..t','......t.','.t......','........','........'],'lay':['........','........','........','........','ff..ff..','...f...f','fffff.ff','f.ffff.f'],'tier':'normal'},
+ {'moves':26,'colors':5,'goals':[['t']],'map':['........','........','...t....','..t...t.','........','........','....t.t.','........'],'tier':'breather'},
+ {'moves':14,'colors':5,'goals':[['c',0,27],['c',1,27]],'map':['........','........','........','........','........','........','........','........'],'storm':4,'tier':'normal','tut':'Гроза! Клетка с молнией через ход превратится в камень. Успей собрать там ряд.'},
+ {'moves':18,'colors':5,'goals':[['c',2,27],['c',3,27],['f']],'map':['........','........','........','........','........','........','........','........'],'lay':['..ffff.f','.ff.ffff','..fffff.','f.ff..f.','........','........','........','........'],'storm':4,'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['c',1,28],['c',0,28],['t']],'map':['........','........','..t...t.','.....t.t','........','..t...t.','.....t..','........'],'storm':4,'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['c',3,28],['c',0,28],['f']],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','f..f.ff.','f.ffffff','.f....ff','ffffff.f'],'storm':4,'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['H'],['s'],['c',0,31],['c',3,31]],'map':['........','.....s..','..sSHS..','.H..s.s.','....sS..','......H.','...s.s..','........'],'storm':4,'tier':'boss'},
+ {'moves':22,'colors':5,'goals':[['d'],['c',3,20],['c',0,20]],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','........','..d....d','d.....dd','...d.dd.'],'tier':'normal','tut':'Грязь убирается рядом прямо на ней. Если долго её не трогать, она расползается.'},
+ {'moves':22,'colors':5,'goals':[['d'],['c',3,21],['c',1,21]],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','........','..d.....','..dd.d..','dddd....'],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['d'],['c',0,21],['c',1,21]],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','........','d.dd...d','d...d...','...dd..d'],'tier':'normal'},
+ {'moves':28,'colors':5,'goals':[['basket'],['c',3,22],['c',4,22]],'map':['........','........','........','...E....','........','.....B..','........','........'],'tier':'normal','tut':'Корзинке нужны фишки своего цвета: собирай такие ряды рядом с ней.'},
+ {'moves':26,'colors':5,'goals':[['d']],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','........','.....dd.','d.dd.d.d','......d.'],'tier':'breather'},
+ {'moves':34,'colors':5,'goals':[['d'],['c',3,26],['c',4,26]],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','........','.dd.....','...d.d.d','dd...ddd'],'tier':'normal'},
+ {'moves':13,'colors':5,'goals':[['c',2,34]],'map':['........','........','........','........','........','....y...','.y......','........'],'bush':2,'tier':'normal','tut':'Ягодный куст не ломается. Ряд рядом с ним — и он перекрашивает соседние фишки в нужный цвет.'},
+ {'moves':20,'colors':5,'goals':[['c',1,35],['l']],'map':['........','........','...ll...','ll......','.y.y..ll','........','l...l...','..l.....'],'bush':1,'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['basket'],['H'],['c',3,26],['c',1,26]],'map':['........','........','.C.H....','....E..H','........','........','........','........'],'tier':'normal'},
+ {'moves':36,'colors':5,'goals':[['basket']],'map':['........','........','........','........','..C.....','.A......','........','........'],'tier':'breather'},
+ {'moves':16,'colors':5,'goals':[['j'],['c',0,27],['c',3,27]],'map':['........','..j.j..j','...j....','........','........','........','........','........'],'tier':'normal','tut':'Божьи коровки каждый ход ползут вверх. Поймай их рядом собранным рядом.'},
+ {'moves':38,'colors':5,'goals':[['j'],['basket'],['c',1,28],['c',0,28]],'map':['........','...j...j','Ej....j.','........','..A.....','........','........','........'],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['j'],['d'],['c',1,28],['c',2,28]],'map':['........','...j....','..j..j.j','........','........','........','........','........'],'lay':['........','........','........','........','........','...d.ddd','d.d..ddd','.dddd...'],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['j'],['m'],['c',0,29],['c',2,29]],'map':['........','j.j...j.','....j...','........','........','m.m.mmmm','.mm.m.mm','.m.mm.mm'],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['j'],['c',0,43],['d']],'map':['........','.j.j....','.....j.j','........','........','.......y','.y......','........'],'lay':['........','........','........','........','........','..ddddd.','d..dd..d','.dd.dddd'],'bush':0,'tier':'boss'},
+ {'moves':12,'colors':5,'goals':[['O'],['c',2,20],['c',1,20]],'map':['........','........','........','........','......O.','........','...O..O.','........'],'tier':'normal','tut':'Крот каждые три хода перепрыгивает и оставляет кучку земли. Бей рядом с ним три раза.'},
+ {'moves':14,'colors':5,'goals':[['O'],['c',0,21],['c',2,21]],'map':['........','...O....','........','........','.....O..','........','...O....','........'],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['O'],['c',4,22],['c',2,22]],'map':['........','...O....','........','.....O..','........','.......O','........','........'],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['log'],['c',2,22],['c',3,22]],'map':['........','........','........','........','........','........','........','........'],'big':[['log',5,0],['log',6,1],['log',4,6],['log',2,0]],'tier':'normal','tut':'Бревно занимает две клетки и выдерживает два удара.'},
+ {'moves':12,'colors':5,'goals':[['log']],'map':['........','........','........','........','........','........','........','........'],'big':[['log',3,3],['log',6,2],['log',4,6],['log',3,5]],'tier':'breather'},
+ {'moves':31,'colors':5,'goals':[['log'],['m'],['c',3,24],['c',2,24]],'map':['........','........','........','........','........','m...mmmm','mmm.m...','mmmmmmm.'],'big':[['log',2,3],['log',6,6],['log',2,5],['log',4,2]],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['w'],['c',3,25],['c',2,25]],'map':['........','........','........','........','........','........','........','........'],'lay':['........','wwww..w.','.....w..','.ww.w...','...w..ww','www.w...','........','........'],'tier':'normal','tut':'Фишка в паутине не падает. Собери с ней ряд, и паутина порвётся.'},
+ {'moves':18,'colors':5,'goals':[['log'],['O'],['c',3,25],['c',0,25]],'map':['........','........','..O...O.','........','........','..O.....','........','........'],'big':[['log',4,1],['log',5,3],['log',2,0],['log',5,6]],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['log'],['O'],['c',1,26],['c',4,26]],'map':['........','........','.O......','...O....','........','........','...O....','........'],'big':[['log',2,2],['log',6,1],['log',3,5],['log',4,0]],'tier':'normal'},
+ {'moves':13,'colors':5,'goals':[['O']],'map':['........','........','........','....O...','.O......','.......O','........','........'],'tier':'breather'},
+ {'moves':25,'colors':5,'goals':[['w'],['O'],['c',0,27],['c',4,27]],'map':['........','....O...','........','...O....','........','........','..O...O.','........'],'lay':['........','.w.w...w','w.w....w','....w.w.','..wwwww.','...ww.ww','........','........'],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['w'],['O'],['c',4,28],['c',0,28]],'map':['........','........','.......O','........','......O.','....O...','.O......','........'],'lay':['........','ww..ww.w','....w.w.','..w.w.ww','.w..ww..','...w..ww','........','........'],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['log'],['O'],['c',0,29],['c',1,29]],'map':['........','........','..O.....','........','.......O','....O...','..O.....','........'],'big':[['log',2,5],['log',3,6],['log',2,3],['log',4,4]],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['log'],['O'],['c',3,29],['c',2,29]],'map':['........','....O.O.','........','........','........','........','.O...O..','........'],'big':[['log',5,5],['log',3,0],['log',4,6],['log',3,5]],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['w'],['c',2,43],['O']],'map':['........','.O......','O......O','........','...y....','......y.','...O....','........'],'lay':['........','..www.ww','...ww...','ww..ww.w','..w.www.','...www..','........','........'],'bush':2,'tier':'boss'},
+ {'moves':16,'colors':5,'goals':[['q'],['c',0,24],['c',3,24]],'map':['........','........','....q...','........','........','........','........','........'],'tier':'normal','tut':'Белка раз в четыре хода утаскивает собранные фишки, если её не прогонять. Собирай ряды рядом с ней!'},
+ {'moves':16,'colors':5,'goals':[['q'],['c',0,25],['c',3,25]],'map':['........','........','........','......q.','........','........','........','........'],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['q'],['c',4,25],['c',3,25]],'map':['........','........','..q.....','........','........','........','........','........'],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['c',3,26],['c',2,26]],'map':['........','........','........','........','........','........','........','........'],'magpie':true,'tier':'normal','tut':'Здесь живёт сорока: если спецфишку не использовать три хода, она её утащит.'},
+ {'moves':18,'colors':5,'goals':[['c',3,24],['c',0,24]],'map':['........','........','........','........','........','........','........','........'],'magpie':true,'tier':'breather'},
+ {'moves':20,'colors':5,'goals':[['c',0,27],['H']],'map':['........','........','........','........','H.......','.......H','........','........'],'magpie':true,'tier':'normal'},
+ {'moves':28,'colors':5,'goals':[['u'],['c',1,25],['c',0,25]],'map':['........','........','u......u','........','........','.....u..','........','........'],'tier':'normal','tut':'Бутону нужны три цвета, они показаны под ним. Собери рядом ряды этих цветов, и он распустится.'},
+ {'moves':20,'colors':5,'goals':[['u'],['c',4,28]],'map':['........','........','.u......','....u...','.....u..','........','........','........'],'magpie':true,'tier':'normal'},
+ {'moves':31,'colors':5,'goals':[['u'],['s'],['c',4,26],['c',0,26]],'map':['........','..s.....','........','.s......','....suss','.uSs....','..su....','........'],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['q'],['c',3,26],['c',1,26]],'map':['........','........','........','..q.....','........','........','........','........'],'tier':'breather'},
+ {'moves':38,'colors':5,'goals':[['k'],['c',4,28],['c',2,28]],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','..k..kkK','.Kkk...k','........','...k.kk.'],'tier':'normal','tut':'Клевер растёт: ряд, который касается клевера, засевает все свои клетки. Засей отмеченные клетки.'},
+ {'moves':43,'colors':5,'goals':[['k'],['c',4,30]],'map':['........','........','........','........','........','........','........','........'],'lay':['........','........','........','........','........','K.k..kk.','..k.k..k','.K.k.k.k'],'magpie':true,'tier':'normal'},
+ {'moves':45,'colors':5,'goals':[['k'],['q'],['c',3,29],['c',0,29]],'map':['........','........','........','...q....','........','........','........','........'],'lay':['........','........','........','........','.kk.....','.k...k..','....K.kk','kk..kK.k'],'tier':'normal'},
+ {'moves':38,'colors':5,'goals':[['k'],['q'],['c',2,29],['c',4,29]],'map':['........','........','........','...q....','........','........','........','........'],'lay':['........','........','........','........','........','kkk...kK','.kk....k','.k.kK.k.'],'tier':'normal'},
+ {'moves':39,'colors':5,'goals':[['k'],['u'],['j']],'map':['........','.j...j.j','.u....j.','........','......u.','........','..u.....','........'],'lay':['........','........','........','........','........','.K..kkk.','.k....kk','.kkkk.kK'],'tier':'boss'},
+ {'moves':12,'colors':5,'goals':[['r'],['c',1,21],['c',3,21]],'map':['........','........','........','.r......','.....r..','...r..r.','........','........'],'tier':'normal','tut':'Лягушка сидит на фишке и раз в три хода прыгает, съедая её. Собери фишку с лягушкой в ряд.'},
+ {'moves':14,'colors':5,'goals':[['r'],['c',0,22],['c',4,22]],'map':['.r......','........','........','.r......','..r.....','.......r','........','........'],'tier':'normal'},
+ {'moves':14,'colors':5,'goals':[['r'],['c',4,23],['c',2,23]],'map':['r.......','........','....r...','........','......r.','..r.....','........','........'],'tier':'normal'},
+ {'moves':14,'colors':5,'goals':[['o'],['c',1,23],['c',0,23]],'map':['........','........','........','........','........','........','........','........'],'lay':['ooo..o.o','oooo.ooo','.oo.o.oo','........','........','........','........','........'],'tier':'normal','tut':'В тумане фишек не видно и их нельзя двигать. Собирай ряды рядом, чтобы его развеять.'},
+ {'moves':12,'colors':5,'goals':[['o']],'map':['........','........','........','........','........','........','........','........'],'lay':['oo.ooo..','o.oooooo','.oo..o.o','........','........','........','........','........'],'tier':'breather'},
+ {'moves':16,'colors':5,'goals':[['r'],['o'],['c',4,25],['c',0,25]],'map':['...r....','........','...r....','....r.r.','........','........','........','........'],'lay':['o.o..ooo','.oo.oooo','ooo.oooo','........','........','........','........','........'],'tier':'normal'},
+ {'moves':22,'colors':5,'goals':[['vine'],['c',3,25],['c',0,25]],'map':['........','........','........','........','........','........','........','........'],'vines':[[5,5,'h'],[3,3,'v'],[2,5,'v'],[6,2,'h'],[3,6,'v'],[2,1,'h']],'tier':'normal','tut':'Лоза держит две фишки: они не двигаются и не падают. Собери одну из них в ряд, и лоза порвётся.'},
+ {'moves':18,'colors':5,'goals':[['vine'],['c',1,28],['c',4,28]],'map':['........','........','........','........','........','........','........','........'],'vines':[[5,5,'h'],[3,0,'h'],[5,1,'v'],[4,5,'h'],[3,4,'h'],[6,3,'v']],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['vine'],['r'],['c',2,27],['c',4,27]],'map':['.r.r....','.....r..','........','........','........','r.......','........','........'],'vines':[[4,0,'h'],[3,0,'h'],[4,2,'h'],[3,2,'h'],[6,2,'h'],[6,0,'h']],'tier':'normal'},
+ {'moves':12,'colors':5,'goals':[['o']],'map':['........','........','........','........','........','........','........','........'],'lay':['o.oo.oo.','.oo.oooo','o..ooooo','........','........','........','........','........'],'tier':'breather'},
+ {'moves':22,'colors':5,'goals':[['o'],['O'],['c',1,28],['c',2,28]],'map':['........','........','........','.....O..','O...O...','........','.O......','........'],'lay':['..oooooo','ooooo.oo','.oo.oooo','........','........','........','........','........'],'tier':'normal'},
+ {'moves':22,'colors':5,'goals':[['vine'],['o'],['c',3,29],['c',2,29]],'map':['........','........','........','........','........','........','........','........'],'lay':['oooooooo','oooooooo','...oo.oo','........','........','........','........','........'],'vines':[[2,1,'h'],[3,4,'v'],[3,6,'v'],[6,3,'h'],[6,5,'h'],[5,5,'h'],[5,1,'v'],[2,5,'v']],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['o'],['r'],['c',3,30],['c',1,30]],'map':['........','........','..r.....','.r......','....r...','...r..r.','........','........'],'lay':['ooo.oo.o','oooooooo','oo..oooo','........','........','........','........','........'],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['vine'],['r'],['c',2,30],['c',1,30]],'map':['.r..r...','........','r.......','........','....r.r.','........','........','........'],'vines':[[2,2,'v'],[5,4,'h'],[2,6,'v'],[2,1,'v'],[6,3,'v'],[3,5,'v'],[5,1,'v'],[6,4,'h']],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['vine'],['o'],['c',0,44]],'map':['........','........','........','........','.......y','........','....y...','........'],'lay':['oooooooo','oooooooo','oooooo..','........','........','........','........','........'],'vines':[[3,6,'v'],[3,2,'v'],[5,2,'h'],[5,4,'h'],[4,0,'v'],[6,0,'h'],[4,4,'h'],[2,6,'h']],'bush':0,'tier':'boss'},
+ {'moves':12,'colors':5,'goals':[['c',3,29],['c',4,29]],'map':['........','........','........','........','........','........','........','........'],'belts':[{'r':4,'d':1}],'tier':'normal','tut':'Ручей каждый ход сдвигает свой ряд на клетку.'},
+ {'moves':14,'colors':5,'goals':[['c',0,29],['c',4,29]],'map':['........','........','........','........','........','........','........','........'],'belts':[{'r':3,'d':-1}],'tier':'normal'},
+ {'moves':14,'colors':5,'goals':[['c',3,30],['c',0,30]],'map':['........','........','........','........','........','........','........','........'],'belts':[{'r':4,'d':-1}],'tier':'normal'},
+ {'moves':14,'colors':5,'goals':[['c',0,31],['c',3,31],['b']],'map':['........','........','........','........','.....b..','........','........','........'],'belts':[{'r':4,'d':-1}],'tier':'normal','tut':'Письмо в бутылке плывёт по ручью. Собери ряд рядом с ним, чтобы поймать.'},
+ {'moves':14,'colors':5,'goals':[['c',1,28],['c',4,28]],'map':['........','........','........','........','........','........','........','........'],'belts':[{'r':3,'d':1}],'tier':'breather'},
+ {'moves':14,'colors':5,'goals':[['c',1,32],['c',2,32],['b'],['s']],'map':['........','.s...ss.','.ss...s.','.......b','.....s..','........','.s......','........'],'belts':[{'r':3,'d':-1}],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['c',0,32],['c',4,32]],'map':['........','........','........','........','........','........','........','........'],'mills':[[3,6]],'tier':'normal','tut':'Мельница каждые два хода поворачивает четыре фишки по кругу.'},
+ {'moves':14,'colors':5,'goals':[['c',3,33],['c',1,33],['b'],['r']],'map':['........','...r....','.....r..','....r.r.','b.......','........','........','........'],'belts':[{'r':4,'d':-1}],'tier':'normal'},
+ {'moves':12,'colors':5,'goals':[['c',1,33],['c',0,33],['b']],'map':['........','........','........','..b.....','........','........','........','........'],'belts':[{'r':3,'d':1}],'mills':[[5,5],[4,0]],'tier':'normal'},
+ {'moves':14,'colors':5,'goals':[['c',0,31],['c',1,31],['b']],'map':['........','........','........','........','...b....','........','........','........'],'belts':[{'r':4,'d':-1}],'tier':'breather'},
+ {'moves':16,'colors':5,'goals':[['c',0,34],['c',4,34],['b'],['o']],'map':['........','........','........','b.......','........','........','........','........'],'lay':['oo..oooo','oo.oooo.','ooooo.oo','........','........','........','........','........'],'belts':[{'r':3,'d':-1}],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['c',2,35],['c',0,35],['b'],['H']],'map':['........','........','..H.....','b.......','........','.......H','H.......','........'],'belts':[{'r':3,'d':-1}],'tier':'normal'},
+ {'moves':14,'colors':5,'goals':[['c',1,35],['c',0,35],['b']],'map':['........','........','........','........','.b......','........','........','........'],'belts':[{'r':4,'d':1}],'mills':[[5,6],[1,5]],'tier':'normal'},
+ {'moves':12,'colors':5,'goals':[['c',3,36],['c',0,36],['b']],'map':['........','........','........','........','.......b','........','........','........'],'belts':[{'r':4,'d':-1}],'mills':[[5,3],[2,6]],'tier':'normal'},
+ {'moves':12,'colors':5,'goals':[['c',2,38],['c',3,38],['b']],'map':['........','........','........','.....b..','........','........','........','........'],'belts':[{'r':3,'d':-1}],'mills':[[5,4],[1,6]],'tier':'boss'},
+ {'moves':18,'colors':5,'goals':[['N'],['c',0,22],['c',1,22]],'map':['.N......','........','.N......','........','.....N..','........','N.....N.','.N......'],'night':true,'tier':'normal','tut':'Ночь! Зажги фонари: собери ряд рядом с фонарём, и вокруг станет светло на пять ходов.'},
+ {'moves':22,'colors':5,'goals':[['N'],['c',1,23],['c',4,23]],'map':['....N...','........','.N..N...','........','......N.','........','........','N..N....'],'night':true,'tier':'normal'},
+ {'moves':28,'colors':5,'goals':[['N'],['f'],['c',1,23],['c',4,23]],'map':['........','......N.','..N.....','N.......','......N.','........','........','....N.N.'],'lay':['..ffff.f','ff..ff..','ff..fff.','..ff..ff','........','........','........','........'],'night':true,'tier':'normal'},
+ {'moves':14,'colors':5,'goals':[['W'],['c',1,24],['c',2,24]],'map':['........','........','.W..W...','........','........','........','..W.....','........'],'tier':'normal','tut':'Не буди совёнка зря: от каждого удара он перемешивает фишки вокруг. После трёх он улетит.'},
+ {'moves':12,'colors':5,'goals':[['W']],'map':['........','........','.......W','........','..W.....','.....W..','........','........'],'tier':'breather'},
+ {'moves':18,'colors':5,'goals':[['W'],['N'],['c',2,26],['c',0,26]],'map':['........','N....N..','..N.....','N.......','...W.W..','N.......','....W...','....N...'],'night':true,'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['e'],['c',4,26],['c',2,26]],'map':['..e..e..','........','........','........','........','........','........','........'],'timer':13,'tier':'normal','tut':'Срочное письмо! Число на нём — сколько ходов осталось. Собери ряд рядом с ним вовремя.'},
+ {'moves':31,'colors':5,'goals':[['W'],['m'],['c',2,27],['c',1,27]],'map':['........','........','........','.......W','........','m.WmW.mm','mmmm.mmm','m.m.mmmm'],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['W'],['e'],['c',2,28],['c',4,28]],'map':['..e...e.','........','W.......','.W....W.','........','........','........','........'],'timer':13,'tier':'normal'},
+ {'moves':13,'colors':5,'goals':[['W']],'map':['........','........','........','........','........','........','W.W.W...','........'],'tier':'breather'},
+ {'moves':22,'colors':5,'goals':[['e'],['N'],['c',1,29],['c',2,29]],'map':['..e.e...','.N.....N','N.N..N..','......N.','........','....N...','........','.N......'],'timer':12,'night':true,'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['e'],['j'],['c',4,30],['c',3,30]],'map':['.e...e..','.....j..','j.j...j.','........','........','........','........','........'],'timer':12,'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['W'],['O'],['c',1,30],['c',2,30]],'map':['........','....W...','.......O','....WO..','O..W....','.......W','O.......','........'],'tier':'normal'},
+ {'moves':28,'colors':5,'goals':[['e'],['N'],['c',3,31],['c',4,31]],'map':['..e..Ne.','........','.N......','N.......','.N......','....N...','...N.N.N','........'],'timer':12,'night':true,'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['W'],['c',3,32],['c',4,32],['H']],'map':['........','...W....','......W.','H..H...H','W....H..','........','....W...','........'],'storm':4,'tier':'boss'},
+ {'moves':16,'colors':5,'goals':[['n'],['c',4,22],['c',1,22]],'map':['........','........','........','n.......','...n....','........','......n.','........'],'tier':'normal','tut':'Снеговик выдерживает три удара, но если его не трогать, снова подрастает.'},
+ {'moves':25,'colors':5,'goals':[['vine'],['n'],['c',4,23],['c',2,23]],'map':['........','........','....n...','.n......','........','.......n','........','........'],'vines':[[3,5,'v'],[2,1,'h'],[3,6,'h'],[5,0,'h'],[6,5,'h'],[5,2,'h']],'tier':'normal'},
+ {'moves':34,'colors':5,'goals':[['n'],['s'],['c',1,24],['c',4,24]],'map':['........','..s.s.s.','........','.s......','.......S','n......s','..n.s..n','........'],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['i'],['c',1,25],['c',3,25]],'map':['.....i..','.i.....i','........','........','........','........','........','........'],'tier':'normal','tut':'Сосулька раз в три хода замораживает фишку под собой. Разбей её двумя ударами рядом.'},
+ {'moves':15,'colors':5,'goals':[['i']],'map':['.......i','.i.i....','........','........','........','........','........','........'],'tier':'breather'},
+ {'moves':28,'colors':5,'goals':[['n'],['t'],['c',4,26],['c',0,26]],'map':['........','........','....t.t.','........','n.t.....','.t....nt','.n...t..','........'],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['c',1,33],['c',4,33]],'map':['........','........','........','........','........','........','........','........'],'fences':[[3,4,'b'],[3,6,'b'],[3,3,'b'],[3,0,'b'],[3,1,'b'],[3,2,'b']],'tier':'normal','tut':'Через заборчик нельзя менять фишки, и сквозь него ничего не падает. Его ломают спецфишки.'},
+ {'moves':20,'colors':5,'goals':[['c',3,33],['c',2,33],['s']],'map':['........','s...s...','....s...','Ss.ss...','........','....S...','........','........'],'fences':[[4,4,'b'],[4,6,'b'],[4,0,'b'],[4,5,'b'],[4,7,'b'],[4,2,'b']],'tier':'normal'},
+ {'moves':34,'colors':5,'goals':[['c',1,34],['c',0,34],['basket']],'map':['........','........','........','........','....A...','.....E..','........','........'],'fences':[[4,1,'b'],[4,0,'b'],[4,5,'b'],[4,3,'b'],[4,4,'b'],[4,7,'b']],'tier':'normal'},
+ {'moves':13,'colors':5,'goals':[['i']],'map':['...i....','.i.....i','........','........','........','........','........','........'],'tier':'breather'},
+ {'moves':28,'colors':5,'goals':[['c',1,35],['c',4,35],['n']],'map':['........','........','........','........','.n....n.','........','n.......','........'],'fences':[[4,3,'b'],[4,4,'b'],[4,0,'b'],[4,2,'b'],[4,7,'b'],[4,5,'b']],'tier':'normal'},
+ {'moves':22,'colors':5,'goals':[['c',2,35],['c',4,35],['i']],'map':['.i......','.....i.i','........','........','........','........','........','........'],'fences':[[4,2,'b'],[4,6,'b'],[4,5,'b'],[4,7,'b'],[4,1,'b'],[4,3,'b']],'tier':'normal'},
+ {'moves':22,'colors':5,'goals':[['c',1,36],['c',2,36],['n']],'map':['........','........','........','........','........','.n..n.n.','........','........'],'fences':[[4,1,'b'],[4,7,'b'],[4,4,'b'],[4,3,'b'],[4,5,'b'],[4,0,'b']],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['i'],['n'],['c',1,32],['c',2,32]],'map':['.i......','...i.i..','........','n.......','..n.....','....n...','........','........'],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['c',0,38],['c',3,38],['o'],['n']],'map':['........','........','........','........','n..n....','........','..n.....','........'],'lay':['oo..oooo','oooooooo','oooooooo','........','........','........','........','........'],'fences':[[4,6,'b'],[4,2,'b'],[4,5,'b'],[4,0,'b'],[4,1,'b'],[4,3,'b']],'tier':'boss'},
+ {'moves':18,'colors':5,'goals':[['a'],['c',3,23],['c',4,23]],'map':['........','........','........','........','...a..a.','.a......','........','........'],'tier':'normal','tut':'Муравейник растёт, если за ход ни один не разбит. Не давай муравьям разбежаться!'},
+ {'moves':16,'colors':5,'goals':[['a'],['j'],['c',1,24],['c',0,24]],'map':['........','j.......','..j....j','a.......','.a......','......a.','........','........'],'tier':'normal'},
+ {'moves':16,'colors':5,'goals':[['c',3,31],['c',0,31],['a']],'map':['........','........','....a...','........','........','...a.a..','........','........'],'mills':[[2,5]],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['cat'],['c',1,25],['c',4,25]],'map':['........','........','........','........','........','........','........','........'],'big':[['cat',5,4,1]],'tier':'normal','tut':'Гусеница ползёт по ряду. Бить нужно по голове: собирай ряды рядом с ней.'},
+ {'moves':12,'colors':5,'goals':[['a']],'map':['........','........','....a...','........','.a......','........','....a...','........'],'tier':'breather'},
+ {'moves':18,'colors':5,'goals':[['cat'],['c',4,32],['c',0,32]],'map':['........','........','........','........','........','........','........','........'],'big':[['cat',4,7,1]],'mills':[[1,4]],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['chest'],['c',0,27],['c',1,27]],'map':['........','........','........','........','........','........','........','........'],'big':[['chest',5,3]],'tier':'normal','tut':'Почтовый сундук выдерживает четыре удара, а внутри — бомба.'},
+ {'moves':20,'colors':5,'goals':[['chest'],['cat'],['c',1,28],['c',3,28]],'map':['........','........','........','........','........','........','........','........'],'big':[['chest',2,5],['cat',5,2,1]],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['chest'],['cat'],['c',4,28],['c',0,28]],'map':['........','........','........','........','........','........','........','........'],'big':[['chest',4,0],['cat',3,7,1]],'tier':'normal'},
+ {'moves':12,'colors':5,'goals':[['cat']],'map':['........','........','........','........','........','........','........','........'],'big':[['cat',5,3,1]],'tier':'breather'},
+ {'moves':16,'colors':5,'goals':[['pic'],['c',1,30],['c',2,30]],'map':['........','........','........','........','...mm...','...mm...','.....mm.','.....mm.'],'pics':[[6,5,2,2],[4,3,2,2]],'tier':'normal','tut':'Под мхом спрятан кусочек открытки. Расчисти весь мох над ним!'},
+ {'moves':31,'colors':5,'goals':[['cat'],['pic'],['c',1,31],['c',3,31]],'map':['........','........','........','........','........','........','mm....mm','mm....mm'],'big':[['cat',5,6,1]],'pics':[[6,0,2,2],[6,6,2,2]],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['chest'],['c',0,30],['c',1,30]],'map':['........','........','........','........','........','........','........','........'],'big':[['chest',4,0]],'storm':4,'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['chest'],['cat'],['c',3,32],['c',0,32]],'map':['........','........','........','........','........','........','........','........'],'big':[['chest',3,1],['cat',3,7,1]],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['chest'],['cat'],['pic']],'map':['........','........','........','........','........','........','.mm...mm','.mm...mm'],'big':[['chest',2,0],['cat',2,4,1]],'pics':[[6,1,2,2],[6,6,2,2]],'tier':'boss'},
+ {'moves':18,'colors':5,'goals':[['c',1,30],['c',4,30]],'map':['........','........','........','........','........','........','........','........'],'wind':'r','tier':'normal','tut':'Ветер! Фишки падают не вниз, а вбок, по ветру.'},
+ {'moves':20,'colors':5,'goals':[['c',3,31],['c',0,31]],'map':['........','........','........','........','........','........','........','........'],'wind':'l','fences':[[4,1,'b'],[4,6,'b'],[4,0,'b'],[4,4,'b'],[4,3,'b']],'tier':'normal'},
+ {'moves':28,'colors':5,'goals':[['c',4,31],['c',3,31],['i']],'map':['......i.','....i..i','........','........','........','........','........','........'],'wind':'r','tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['c',1,32],['c',3,32]],'map':['........','........','........','.......t','........','.t......','........','........'],'portals':[[7,4]],'tier':'normal','tut':'Норки: фишка, что уходит в норку внизу, выпадает из другой норки сверху.'},
+ {'moves':24,'colors':5,'goals':[['c',2,30],['c',3,30]],'map':['........','........','........','........','........','........','........','........'],'wind':'r','tier':'breather'},
+ {'moves':18,'colors':5,'goals':[['c',4,33],['c',2,33],['O']],'map':['........','........','...O....','....O.tO','........','t..O....','........','........'],'portals':[[6,3]],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['z'],['c',0,27],['c',4,27]],'map':['..Z.....','........','........','........','........','........','........','...z....'],'tier':'normal','tut':'Доведи ключ до замка: когда ключ окажется рядом с замком, тот откроется.'},
+ {'moves':18,'colors':5,'goals':[['c',2,34],['c',0,34],['vine']],'map':['........','........','........','........','..t.t...','........','........','........'],'portals':[[2,5]],'vines':[[5,4,'v'],[2,6,'h'],[6,0,'h'],[2,4,'v'],[4,3,'v'],[5,2,'v'],[3,6,'v'],[6,6,'h']],'tier':'normal'},
+ {'moves':34,'colors':5,'goals':[['z'],['c',3,34],['c',0,34]],'map':['...Z....','........','........','........','........','........','........','..z.....'],'belts':[{'r':4,'d':1}],'tier':'normal'},
+ {'moves':20,'colors':5,'goals':[['c',2,32],['c',1,32]],'map':['........','........','........','........','t..t....','........','........','........'],'portals':[[1,6]],'tier':'breather'},
+ {'moves':34,'colors':5,'goals':[['z'],['c',0,35],['c',1,35]],'map':['...Z....','........','........','........','........','........','........','..z.....'],'mills':[[5,5],[4,0]],'tier':'normal'},
+ {'moves':31,'colors':5,'goals':[['z'],['c',1,36],['c',0,36]],'map':['...Z....','........','........','.......t','t.......','........','........','..z.....'],'portals':[[6,1]],'tier':'normal'},
+ {'moves':25,'colors':5,'goals':[['z'],['j'],['c',4,32],['c',3,32]],'map':['...Z....','j......j','.j..j...','........','........','........','........','..z.....'],'tier':'normal'},
+ {'moves':18,'colors':5,'goals':[['c',4,37],['c',1,37]],'map':['........','........','........','........','...t.t..','........','........','........'],'portals':[[5,1]],'storm':4,'tier':'normal'},
+ {'moves':22,'colors':5,'goals':[['c',2,38],['c',1,38],['s']],'map':['........','........','.sS....s','.t.s....','.....sS.','...S..ts','S.sS....','........'],'portals':[[1,4]],'magpie':true,'tier':'boss'},
 ];
 const CAST=[
  {pet:'chick',name:'Цыплёнок Пик',to:'Цыплёнку Пику',text:'Пик впервые в жизни получает письмо: от бабушки с соседнего двора. Собери сердечки и кристаллы для посылки.'},
@@ -918,9 +1128,160 @@ const CAST=[
  {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'Горный ручей замёрз. Жираф Кузя просит растопить лёд. А ещё доведи Тишу до адресата, разбей камни.'},
  {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'Бобр Тихон ждёт Тишу в самом дальнем углу леса. А ещё разбей камни, убери мох.'},
  {'pet':null,'name':'Все жители леса','to':'Всему лесу','text':'Последнее письмо большого года: приглашение на праздник у почты. Доставь его, и праздник начнётся! А ещё разбей камни, расчисти сугробы, растопи лёд, довези посылки.'},
+ // ---------- письма глав 7–16 ----------
+ {'pet':'penguin','name':'Пингвин Пип','to':'Пингвину Пипу','text':'Пингвин Пип не может пройти к дому: дорожку завалило пнями после грозы. А ещё собери кристаллы и жемчужины.'},
+ {'pet':'elephant','name':'Слон Тимофей','to':'Слону Тимофею','text':'Слон Тимофей просит убрать пни, которые остались после бури. А ещё собери жемчужины и изумруды.'},
+ {'pet':'lion','name':'Лев Лёва','to':'Льву Лёве','text':'Лев Лёва не может пройти к дому: дорожку завалило пнями после грозы. А ещё собери сердечки и изумруды.'},
+ {'pet':'pig','name':'Свинка Хрюня','to':'Свинке Хрюне','text':'Ветер засыпал крыльцо листьями. Свинка Хрюня просит подмести. А ещё собери жемчужины и сердечки.'},
+ {'pet':'dog','name':'Пёс Барбос','to':'Псу Барбосу','text':'Пёс Барбос просит убрать пни, которые остались после бури.'},
+ {'pet':'monkey','name':'Обезьянка Чита','to':'Обезьянке Чите','text':'Обезьянка Чита не может пройти к дому: дорожку завалило пнями после грозы. А ещё собери звёзды и кристаллы.'},
+ {'pet':'tiger','name':'Тигр Полосатик','to':'Тигру Полосатику','text':'Пчёлы поселились прямо у двери! Тигр Полосатик просит переселить ульи. А ещё собери сердечки и звёзды.'},
+ {'pet':'fish','name':'Рыбка Буль','to':'Рыбке Буль','text':'Рыбка Буль не видит своей грядки под листьями. А ещё убери пни, собери кристаллы и изумруды.'},
+ {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Гусеница Фрося не видит своей грядки под листьями. А ещё убери пни, собери сердечки и звёзды.'},
+ {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'Краб Капитан просит убрать пни, которые остались после бури.'},
+ {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Гроза над лесом! Коала Соня ждёт подарки: сердечки и звёзды.'},
+ {'pet':'cow','name':'Корова Бурёнка','to':'Корове Бурёнке','text':'Гроза над лесом! Корова Бурёнка ждёт подарки: кристаллы и изумруды. А ещё смети листья.'},
+ {'pet':'deer','name':'Олень Арсений','to':'Оленю Арсению','text':'Гроза над лесом! Олень Арсений ждёт подарки: звёзды и сердечки. А ещё убери пни.'},
+ {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'Гроза над лесом! Цыплёнок Пик ждёт подарки: изумруды и сердечки. А ещё смети листья.'},
+ {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'Финал главы! Пчёлы поселились прямо у двери! Бобр Тихон просит переселить ульи. А ещё разбей камни, собери сердечки и изумруды.'},
+ {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'Медведица Глаша не может пройти по грязной тропинке. Помоги её расчистить! А ещё собери изумруды и сердечки.'},
+ {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'Кот Мурзик не может пройти по грязной тропинке. Помоги её расчистить! А ещё собери изумруды и звёзды.'},
+ {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'Жираф Кузя не может пройти по грязной тропинке. Помоги её расчистить! А ещё собери сердечки и звёзды.'},
+ {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'Пчела Жужа собирает грибы и ягоды. Наполни корзинки! А ещё собери изумруды и жемчужины.'},
+ {'pet':'hog','name':'Кабан Гоша','to':'Кабану Гоше','text':'После дождя у крыльца грязь по колено. Кабан Гоша просит помочь.'},
+ {'pet':'panda','name':'Панда Бао','to':'Панде Бао','text':'После дождя у крыльца грязь по колено. Панда Бао просит помочь. А ещё собери изумруды и жемчужины.'},
+ {'pet':'fox','name':'Лиса Маргарита','to':'Лисе Маргарите','text':'Лиса Маргарита варит варенье. Нужно много: кристаллы.'},
+ {'pet':'parrot','name':'Попугай Кеша','to':'Попугаю Кеше','text':'Попугай Кеша варит варенье. Нужно много: звёзды. А ещё растопи лёд.'},
+ {'pet':'penguin','name':'Пингвин Пип','to':'Пингвину Пипу','text':'Пингвин Пип собирает грибы и ягоды. Наполни корзинки! А ещё переселить ульи, собери изумруды и звёзды.'},
+ {'pet':'elephant','name':'Слон Тимофей','to':'Слону Тимофею','text':'Слон Тимофей собирает грибы и ягоды. Наполни корзинки!'},
+ {'pet':'lion','name':'Лев Лёва','to':'Льву Лёве','text':'Божьи коровки разбежались. Лев Лёва просит собрать их. А ещё собери сердечки и изумруды.'},
+ {'pet':'pig','name':'Свинка Хрюня','to':'Свинке Хрюне','text':'Божьи коровки разбежались. Свинка Хрюня просит собрать их. А ещё наполни корзинки, собери звёзды и сердечки.'},
+ {'pet':'dog','name':'Пёс Барбос','to':'Псу Барбосу','text':'Божьи коровки разбежались. Пёс Барбос просит собрать их. А ещё убери грязь, собери звёзды и кристаллы.'},
+ {'pet':'monkey','name':'Обезьянка Чита','to':'Обезьянке Чите','text':'Божьи коровки разбежались. Обезьянка Чита просит собрать их. А ещё убери мох, собери сердечки и кристаллы.'},
+ {'pet':'tiger','name':'Тигр Полосатик','to':'Тигру Полосатику','text':'Финал главы! Божьи коровки разбежались. Тигр Полосатик просит собрать их. А ещё собери сердечки, убери грязь.'},
+ {'pet':'fish','name':'Рыбка Буль','to':'Рыбке Буль','text':'Крот перекопал весь огород. Рыбка Буль просит поймать проказника! А ещё собери кристаллы и звёзды.'},
+ {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Крот перекопал весь огород. Гусеница Фрося просит поймать проказника! А ещё собери сердечки и кристаллы.'},
+ {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'Крот перекопал весь огород. Краб Капитан просит поймать проказника! А ещё собери жемчужины и кристаллы.'},
+ {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Дорогу перегородили брёвна. Коала Соня ждёт помощи. А ещё собери кристаллы и изумруды.'},
+ {'pet':'cow','name':'Корова Бурёнка','to':'Корове Бурёнке','text':'Дорогу перегородили брёвна. Корова Бурёнка ждёт помощи.'},
+ {'pet':'deer','name':'Олень Арсений','to':'Оленю Арсению','text':'Дорогу перегородили брёвна. Олень Арсений ждёт помощи. А ещё убери мох, собери изумруды и кристаллы.'},
+ {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'Пауки сплели паутину над тропинкой. Цыплёнок Пик просит её убрать. А ещё собери изумруды и кристаллы.'},
+ {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'Дорогу перегородили брёвна. Бобр Тихон ждёт помощи. А ещё поймай крота, собери изумруды и сердечки.'},
+ {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'Дорогу перегородили брёвна. Медведица Глаша ждёт помощи. А ещё поймай крота, собери звёзды и жемчужины.'},
+ {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'Крот перекопал весь огород. Кот Мурзик просит поймать проказника!'},
+ {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'Пауки сплели паутину над тропинкой. Жираф Кузя просит её убрать. А ещё поймай крота, собери сердечки и жемчужины.'},
+ {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'Пауки сплели паутину над тропинкой. Пчела Жужа просит её убрать. А ещё поймай крота, собери жемчужины и сердечки.'},
+ {'pet':'hog','name':'Кабан Гоша','to':'Кабану Гоше','text':'Дорогу перегородили брёвна. Кабан Гоша ждёт помощи. А ещё поймай крота, собери сердечки и звёзды.'},
+ {'pet':'panda','name':'Панда Бао','to':'Панде Бао','text':'Дорогу перегородили брёвна. Панда Бао ждёт помощи. А ещё поймай крота, собери изумруды и кристаллы.'},
+ {'pet':'fox','name':'Лиса Маргарита','to':'Лисе Маргарите','text':'Финал главы! Пауки сплели паутину над тропинкой. Лиса Маргарита просит её убрать. А ещё собери кристаллы, поймай крота.'},
+ {'pet':'parrot','name':'Попугай Кеша','to':'Попугаю Кеше','text':'Белка таскает чужие орехи! Попугай Кеша просит её прогнать, а заодно собрать сердечки и изумруды.'},
+ {'pet':'penguin','name':'Пингвин Пип','to':'Пингвину Пипу','text':'Белка таскает чужие орехи! Пингвин Пип просит её прогнать, а заодно собрать сердечки и изумруды.'},
+ {'pet':'elephant','name':'Слон Тимофей','to':'Слону Тимофею','text':'Белка таскает чужие орехи! Слон Тимофей просит её прогнать, а заодно собрать жемчужины и изумруды.'},
+ {'pet':'lion','name':'Лев Лёва','to':'Льву Лёве','text':'Сорока ворует всё блестящее. Лев Лёва просит собрать изумруды и кристаллы, пока она не видит.'},
+ {'pet':'pig','name':'Свинка Хрюня','to':'Свинке Хрюне','text':'Сорока ворует всё блестящее. Свинка Хрюня просит собрать изумруды и сердечки, пока она не видит.'},
+ {'pet':'dog','name':'Пёс Барбос','to':'Псу Барбосу','text':'Сорока ворует всё блестящее. Пёс Барбос просит собрать сердечки, пока она не видит. А ещё переселить ульи.'},
+ {'pet':'monkey','name':'Обезьянка Чита','to':'Обезьянке Чите','text':'Обезьянка Чита ждёт, когда распустятся цветы у крыльца. А ещё собери звёзды и сердечки.'},
+ {'pet':'tiger','name':'Тигр Полосатик','to':'Тигру Полосатику','text':'Тигр Полосатик ждёт, когда распустятся цветы у крыльца. А ещё собери жемчужины.'},
+ {'pet':'fish','name':'Рыбка Буль','to':'Рыбке Буль','text':'Рыбка Буль ждёт, когда распустятся цветы у крыльца. А ещё разбей камни, собери жемчужины и сердечки.'},
+ {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Белка таскает чужие орехи! Гусеница Фрося просит её прогнать, а заодно собрать изумруды и звёзды.'},
+ {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'Краб Капитан мечтает о клеверной полянке. Засей её! А ещё собери жемчужины и кристаллы.'},
+ {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Коала Соня мечтает о клеверной полянке. Засей её! А ещё собери жемчужины.'},
+ {'pet':'cow','name':'Корова Бурёнка','to':'Корове Бурёнке','text':'Корова Бурёнка мечтает о клеверной полянке. Засей её! А ещё прогони белку, собери изумруды и сердечки.'},
+ {'pet':'deer','name':'Олень Арсений','to':'Оленю Арсению','text':'Олень Арсений мечтает о клеверной полянке. Засей её! А ещё прогони белку, собери кристаллы и жемчужины.'},
+ {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'Финал главы! Цыплёнок Пик мечтает о клеверной полянке. Засей её! А ещё помоги бутонам распуститься, поймай божьих коровок.'},
+ {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'Лягушки прыгают по кочкам. Бобр Тихон просит их переловить. А ещё собери звёзды и изумруды.'},
+ {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'Лягушки прыгают по кочкам. Медведица Глаша просит их переловить. А ещё собери сердечки и жемчужины.'},
+ {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'Лягушки прыгают по кочкам. Кот Мурзик просит их переловить. А ещё собери жемчужины и кристаллы.'},
+ {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'Над болотом стоит туман. Жираф Кузя ждёт, когда он рассеется. А ещё собери звёзды и сердечки.'},
+ {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'Пчела Жужа не видит дорогу в тумане.'},
+ {'pet':'hog','name':'Кабан Гоша','to':'Кабану Гоше','text':'Лягушки прыгают по кочкам. Кабан Гоша просит их переловить. А ещё развей туман, собери жемчужины и сердечки.'},
+ {'pet':'panda','name':'Панда Бао','to':'Панде Бао','text':'Лоза оплела тропинку к дому. Панда Бао ждёт помощи. А ещё собери изумруды и сердечки.'},
+ {'pet':'fox','name':'Лиса Маргарита','to':'Лисе Маргарите','text':'Лоза оплела тропинку к дому. Лиса Маргарита ждёт помощи. А ещё собери звёзды и жемчужины.'},
+ {'pet':'parrot','name':'Попугай Кеша','to':'Попугаю Кеше','text':'Лоза оплела тропинку к дому. Попугай Кеша ждёт помощи. А ещё поймай лягушек, собери кристаллы и жемчужины.'},
+ {'pet':'penguin','name':'Пингвин Пип','to':'Пингвину Пипу','text':'Над болотом стоит туман. Пингвин Пип ждёт, когда он рассеется.'},
+ {'pet':'elephant','name':'Слон Тимофей','to':'Слону Тимофею','text':'Слон Тимофей не видит дорогу в тумане. А ещё поймай крота, собери звёзды и кристаллы.'},
+ {'pet':'lion','name':'Лев Лёва','to':'Льву Лёве','text':'Лоза оплела тропинку к дому. Лев Лёва ждёт помощи. А ещё развей туман, собери изумруды и кристаллы.'},
+ {'pet':'pig','name':'Свинка Хрюня','to':'Свинке Хрюне','text':'Свинка Хрюня не видит дорогу в тумане. А ещё поймай лягушек, собери изумруды и звёзды.'},
+ {'pet':'dog','name':'Пёс Барбос','to':'Псу Барбосу','text':'Лоза оплела тропинку к дому. Пёс Барбос ждёт помощи. А ещё поймай лягушек, собери кристаллы и звёзды.'},
+ {'pet':'monkey','name':'Обезьянка Чита','to':'Обезьянке Чите','text':'Финал главы! Обезьянка Чита не видит дорогу в тумане. А ещё порви лозу, собери сердечки.'},
+ {'pet':'tiger','name':'Тигр Полосатик','to':'Тигру Полосатику','text':'Тигр Полосатик живёт за ручьём. Переправь изумруды и жемчужины на другой берег.'},
+ {'pet':'fish','name':'Рыбка Буль','to':'Рыбке Буль','text':'Рыбка Буль живёт за ручьём. Переправь сердечки и жемчужины на другой берег.'},
+ {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Гусеница Фрося живёт за ручьём. Переправь изумруды и сердечки на другой берег.'},
+ {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'По ручью плывёт письмо в бутылке для адресата Краб Капитан. Поймай его! А ещё собери сердечки и изумруды.'},
+ {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Коала Соня живёт за ручьём. Переправь звёзды и жемчужины на другой берег.'},
+ {'pet':'cow','name':'Корова Бурёнка','to':'Корове Бурёнке','text':'По ручью плывёт письмо в бутылке для адресата Корова Бурёнка. Поймай его! А ещё собери звёзды и кристаллы, разбей камни.'},
+ {'pet':'deer','name':'Олень Арсений','to':'Оленю Арсению','text':'На мельнице кипит работа. Олень Арсений ждёт муку и сердечки и жемчужины.'},
+ {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'По ручью плывёт письмо в бутылке для адресата Цыплёнок Пик. Поймай его! А ещё собери изумруды и звёзды, поймай лягушек.'},
+ {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'На мельнице кипит работа. Бобр Тихон ждёт муку и звёзды и сердечки. А ещё поймай бутылку.'},
+ {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'По ручью плывёт письмо в бутылке для адресата Медведица Глаша. Поймай его! А ещё собери сердечки и звёзды.'},
+ {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'По ручью плывёт письмо в бутылке для адресата Кот Мурзик. Поймай его! А ещё собери сердечки и жемчужины, развей туман.'},
+ {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'По ручью плывёт письмо в бутылке для адресата Жираф Кузя. Поймай его! А ещё собери кристаллы и сердечки, переселить ульи.'},
+ {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'По ручью плывёт письмо в бутылке для адресата Пчела Жужа. Поймай его! А ещё собери звёзды и сердечки.'},
+ {'pet':'hog','name':'Кабан Гоша','to':'Кабану Гоше','text':'На мельнице кипит работа. Кабан Гоша ждёт муку и изумруды и сердечки. А ещё поймай бутылку.'},
+ {'pet':'panda','name':'Панда Бао','to':'Панде Бао','text':'Финал главы! На мельнице кипит работа. Панда Бао ждёт муку и кристаллы и изумруды. А ещё поймай бутылку.'},
+ {'pet':'fox','name':'Лиса Маргарита','to':'Лисе Маргарите','text':'Ночью Лиса Маргарита боится темноты. Зажги фонари вдоль тропинки! А ещё собери сердечки и звёзды.'},
+ {'pet':'parrot','name':'Попугай Кеша','to':'Попугаю Кеше','text':'Ночью Попугай Кеша боится темноты. Зажги фонари вдоль тропинки! А ещё собери звёзды и жемчужины.'},
+ {'pet':'penguin','name':'Пингвин Пип','to':'Пингвину Пипу','text':'Ночью Пингвин Пип боится темноты. Зажги фонари вдоль тропинки! А ещё смети листья, собери звёзды и жемчужины.'},
+ {'pet':'elephant','name':'Слон Тимофей','to':'Слону Тимофею','text':'Совята проснулись не вовремя. Слон Тимофей просит отправить их спать. А ещё собери звёзды и кристаллы.'},
+ {'pet':'lion','name':'Лев Лёва','to':'Льву Лёве','text':'Совята проснулись не вовремя. Лев Лёва просит отправить их спать.'},
+ {'pet':'pig','name':'Свинка Хрюня','to':'Свинке Хрюне','text':'Совята проснулись не вовремя. Свинка Хрюня просит отправить их спать. А ещё зажги фонари, собери кристаллы и сердечки.'},
+ {'pet':'dog','name':'Пёс Барбос','to':'Псу Барбосу','text':'Срочная телеграмма! Пёс Барбос ждёт её прямо сейчас. А ещё собери жемчужины и кристаллы.'},
+ {'pet':'monkey','name':'Обезьянка Чита','to':'Обезьянке Чите','text':'Совята проснулись не вовремя. Обезьянка Чита просит отправить их спать. А ещё убери мох, собери кристаллы и звёзды.'},
+ {'pet':'tiger','name':'Тигр Полосатик','to':'Тигру Полосатику','text':'Совята проснулись не вовремя. Тигр Полосатик просит отправить их спать. А ещё доставь срочное письмо, собери кристаллы и жемчужины.'},
+ {'pet':'fish','name':'Рыбка Буль','to':'Рыбке Буль','text':'Совята проснулись не вовремя. Рыбка Буль просит отправить их спать.'},
+ {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Срочная телеграмма! Гусеница Фрося ждёт её прямо сейчас. А ещё зажги фонари, собери звёзды и кристаллы.'},
+ {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'Срочная телеграмма! Краб Капитан ждёт её прямо сейчас. А ещё поймай божьих коровок, собери жемчужины и изумруды.'},
+ {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Совята проснулись не вовремя. Коала Соня просит отправить их спать. А ещё поймай крота, собери звёзды и кристаллы.'},
+ {'pet':'cow','name':'Корова Бурёнка','to':'Корове Бурёнке','text':'Срочная телеграмма! Корова Бурёнка ждёт её прямо сейчас. А ещё зажги фонари, собери изумруды и жемчужины.'},
+ {'pet':'deer','name':'Олень Арсений','to':'Оленю Арсению','text':'Финал главы! Совята проснулись не вовремя. Олень Арсений просит отправить их спать. А ещё собери изумруды и жемчужины, переселить ульи.'},
+ {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'Снеговики загородили перевал. Цыплёнок Пик ждёт на той стороне. А ещё собери жемчужины и звёзды.'},
+ {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'Снеговики загородили перевал. Бобр Тихон ждёт на той стороне. А ещё порви лозу, собери жемчужины и кристаллы.'},
+ {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'Снеговики загородили перевал. Медведица Глаша ждёт на той стороне. А ещё разбей камни, собери звёзды и жемчужины.'},
+ {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'С крыши свисают сосульки. Кот Мурзик боится выйти из дома. А ещё собери звёзды и изумруды.'},
+ {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'С крыши свисают сосульки. Жираф Кузя боится выйти из дома.'},
+ {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'Снеговики загородили перевал. Пчела Жужа ждёт на той стороне. А ещё убери пни, собери жемчужины и сердечки.'},
+ {'pet':'hog','name':'Кабан Гоша','to':'Кабану Гоше','text':'Вокруг грядок поставили заборчики. Кабан Гоша просит собрать звёзды и жемчужины.'},
+ {'pet':'panda','name':'Панда Бао','to':'Панде Бао','text':'Вокруг грядок поставили заборчики. Панда Бао просит собрать изумруды и кристаллы. А ещё разбей камни.'},
+ {'pet':'fox','name':'Лиса Маргарита','to':'Лисе Маргарите','text':'Вокруг грядок поставили заборчики. Лиса Маргарита просит собрать звёзды и сердечки. А ещё наполни корзинки.'},
+ {'pet':'parrot','name':'Попугай Кеша','to':'Попугаю Кеше','text':'С крыши свисают сосульки. Попугай Кеша боится выйти из дома.'},
+ {'pet':'penguin','name':'Пингвин Пип','to':'Пингвину Пипу','text':'Вокруг грядок поставили заборчики. Пингвин Пип просит собрать звёзды и жемчужины. А ещё растопи снеговиков.'},
+ {'pet':'elephant','name':'Слон Тимофей','to':'Слону Тимофею','text':'Вокруг грядок поставили заборчики. Слон Тимофей просит собрать кристаллы и жемчужины. А ещё сбей сосульки.'},
+ {'pet':'lion','name':'Лев Лёва','to':'Льву Лёве','text':'Вокруг грядок поставили заборчики. Лев Лёва просит собрать звёзды и кристаллы. А ещё растопи снеговиков.'},
+ {'pet':'pig','name':'Свинка Хрюня','to':'Свинке Хрюне','text':'С крыши свисают сосульки. Свинка Хрюня боится выйти из дома. А ещё растопи снеговиков, собери звёзды и кристаллы.'},
+ {'pet':'dog','name':'Пёс Барбос','to':'Псу Барбосу','text':'Финал главы! Вокруг грядок поставили заборчики. Пёс Барбос просит собрать сердечки и изумруды. А ещё развей туман, растопи снеговиков.'},
+ {'pet':'monkey','name':'Обезьянка Чита','to':'Обезьянке Чите','text':'Муравьи строят город прямо у крыльца. Обезьянка Чита просит помочь им переехать. А ещё собери изумруды и жемчужины.'},
+ {'pet':'tiger','name':'Тигр Полосатик','to':'Тигру Полосатику','text':'Муравьи строят город прямо у крыльца. Тигр Полосатик просит помочь им переехать. А ещё поймай божьих коровок, собери звёзды и сердечки.'},
+ {'pet':'fish','name':'Рыбка Буль','to':'Рыбке Буль','text':'Муравьи строят город прямо у крыльца. Рыбка Буль просит помочь им переехать. А ещё собери изумруды и сердечки.'},
+ {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Гусеница ползает по грядкам. Гусеница Фрося просит её прогнать. А ещё собери звёзды и жемчужины.'},
+ {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'Муравьи строят город прямо у крыльца. Краб Капитан просит помочь им переехать.'},
+ {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Гусеница ползает по грядкам. Коала Соня просит её прогнать. А ещё собери жемчужины и сердечки.'},
+ {'pet':'cow','name':'Корова Бурёнка','to':'Корове Бурёнке','text':'В лесу нашёлся старый почтовый сундук. Корова Бурёнка просит его открыть! А ещё собери сердечки и звёзды.'},
+ {'pet':'deer','name':'Олень Арсений','to':'Оленю Арсению','text':'Гусеница ползает по грядкам. Олень Арсений просит её прогнать. А ещё открой сундук, собери звёзды и изумруды.'},
+ {'pet':'chick','name':'Цыплёнок Пик','to':'Цыплёнку Пику','text':'Гусеница ползает по грядкам. Цыплёнок Пик просит её прогнать. А ещё открой сундук, собери жемчужины и сердечки.'},
+ {'pet':'beaver','name':'Бобр Тихон','to':'Бобру Тихону','text':'Гусеница ползает по грядкам. Бобр Тихон просит её прогнать.'},
+ {'pet':'polar','name':'Медведица Глаша','to':'Медведице Глаше','text':'Кусочки открытки затерялись во мху. Медведица Глаша просит их найти! А ещё собери звёзды и кристаллы.'},
+ {'pet':'cat','name':'Кот Мурзик','to':'Коту Мурзику','text':'Кусочки открытки затерялись во мху. Кот Мурзик просит их найти! А ещё прогони гусеницу, собери звёзды и изумруды.'},
+ {'pet':'giraffe','name':'Жираф Кузя','to':'Жирафу Кузе','text':'В лесу нашёлся старый почтовый сундук. Жираф Кузя просит его открыть! А ещё собери сердечки и звёзды.'},
+ {'pet':'bee','name':'Пчела Жужа','to':'Пчеле Жуже','text':'В лесу нашёлся старый почтовый сундук. Пчела Жужа просит его открыть! А ещё прогони гусеницу, собери изумруды и сердечки.'},
+ {'pet':'hog','name':'Кабан Гоша','to':'Кабану Гоше','text':'Финал главы! В лесу нашёлся старый почтовый сундук. Кабан Гоша просит его открыть! А ещё прогони гусеницу, найди кусочки открытки.'},
+ {'pet':'panda','name':'Панда Бао','to':'Панде Бао','text':'Ветер сдувает всё в сторону. Панда Бао ждёт звёзды и жемчужины.'},
+ {'pet':'fox','name':'Лиса Маргарита','to':'Лисе Маргарите','text':'Ветер сдувает всё в сторону. Лиса Маргарита ждёт изумруды и сердечки.'},
+ {'pet':'parrot','name':'Попугай Кеша','to':'Попугаю Кеше','text':'Ветер сдувает всё в сторону. Попугай Кеша ждёт жемчужины и изумруды. А ещё сбей сосульки.'},
+ {'pet':'penguin','name':'Пингвин Пип','to':'Пингвину Пипу','text':'Кроты прорыли норки, и фишки путешествуют под землёй. Пингвин Пип ждёт звёзды и изумруды.'},
+ {'pet':'elephant','name':'Слон Тимофей','to':'Слону Тимофею','text':'Ветер сдувает всё в сторону. Слон Тимофей ждёт кристаллы и изумруды.'},
+ {'pet':'lion','name':'Лев Лёва','to':'Льву Лёве','text':'Кроты прорыли норки, и фишки путешествуют под землёй. Лев Лёва ждёт жемчужины и кристаллы. А ещё поймай крота.'},
+ {'pet':'pig','name':'Свинка Хрюня','to':'Свинке Хрюне','text':'Ключ от сарая укатился. Свинка Хрюня просит довести его до замка! А ещё собери сердечки и жемчужины.'},
+ {'pet':'dog','name':'Пёс Барбос','to':'Псу Барбосу','text':'Кроты прорыли норки, и фишки путешествуют под землёй. Пёс Барбос ждёт кристаллы и сердечки. А ещё порви лозу.'},
+ {'pet':'monkey','name':'Обезьянка Чита','to':'Обезьянке Чите','text':'Ключ от сарая укатился. Обезьянка Чита просит довести его до замка! А ещё собери изумруды и сердечки.'},
+ {'pet':'tiger','name':'Тигр Полосатик','to':'Тигру Полосатику','text':'Кроты прорыли норки, и фишки путешествуют под землёй. Тигр Полосатик ждёт кристаллы и звёзды.'},
+ {'pet':'fish','name':'Рыбка Буль','to':'Рыбке Буль','text':'Ключ от сарая укатился. Рыбка Буль просит довести его до замка! А ещё собери сердечки и звёзды.'},
+ {'pet':'caterpillar','name':'Гусеница Фрося','to':'Гусенице Фросе','text':'Кроты прорыли норки, и фишки путешествуют под землёй. Гусеница Фрося ждёт звёзды и сердечки. А ещё открой замок.'},
+ {'pet':'crab','name':'Краб Капитан','to':'Крабу Капитану','text':'Ключ от сарая укатился. Краб Капитан просит довести его до замка! А ещё поймай божьих коровок, собери жемчужины и изумруды.'},
+ {'pet':'koala','name':'Коала Соня','to':'Коале Соне','text':'Кроты прорыли норки, и фишки путешествуют под землёй. Коала Соня ждёт жемчужины и звёзды.'},
+ {'pet':null,'name':'Все жители леса','to':'Всему лесу','text':'Последнее письмо: весь лес собирается на большой праздник у почты! Нужно всё и сразу: собери кристаллы и звёзды, разбей камни.'},
 ];
 CAST.forEach((c,i)=>Object.assign(LEVELS[i],c));
-const CHAPTERS=[{title:'Глава 1 · Весна',from:0,to:14},{title:'Глава 2 · Лето у ручья',from:15,to:29},{title:'Глава 3 · Осень: Тиша в пути',from:30,to:39},{title:'Глава 4 · Зима: снежные письма',from:40,to:59},{title:'Глава 5 · Весенняя ярмарка',from:60,to:79},{title:'Глава 6 · Большая доставка',from:80,to:99}];
+const CHAPTERS=[{title:'Глава 1 · Весна',from:0,to:14},{title:'Глава 2 · Лето у ручья',from:15,to:29},{title:'Глава 3 · Осень: Тиша в пути',from:30,to:39},{title:'Глава 4 · Зима: снежные письма',from:40,to:59},{title:'Глава 5 · Весенняя ярмарка',from:60,to:79},{title:'Глава 6 · Большая доставка',from:80,to:99},{title:'Глава 7 · Летняя гроза',from:100,to:114},{title:'Глава 8 · Грибная пора',from:115,to:129},{title:'Глава 9 · Кротовые горки',from:130,to:144},{title:'Глава 10 · Белкин переполох',from:145,to:159},{title:'Глава 11 · Болото',from:160,to:174},{title:'Глава 12 · Ручей и мельница',from:175,to:189},{title:'Глава 13 · Ночной лес',from:190,to:204},{title:'Глава 14 · Зимний перевал',from:205,to:219},{title:'Глава 15 · Муравьиный город',from:220,to:234},{title:'Глава 16 · Ветреная долина',from:235,to:249}];
 const petSrc=p=>`assets/pets/${p||'bunny'}.png`;
 const petImg=(p,cls='')=>`<img class="${cls}" src="${petSrc(p)}" alt="" draggable="false">`;
 // места жителей на диораме (посчитаны из 3D-сцены): x, низ y, высота в процентах кадра
@@ -1047,7 +1408,7 @@ function showMap(){
   const W=Math.min(innerWidth-32,680);
   const pos=i=>[W/2+Math.sin(i*0.9)*W*0.27,Hh-PADB-i*SP-SP/2];
   let d='';for(let i=0;i<n;i++){const [x,y]=pos(i);if(!i)d=`M${x} ${y+SP}L${x} ${y}`;else{const [px,py]=pos(i-1);d+=` C${px} ${py-SP*.5},${x} ${y+SP*.5},${x} ${y}`}}
-  const deco={0:['tree','tree-high','plant-spring','rocks-low','tree'],1:['tree-high','tree','plant','stones','tree-high'],2:['tree-autumn','tree-high-autumn','plant-autumn','rocks-low','tree-autumn'],3:['tree-winter','tree-high-winter','rocks-low-winter','tree-winter'],4:['tree','plant-spring','tree-high','plant-spring','plant-spring'],5:['tree-high','tree','stones','rocks-low','plant','tree-autumn']};
+  const deco={0:['tree','tree-high','plant-spring','rocks-low','tree'],1:['tree-high','tree','plant','stones','tree-high'],2:['tree-autumn','tree-high-autumn','plant-autumn','rocks-low','tree-autumn'],3:['tree-winter','tree-high-winter','rocks-low-winter','tree-winter'],4:['tree','plant-spring','tree-high','plant-spring','plant-spring'],5:['tree-high','tree','stones','rocks-low','plant','tree-autumn'],6:['tree-high','tree','rocks-low','plant'],7:['tree-autumn','plant-autumn','tree','stones'],8:['rocks-low','stones','plant','tree'],9:['tree-autumn','tree-high-autumn','plant-autumn'],10:['plant','tree-high','rocks-low','plant'],11:['tree','plant-spring','stones'],12:['tree-high','tree','rocks-low'],13:['tree-winter','tree-high-winter','rocks-low-winter'],14:['tree','plant','stones','rocks-low'],15:['tree-high','plant','rocks-low']};
   const rnd=seeded(4242);let decor='';
   for(let i=0;i<n;i++){const ch=CHAPTERS.findIndex(c=>i>=c.from&&i<=c.to);const [x,y]=pos(i);
     for(const side of [-1,1]){if(rnd()<.25)continue;const list=deco[ch];const k=list[Math.floor(rnd()*list.length)];
@@ -1113,6 +1474,8 @@ const D4=[[1,0],[-1,0],[0,1],[0,-1]];
 const randColor=()=>Math.floor(Math.random()*LV.colors);
 
 function goalIcon(g){
+  if(g.t==='pic')return BICON.postcard||'';
+  if(GOAL_IMG[g.t])return `<img src="assets/obs/${GOAL_IMG[g.t]}.png" alt="">`;if(GOAL_LAY[g.t])return `<span class="layi l-${g.t}"></span>`;
   if(g.t==='c')return TILE[g.color];
   if(g.t==='h')return '<img src="assets/pets/bunny.png" alt="">';if(g.t==='p')return PARCEL;if(g.t==='m')return ((window._GL||LV)&&(window._GL||LV).map&&(window._GL||LV).map.some(r=>r.includes('M')))?'<span class="mossi snowi"></span>':MOSS_IC;if(g.t==='s')return STONE;if(g.t==='l')return TILE[0]+ICE;
 }
@@ -1146,17 +1509,8 @@ function startLevel(i){
   for(let r=0;r<N;r++){moss.push([]);mossEl.push([]);grid.push(Array(N).fill(null));
     for(let c=0;c<N;c++){const ch=map[r][c];const m=ch==='M'?2:'mLx'.includes(ch)?1:0;moss[r].push(m);
       const e=document.createElement('div');e.className='mossc'+(m?'':' gone')+(m===2?' snow':'');e.style.transform=`translate(${c*CELL}px,${r*CELL}px)`;b.appendChild(e);mossEl[r].push(e)}}
-  fillBoard(map);
-  goals=LV.goals.map(g=>{
-    if(g[0]==='c')return {t:'c',color:g[1],need:g[2],have:0};
-    let need=0;for(let r=0;r<N;r++)for(let c=0;c<N;c++){const ch=map[r][c];
-      if(g[0]==='m'&&moss[r][c])need++;
-      if(g[0]==='s'&&'sSx'.includes(ch))need++;
-      if(g[0]==='l'&&'lL'.includes(ch))need++;
-      if(g[0]==='p'&&ch==='p')need++;
-      if(g[0]==='h'&&ch==='h')need++;}
-    return {t:g[0],need,have:0};
-  });
+  goals=[];setupObs(map);fillBoard(map);postObs();
+  goals=LV.goals.map(g=>g[0]==='c'?{t:'c',color:g[1],need:g[2],have:0}:{t:g[0],need:needOf(LV,g[0]),have:0});
   bindBoard();updateHUD();
   $('tHammer').onclick=()=>{if(busy)return;if(P.hammers<=0)return quickBuy('hammer');tool=tool==='hammer'?null:'hammer';clearSel();updateHUD();if(tool)toast('Выбери клетку для молотка')};
   $('tShuffle').onclick=async()=>{if(busy)return;if(P.shuffles<=0)return quickBuy('shuffle');P.shuffles--;save();track('booster_use',{id:'shuffle',level:LI+1});busy=true;await shuffleBoard();busy=false;updateHUD();armHint()};
@@ -1176,8 +1530,10 @@ function layout(){
 function fillBoard(map){
   for(let tries=0;tries<100;tries++){
     for(let r=0;r<N;r++)for(let c=0;c<N;c++){if(grid[r][c]&&grid[r][c].el)grid[r][c].el.remove();grid[r][c]=null}
+    const occ=placeBig();
     for(let r=0;r<N;r++)for(let c=0;c<N;c++){
-      const ch=map[r][c];
+      const ch=map[r][c];if(occ.has(r*N+c))continue;
+      const ot=obTile(ch,r,c);if(ot){grid[r][c]=ot;continue}
       if('sSx'.includes(ch)){grid[r][c]=mk({stone:true,hp:ch==='S'?2:1,color:-2},r,c);continue}
       if(ch==='p'){grid[r][c]=mk({parcel:true,color:-3},r,c);continue}
       if(ch==='h'){grid[r][c]=mk({hero:true,color:-4},r,c);continue}
@@ -1195,9 +1551,10 @@ function mk(o,r,c){
   t.el=document.createElement('div');renderTile(t);$('board').appendChild(t.el);return t;
 }
 function renderTile(t){
+  if(t.obj)return renderObj(t);
   t.el.className='t'+(t.parcel?' parcel':'')+(t.hero?' heroT':'')+(t.sp?' sp-'+t.sp:'')+(t.stone&&t.hp>1?' hp2':'')+(t===sel?' sel':'');
   const g=t.hero?HERO_T:t.parcel?PARCEL:t.stone?(t.hp>1?BOULDER:STONE):t.sp==='rb'?'<div class="rb"></div>':(t.sp?TILE_SP[t.color]:TILE[t.color]);
-  t.el.innerHTML=`<div class="g">${g}</div>${t.lock?ICE:''}`;
+  t.el.innerHTML=`<div class="g">${g}</div>${t.lock?ICE:''}${t.frog?'<img class="frog" src="assets/obs/frog.png" alt="Лягушка">':''}`;
 }
 function place(t,dur,row){
   t.el.style.transitionDuration=(dur||0)+'ms';
@@ -1213,6 +1570,238 @@ function updateHUD(){
   $('nH').textContent=P.hammers||'+';$('nS').textContent=P.shuffles||'+';
 }
 
+/* ---------- усложнения глав 7–16 ---------- */
+// объекты на поле: fixed — не падают; move — падают и меняются местами; spOnly — только спецфишками; noHit — не бьются
+const OBJ={
+  stump:{img:'stump',fixed:1,hp:3,goal:'t',name:'Пень'},
+  hive:{img:'hive',fixed:1,hp:3,goal:'H',name:'Улей'},
+  bush:{img:'bush',fixed:1,hp:0,name:'Ягодный куст'},
+  snowman:{img:'snowman',fixed:1,hp:3,goal:'n',name:'Снеговик'},
+  anthill:{img:'anthill',fixed:1,hp:1,goal:'a',name:'Муравейник'},
+  bud:{img:'bud',fixed:1,goal:'u',name:'Бутон'},
+  lock:{img:'lock',fixed:1,goal:'z',noHit:1,name:'Замок'},
+  key:{img:'key',move:1,noHit:1,name:'Ключ'},
+  squirrel:{img:'squirrel',fixed:1,hp:2,goal:'q',name:'Белка'},
+  mole:{img:'mole',fixed:1,hp:3,goal:'O',name:'Крот'},
+  molehill:{img:'molehill',fixed:1,hp:1,name:'Кротовая кучка'},
+  ladybug:{img:'ladybug',move:1,hp:1,goal:'j',name:'Божья коровка'},
+  owl:{img:'owlsleep',fixed:1,hp:3,goal:'W',name:'Совёнок'},
+  letter:{img:'letter',move:1,hp:1,goal:'e',name:'Срочное письмо'},
+  icicle:{img:'icicle',fixed:1,hp:2,goal:'i',name:'Сосулька'},
+  lantern:{img:'lanternoff',fixed:1,noHit:1,goal:'N',name:'Фонарь'},
+  bottle:{img:'bottle',move:1,hp:1,goal:'b',name:'Письмо в бутылке'},
+  basket:{img:'basket',fixed:1,hp:3,goal:'basket',name:'Корзинка'},
+  log:{img:'log',fixed:1,hp:2,goal:'log',name:'Бревно'},
+  chest:{img:'chest',fixed:1,hp:4,goal:'chest',name:'Почтовый сундук'},
+  seg:{img:'segment',fixed:1,goal:'cat',name:'Гусеница'},
+};
+const CH2OBJ={t:'stump',H:'hive',y:'bush',n:'snowman',a:'anthill',u:'bud',z:'lock',Z:'key',q:'squirrel',O:'mole',j:'ladybug',W:'owl',e:'letter',i:'icicle',N:'lantern',b:'bottle',A:'basket',B:'basket',C:'basket',D:'basket',E:'basket'};
+const GOAL_IMG={t:'stump',H:'hive',n:'snowman',a:'anthill',u:'flower',z:'lock',q:'squirrel',O:'mole',j:'ladybug',W:'owl',e:'letter',i:'icicle',N:'lantern',b:'bottle',basket:'basket',log:'log',chest:'chest',cat:'caterpillar',r:'frog'};
+const GOAL_LAY={d:'dirt',f:'leaves',k:'clover',w:'web',o:'fog',pic:'pic',vine:'vine'};
+let OB={},lay=[],layEl=[];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function needOf(L,k){
+  const map=L.map||Array(N).fill('........'),ly=L.lay||[];let n=0;
+  const cnt=f=>{for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(f(map[r][c],(ly[r]||'')[c]||'.'))n++};
+  if(k==='m')cnt(ch=>'mLxM'.includes(ch));else if(k==='s')cnt(ch=>'sSx'.includes(ch));else if(k==='l')cnt(ch=>'lL'.includes(ch));
+  else if(k==='p'||k==='h'||k==='r')cnt(ch=>ch===k);else if(k==='basket')cnt(ch=>'ABCDE'.includes(ch));
+  else if('dfwok'.includes(k)&&k.length===1)cnt((ch,l)=>l===k);
+  else if(k==='log'||k==='chest'||k==='cat')n=(L.big||[]).filter(b=>b[0]===k).length;
+  else if(k==='pic')n=(L.pics||[]).length;else if(k==='vine')n=(L.vines||[]).length;
+  else{const o=Object.keys(CH2OBJ).filter(ch=>OBJ[CH2OBJ[ch]].goal===k);cnt(ch=>o.includes(ch))}
+  return n;
+}
+function goalNeedAdd(t,d){for(const g of goals)if(g.t===t){g.need+=d}}
+const isNormal=t=>t&&!t.obj&&!t.stone&&!t.parcel&&!t.hero&&t.color>=0;
+const held=(t,r,c)=>!!t&&(!!t.fixed||!!t.vine||lay[r][c]==='w');
+function wall(r1,c1,r2,c2){const F=OB.fence;if(!F||!F.size)return false;
+  if(c1===c2)return F.has(Math.min(r1,r2)+','+c1+',b');return F.has(r1+','+Math.min(c1,c2)+',r')}
+const fog=(r,c)=>lay[r]&&lay[r][c]==='o';
+function canSwap(r1,c1,r2,c2){const a=grid[r1][c1],b=grid[r2][c2];return movable(a)&&movable(b)&&!wall(r1,c1,r2,c2)&&!fog(r1,c1)&&!fog(r2,c2)}
+// ----- слои клетки
+function setLay(r,c){const e=layEl[r][c],l=lay[r][c];e.className='lay'+(l?' l-'+l:' gone')}
+function layerHit(r,c,isAdj){const l=lay[r][c];if(!l||l==='K'||l==='k')return;
+  if(isAdj&&l!=='f'&&l!=='o')return;
+  if(l==='w'&&isAdj)return;
+  lay[r][c]='';setLay(r,c);score+=20;goalAdd(l);if(l==='d')OB.dirtCleared=OB.T}
+function cloverRuns(runs){if(!OB.clover)return;
+  for(const run of runs){if(!run.cells.some(([r,c])=>lay[r][c]==='K'))continue;
+    for(const [r,c] of run.cells){if(lay[r][c]==='k'){goalAdd('k');score+=20}if(lay[r][c]!=='K'&&!lay[r][c]||lay[r][c]==='k'){lay[r][c]='K';setLay(r,c);layEl[r][c].classList.add('grow')}}}}
+function checkPics(){for(const p of OB.pics||[]){if(p.done)continue;let ok=true;for(let r=p.r;r<p.r+p.h;r++)for(let c=p.c;c<p.c+p.w;c++)if(moss[r][c])ok=false;
+  if(ok){p.done=true;goalAdd('pic');score+=300;p.el.classList.add('found');if(SPEED){comboText('Кусочек открытки!');sfx('friend',.6)}}}}
+// ----- удары по объектам
+function killObj(t,removed){
+  if(t.big){for(const s of t.big.cells){if(grid[s.r][s.c]===s)grid[s.r][s.c]=null;removed.push(s)}}
+  else{grid[t.r][t.c]=null;removed.push(t)}
+  const o=OBJ[t.obj];if(o.goal)goalAdd(o.goal);score+=60;
+  if(t.obj==='chest'){OB.bonus=(OB.bonus||0)+1;if(SPEED)comboText('Сундук открыт!')}
+  if(t.obj==='seg'&&SPEED)comboText('Гусеница уползла!');
+}
+function objHit(t,r,c,how,removed,hitBig){
+  const o=OBJ[t.obj];
+  if(t.obj==='lantern'){if(how.adj||how.strong){if(!t.everLit){t.everLit=true;goalAdd('N')}t.lit=5;renderTile(t);updNight()}return}
+  if(o.noHit)return;
+  if(t.obj==='seg'&&!t.head)return;
+  if(o.spOnly&&!how.strong){t.el.classList.remove('nope');void t.el.offsetWidth;t.el.classList.add('nope');return}
+  const h=t.big||t;if(hitBig.has(h))return;hitBig.add(h);
+  t.lastHit=OB.T;h.lastHit=OB.T;
+  if(t.obj==='bush'){bushDrop(t);return}
+  if(t.obj==='basket'&&!(how.adj&&how.adj.has(t.bcolor)))return;
+  if(t.obj==='bud'){if(!how.adj)return;let ch=false;for(const p of t.petals)if(!p.done&&how.adj.has(p.c)){p.done=true;ch=true}
+    if(!ch)return;if(t.petals.every(p=>p.done)){killObj(t,removed);floatNum(r,c,'Цветок!')}else renderTile(t);return}
+  if(t.obj==='owl'){t.awake=true;owlShuffle(r,c)}
+  if(t.obj==='anthill')OB.antHit=OB.T;
+  if(t.obj==='hive'&&how.strong)h.hp=1;
+  h.hp--;score+=30;
+  if(h.hp<=0)killObj(t,removed);else{renderTile(t);if(t.big)t.big.cells.forEach(s=>s!==t&&renderTile(s))}
+}
+function bushDrop(t){const bc=LV.bush!=null?LV.bush:((goals.find(g=>g.t==='c')||{color:0}).color);
+  const ns=D4.map(([a,b])=>[t.r+a,t.c+b]).filter(([y,x])=>inb(y,x)&&isNormal(grid[y][x])&&!grid[y][x].sp&&grid[y][x].color!==bc);
+  for(const [y,x] of ns.sort(()=>Math.random()-.5).slice(0,2)){const u=grid[y][x];u.color=bc;renderTile(u);burst(y,x,bc,4)}}
+function owlShuffle(r,c){for(let y=r-1;y<=r+1;y++)for(let x=c-1;x<=c+1;x++){if(!inb(y,x))continue;const u=grid[y][x];if(isNormal(u)&&!u.sp){u.color=randColor();renderTile(u)}}if(SPEED)toast('Совёнок проснулся и всё перепутал!')}
+function breakVine(v){if(v.gone)return;v.gone=true;if(v.a)v.a.vine=null;if(v.b)v.b.vine=null;v.el.classList.add('gone');goalAdd('vine');score+=40}
+function breakFences(r,c){if(!OB.fence||!OB.fence.size)return;for(const k of [r+','+c+',b',(r-1)+','+c+',b',r+','+c+',r',r+','+(c-1)+',r'])if(OB.fence.has(k)){OB.fence.delete(k);const e=OB.fenceEl[k];if(e)e.classList.add('gone')}}
+// ----- ночь
+function updNight(){if(!LV.night)return;const lit=new Set();
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){const t=grid[r][c];if(t&&t.obj==='lantern'&&t.lit>0)for(let y=r-2;y<=r+2;y++)for(let x=c-2;x<=c+2;x++)if(inb(y,x))lit.add(y*N+x)}
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++)OB.dark[r][c].classList.toggle('on',!lit.has(r*N+c))}
+// ----- раскладка уровня
+function obTile(ch,r,c){
+  if(ch==='r')return mk({color:randColor(),frog:true},r,c);
+  const k=CH2OBJ[ch];if(!k)return null;const o=OBJ[k];
+  const t={obj:k,fixed:!!o.fixed,hp:o.hp||0,color:-5};
+  if(k==='basket')t.bcolor=Math.min('ABCDE'.indexOf(ch),LV.colors-1);
+  if(k==='bud'){const cs=[...Array(LV.colors).keys()].sort(()=>Math.random()-.5).slice(0,3);t.petals=cs.map(c=>({c,done:false}))}
+  if(k==='letter')t.timer=LV.timer||12;
+  return mk(t,r,c);
+}
+function bigCells(b){const [k,r,c]=b;if(k==='log')return [[r,c],[r,c+1]];if(k==='chest')return [[r,c],[r,c+1],[r+1,c],[r+1,c+1]];
+  const d=b[3]||1;return [[r,c],[r,c-d],[r,c-2*d]]}
+function placeBig(){const occ=new Set();OB.cats=[];
+  for(const b of LV.big||[]){const cells=bigCells(b);const k=b[0];
+    const B={hp:k==='cat'?4:OBJ[k].hp,cells:[],kind:k};
+    cells.forEach(([r,c],i)=>{occ.add(r*N+c);const t=mk({obj:k==='cat'?'seg':k,fixed:true,color:-5,big:B,part:k!=='cat'&&i>0,head:k==='cat'&&i===0},r,c);grid[r][c]=t;B.cells.push(t)});
+    if(k==='cat'){B.dir=b[3]||1;B.segs=B.cells;OB.cats.push(B)}
+    B.cells.forEach(renderTile);}
+  return occ}
+function setupObs(map){
+  const b=$('board');OB={T:0,fence:new Set(),fenceEl:{},clover:false,dirtCleared:-1,leafHome:[],leafRegrow:0,pics:[],warn:null};
+  lay=[];layEl=[];
+  for(let r=0;r<N;r++){lay.push([]);layEl.push([]);for(let c=0;c<N;c++){const l=((LV.lay||[])[r]||'')[c]||'.';const v=l==='.'?'':l;lay[r].push(v);if(v==='k'||v==='K')OB.clover=true;if(v==='f')OB.leafHome.push([r,c]);
+    const e=document.createElement('div');e.style.transform=`translate(${c*CELL}px,${r*CELL}px)`;layEl[r].push(e);setLay(r,c);
+    (v==='d'||v==='k'||v==='K'?b.insertBefore(e,b.firstChild):b.appendChild(e))}}
+  for(const [r,c,h,w] of LV.pics||[]){const e=document.createElement('div');e.className='picpiece';Object.assign(e.style,{left:c*CELL+'px',top:r*CELL+'px',width:w*CELL+'px',height:h*CELL+'px',backgroundImage:`url(${petSrc(LV.pet||'bunny')})`});b.insertBefore(e,b.firstChild);OB.pics.push({r,c,h,w,el:e})}
+  for(const [r,c,s] of LV.fences||[]){const k=r+','+c+','+s;OB.fence.add(k);const e=document.createElement('div');e.className='fence '+(s==='b'?'fb':'fr');e.style.transform=`translate(${(c+(s==='r'?1:0))*CELL}px,${(r+(s==='b'?1:0))*CELL}px)`;b.appendChild(e);OB.fenceEl[k]=e}
+  for(const bl of LV.belts||[]){const e=document.createElement('div');e.className='belt'+(bl.d<0?' left':'');e.style.top=bl.r*CELL+'px';b.insertBefore(e,b.firstChild)}
+  for(const [a,bb] of LV.portals||[]){const e1=document.createElement('div');e1.className='burrow in';e1.style.left=a*CELL+'px';b.appendChild(e1);const e2=document.createElement('div');e2.className='burrow out';e2.style.left=bb*CELL+'px';b.appendChild(e2)}
+  for(const [r,c] of LV.mills||[]){const e=document.createElement('div');e.className='mill';Object.assign(e.style,{left:(c+1)*CELL+'px',top:(r+1)*CELL+'px'});b.appendChild(e)}
+  if(LV.wind){const e=document.createElement('div');e.className='windfx '+LV.wind;b.appendChild(e)}
+
+}
+function postObs(){
+  const b=$('board');
+  OB.vines=[];for(const [r,c,d] of LV.vines||[]){const a=grid[r][c],bb=d==='h'?grid[r][c+1]:grid[r+1][c];if(!isNormal(a)||!isNormal(bb))continue;
+    const e=document.createElement('div');e.className='vine '+(d==='h'?'vh':'vv');e.style.transform=`translate(${(c+(d==='h'?.5:0))*CELL}px,${(r+(d==='h'?0:.5))*CELL}px)`;b.appendChild(e);
+    const v={a,b:bb,el:e};a.vine=v;bb.vine=v;OB.vines.push(v)}
+  if(LV.night){OB.dark=[];for(let r=0;r<N;r++){OB.dark.push([]);for(let c=0;c<N;c++){const e=document.createElement('div');e.className='dark on';e.style.transform=`translate(${c*CELL}px,${r*CELL}px)`;b.appendChild(e);OB.dark[r].push(e)}}updNight()}
+}
+// ----- гравитация: неподвижные клетки, диагональное стекание, заборы, ветер, норки
+function gP(i,j){const w=LV.wind;return w==='l'?[j,N-1-i]:w==='r'?[j,i]:[i,j]}
+async function gravity(){
+  const info=new Map();let changed=true,guard=0;const spawnN=Array(N).fill(0);let maxD=0;
+  const mv=(t,r,c,tele)=>{const f=info.get(t)||{d:0,tele:false};if(tele){f.tele=true;f.spawn=++spawnN[tele.j]}f.d++;info.set(t,f);grid[t.r][t.c]=null;grid[r][c]=t;t.r=r;t.c=c};
+  const portalIn=j=>{if(LV.wind||!LV.portals)return null;const p=LV.portals.find(p=>p[1]===j);return p?p[0]:null};
+  while(changed&&guard++<120){changed=false;
+    for(let j=0;j<N;j++)for(let i=N-1;i>=0;i--){const [r,c]=gP(i,j);if(grid[r][c])continue;
+      if(i===0){const pa=portalIn(j);const pt=pa!=null?grid[N-1][pa]:null;
+        if(pt&&!held(pt,N-1,pa)&&!pt.parcel&&!pt.hero){mv(pt,r,c,{j});changed=true;continue}
+        const t=mk({color:randColor()},r,c);grid[r][c]=t;info.set(t,{d:0,spawn:++spawnN[j],fresh:true});changed=true;continue}
+      const [r2,c2]=gP(i-1,j);const up=grid[r2][c2];
+      if(!wall(r2,c2,r,c)){if(!up)continue;if(!held(up,r2,c2)){mv(up,r,c);changed=true;continue}}
+      for(const dj of Math.random()<.5?[-1,1]:[1,-1]){const jj=j+dj;if(jj<0||jj>=N)continue;const [sr,sc]=gP(i-1,jj),[br,bc]=gP(i,jj);const s=grid[sr][sc];
+        if(s&&!held(s,sr,sc)&&grid[br][bc]&&!s.hero){mv(s,r,c);changed=true;break}}
+    }
+  }
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(!grid[r][c]){const t=mk({color:randColor()},r,c);grid[r][c]=t;info.set(t,{d:0,pop:true})}
+  const fresh=[];
+  for(const [t,f] of info){
+    if(f.pop){place(t,0);t.el.classList.add('pop-in');continue}
+    if(f.fresh||f.tele){const w=LV.wind,k=f.spawn;const [sr,sc]=w==='l'?[t.r,N-1+k]:w==='r'?[t.r,-k]:[-k,t.c];
+      t.el.style.transitionDuration='0ms';t.el.style.transform=`translate(${sc*CELL}px,${sr*CELL}px)`;const d=Math.abs(sr-t.r)+Math.abs(sc-t.c);fresh.push([t,d]);maxD=Math.max(maxD,d);continue}
+    const d=Math.max(1,f.d);maxD=Math.max(maxD,d);place(t,110+d*55);
+  }
+  if(fresh.length&&SPEED)void $('board').offsetWidth;
+  for(const [t,d] of fresh)place(t,110+d*55);
+  await sleep(130+maxD*55);
+  if(SPEED&&maxD)for(const row of grid)for(const t of row)if(t&&!t.fixed){t.el.classList.remove('land');t.el.classList.add('land');setTimeout(()=>t.el.classList.remove('land'),240)}
+}
+// ----- конец хода: звери, погода, ручьи
+async function turnEnd(){
+  if(!OB||OB.T==null)return;
+  const T=OB.T+1;let changed=false;
+  const all=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++){const t=grid[r][c];if(t)all.push(t)}
+  const alive=t=>grid[t.r]&&grid[t.r][t.c]===t;
+  const normals=()=>{const o=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++){const t=grid[r][c];if(isNormal(t)&&!t.sp&&!t.lock&&!t.vine&&!t.frog&&!lay[r][c])o.push(t)}return o};
+  const say=t=>{if(SPEED)toast(t)};
+  for(const t of all)if(t.obj==='letter'&&alive(t)){t.timer--;renderTile(t);if(t.timer<=0)OB.fail='Срочное письмо опоздало!'}
+  for(const t of all)if(t.obj==='ladybug'&&alive(t)&&t.r>0){const u=grid[t.r-1][t.c];
+    if(isNormal(u)&&!u.lock&&!u.vine&&!held(u,u.r,u.c)&&!wall(t.r-1,t.c,t.r,t.c)){swapGrid(t.r,t.c,t.r-1,t.c);place(t,220);place(u,220);changed=true}}
+  if(T%3===0)for(const t of all)if(t.frog&&alive(t)){const cand=normals().filter(u=>u!==t);if(!cand.length)continue;const u=pick(cand);
+    t.frog=false;u.frog=true;renderTile(u);grid[t.r][t.c]=null;t.el.classList.add('pop');setTimeout(()=>t.el.remove(),230);changed=true}
+  const hills=()=>{let n=0;for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(grid[r][c]&&grid[r][c].obj==='molehill')n++;return n};
+  if(T%3===0)for(const t of all)if(t.obj==='mole'&&alive(t)){const cand=normals();if(!cand.length)continue;const u=pick(cand);const r0=t.r,c0=t.c;const leave=hills()<5;
+    grid[u.r][u.c]=t;t.r=u.r;t.c=u.c;u.el.remove();place(t,0);t.el.classList.remove('pop-in');void t.el.offsetWidth;t.el.classList.add('pop-in');
+    grid[r0][c0]=leave?mk({obj:'molehill',fixed:true,hp:1,color:-5},r0,c0):mk({color:randColor()},r0,c0);place(grid[r0][c0],0)}
+  if(T%4===0)for(const t of all)if(t.obj==='squirrel'&&alive(t)&&(t.lastHit==null||t.lastHit<OB.T-3)){
+    const g=goals.filter(g=>g.t==='c'&&g.have>0&&g.have<g.need).sort((a,b)=>b.have-a.have)[0];
+    t.el.classList.remove('hop');void t.el.offsetWidth;t.el.classList.add('hop');
+    if(g){const k=Math.min(3,g.have);g.have-=k;say(`Белка утащила ${k} ${COLOR_GEN[g.color]}!`)}else if(moves>1){moves--;say('Белка отвлекла Тишу: −1 ход')}}
+  const ants=all.filter(t=>t.obj==='anthill'&&alive(t));
+  if(ants.length&&OB.antHit!==OB.T&&ants.length<14){for(const a of ants.sort(()=>Math.random()-.5)){const ns=D4.map(([y,x])=>[a.r+y,a.c+x]).filter(([y,x])=>inb(y,x)&&isNormal(grid[y][x])&&!grid[y][x].sp&&!grid[y][x].lock&&!grid[y][x].vine);
+    if(!ns.length)continue;const [y,x]=pick(ns);grid[y][x].el.remove();grid[y][x]=mk({obj:'anthill',fixed:true,hp:1,color:-5},y,x);place(grid[y][x],0);grid[y][x].el.classList.add('pop-in');goalNeedAdd('a',1);break}}
+  if(T%2===0&&OB.dirtCleared<OB.T-1){const ds=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(lay[r][c]==='d')ds.push([r,c]);
+    for(const [r,c] of ds.sort(()=>Math.random()-.5)){const ns=D4.map(([y,x])=>[r+y,c+x]).filter(([y,x])=>inb(y,x)&&!lay[y][x]&&!(grid[y][x]&&grid[y][x].obj));if(!ns.length)continue;
+      const [y,x]=pick(ns);lay[y][x]='d';setLay(y,x);layEl[y][x].classList.add('grow');goalNeedAdd('d',1);break}}
+  if(T%4===0&&OB.leafRegrow<6){const free=OB.leafHome.filter(([r,c])=>!lay[r][c]).sort(()=>Math.random()-.5).slice(0,2);
+    for(const [r,c] of free){lay[r][c]='f';setLay(r,c);layEl[r][c].classList.add('grow');OB.leafRegrow++;goalNeedAdd('f',1)}if(free.length)say('Ветер насыпал листьев')}
+  for(const t of all)if(t.obj==='snowman'&&alive(t)&&t.hp<3&&OB.T-(t.lastHit??-9)>=3&&T%3===0){t.hp++;renderTile(t)}
+  if(T%3===0)for(const t of all)if(t.obj==='icicle'&&alive(t)&&t.r<N-1){const u=grid[t.r+1][t.c];if(isNormal(u)&&!u.lock){u.lock=true;renderTile(u);goalNeedAdd('l',1)}}
+  if(LV.storm){if(OB.warn){const [r,c]=OB.warn;OB.warnEl.remove();const u=grid[r][c];OB.warn=null;
+      if(isNormal(u)&&!u.vine){u.el.remove();grid[r][c]=mk({stone:true,hp:1,color:-2},r,c);place(grid[r][c],0);grid[r][c].el.classList.add('pop-in');goalNeedAdd('s',1);if(SPEED){shake();tone(90,.3,'sawtooth',.05)}}}
+    if(T%LV.storm===LV.storm-1){const cand=normals();if(cand.length){const u=pick(cand);OB.warn=[u.r,u.c];const e=document.createElement('div');e.className='bolt';e.style.transform=`translate(${u.c*CELL}px,${u.r*CELL}px)`;$('board').appendChild(e);OB.warnEl=e}}}
+  if(LV.magpie){let took=false;for(const t of all)if(alive(t)&&t.sp&&isNormal(t)){t.age=(t.age||0)+1;if(t.age>=3){if(t.sp==='rb')t.color=randColor();t.sp=null;t.age=0;renderTile(t);took=true;magpieFx(t)}}if(took)say('Сорока утащила спецфишку!')}
+  if(T%2===0)for(const cat of OB.cats||[]){if(cat.hp<=0||!alive(cat.segs[0]))continue;const h=cat.segs[0];const tr=h.r,tc=h.c+cat.dir;
+    const ok=inb(tr,tc)&&isNormal(grid[tr][tc])&&!grid[tr][tc].vine&&!lay[tr][tc];
+    if(!ok){cat.dir=-cat.dir;cat.segs.reverse();cat.segs.forEach((s,i)=>{s.head=i===0;s.el.classList.toggle('flip',cat.dir<0);renderTile(s)});continue}
+    const X=grid[tr][tc],tail=cat.segs[cat.segs.length-1],tp=[tail.r,tail.c];
+    for(let i=cat.segs.length-1;i>0;i--){cat.segs[i].r=cat.segs[i-1].r;cat.segs[i].c=cat.segs[i-1].c}
+    h.r=tr;h.c=tc;for(const s of cat.segs){grid[s.r][s.c]=s;place(s,260)}grid[tp[0]][tp[1]]=X;X.r=tp[0];X.c=tp[1];place(X,260);changed=true}
+  for(const bl of LV.belts||[]){const row=grid[bl.r];if(row.some((t,c)=>!t||held(t,bl.r,c)||t.hero||t.parcel))continue;
+    const old=row.slice();for(let c=0;c<N;c++){const t=old[c],nc=(c+bl.d+N)%N;grid[bl.r][nc]=t;t.c=nc;const wrap=Math.abs(nc-c)>1;if(wrap){place(t,0);t.el.classList.remove('pop-in');void t.el.offsetWidth;t.el.classList.add('pop-in')}else place(t,240)}changed=true}
+  if(T%2===0)for(const [r,c] of LV.mills||[]){const P4=[[r,c],[r,c+1],[r+1,c+1],[r+1,c]];const ts=P4.map(([y,x])=>grid[y][x]);if(ts.some((t,i)=>!t||held(t,P4[i][0],P4[i][1])||t.hero))continue;
+    ts.forEach((t,i)=>{const [y,x]=P4[(i+1)%4];grid[y][x]=t;t.r=y;t.c=x;place(t,260)});changed=true}
+  for(const t of all)if(t.obj==='lantern'&&t.lit>0){t.lit--;renderTile(t)}
+  if(LV.night)updNight();
+  for(const t of all)if(t.obj==='key'&&alive(t))for(const [a,b] of D4){const y=t.r+a,x=t.c+b;if(!inb(y,x))continue;const l=grid[y][x];
+    if(l&&l.obj==='lock'){grid[y][x]=null;grid[t.r][t.c]=null;l.el.classList.add('pop');t.el.classList.add('pop');setTimeout(()=>{l.el.remove();t.el.remove()},250);goalAdd('z');score+=300;if(SPEED){comboText('Замок открыт!');sfx('build',.7)}changed=true;break}}
+  if(OB.bonus){const cand=normals();while(OB.bonus>0&&cand.length){const u=cand.splice(Math.floor(Math.random()*cand.length),1)[0];u.sp='bomb';renderTile(u);OB.bonus--}OB.bonus=0}
+  OB.T=T;updateHUD();
+  if(changed){await sleep(SPEED?260:0);await gravity();await resolve(null)}
+}
+function magpieFx(t){if(!SPEED)return;const e=sprite('fxl',{width:CELL*1.2+'px',height:CELL*1.2+'px'},'assets/obs/magpie.png');
+  e.animate([{transform:`translate(${-CELL*2}px,${t.r*CELL-CELL}px)`},{transform:`translate(${t.c*CELL}px,${t.r*CELL-CELL*.2}px)`,offset:.5},{transform:`translate(${N*CELL+CELL}px,${t.r*CELL-CELL*2}px)`}],{duration:900,easing:'ease-in-out'}).onfinish=()=>e.remove()}
+function renderObj(t){const o=OBJ[t.obj];
+  t.el.className='t obj o-'+t.obj+(t.part?' part':'')+(t.big&&!t.part&&t.obj!=='seg'?' big-'+t.obj:'')+(t===sel?' sel':'')+(t.obj==='seg'&&t.big&&t.big.dir<0?' flip':'');
+  let img=o.img;if(t.obj==='owl'&&t.awake)img='owl';if(t.obj==='lantern'&&t.lit>0)img='lantern';if(t.obj==='seg'&&t.head)img='caterpillar';
+  const hp=t.big?t.big.hp:t.hp;let badge='';
+  if(t.obj==='letter')badge=`<b class="obadge timer${t.timer<=3?' hot':''}">${t.timer}</b>`;
+  else if(t.obj==='basket')badge=`<span class="bask">${TILE[t.bcolor]}</span><b class="obadge">${t.hp}</b>`;
+  else if(t.obj==='bud')badge=`<span class="petals">${t.petals.map(p=>`<i class="${p.done?'ok':''}">${TILE[p.c]}</i>`).join('')}</span>`;
+  else if(t.obj==='lantern'&&t.lit>0)badge=`<b class="obadge lit">${t.lit}</b>`;
+  else if(hp>1&&(t.obj!=='seg'||t.head))badge=`<b class="obadge">${hp}</b>`;
+  t.el.innerHTML=`<div class="g"><img src="assets/obs/${img}.png" alt="${o.name}" draggable="false"></div>${badge}`;
+}
+
 /* ---------- поиск совпадений ---------- */
 function findRuns(){
   const runs=[];
@@ -1220,12 +1809,12 @@ function findRuns(){
   for(let c=0;c<N;c++){let r=0;while(r<N){const k=cc(r,c);let e=r+1;if(k>=0){while(e<N&&cc(e,c)===k)e++;if(e-r>=3){const cells=[];for(let y=r;y<e;y++)cells.push([y,c]);runs.push({dir:'v',color:k,cells})}}r=e}}
   return runs;
 }
-const movable=t=>t&&!t.stone&&!t.lock;
+const movable=t=>t&&!t.stone&&!t.lock&&!t.fixed&&!t.vine;
 function swapGrid(r1,c1,r2,c2){const a=grid[r1][c1],b=grid[r2][c2];grid[r1][c1]=b;grid[r2][c2]=a;if(a){a.r=r2;a.c=c2}if(b){b.r=r1;b.c=c1}}
 function findMove(){
   for(let r=0;r<N;r++)for(let c=0;c<N;c++)for(const [dr,dc] of [[0,1],[1,0]]){
     const r2=r+dr,c2=c+dc;if(!inb(r2,c2))continue;const a=grid[r][c],b=grid[r2][c2];
-    if(!movable(a)||!movable(b))continue;
+    if(!canSwap(r,c,r2,c2))continue;
     if(a.sp==='rb'||b.sp==='rb'||(a.sp&&b.sp))return [r,c,r2,c2];
     swapGrid(r,c,r2,c2);const ok=findRuns().length>0;swapGrid(r,c,r2,c2);
     if(ok)return [r,c,r2,c2];
@@ -1312,20 +1901,31 @@ function fxOld(t,r,c){
 async function applyHits(list,spawns,fromMatch,mult){
   const spawnKeys=new Set(spawns.map(s=>s.r*N+s.c));
   const queue=list.map(([r,c])=>r*N+c);
-  if(fromMatch){for(const k of [...queue]){const r=k/N|0,c=k%N;for(const [dr,dc] of D4){const y=r+dr,x=c+dc;if(inb(y,x)&&grid[y][x]&&grid[y][x].stone)queue.push(y*N+x)}}}
-  const done=new Set(),removed=[];let big=false;
+  const direct=new Set(queue),strong=new Set(fromMatch?[]:queue),adj=new Map();
+  if(fromMatch){for(const k of queue){const r=k/N|0,c=k%N;const t=grid[r][c];const col=t?t.color:-1;for(const [dr,dc] of D4){const y=r+dr,x=c+dc;if(!inb(y,x))continue;const kk=y*N+x;if(!adj.has(kk))adj.set(kk,new Set());adj.get(kk).add(col)}}}
+  const done=new Set(),removed=[],hitBig=new Set();let big=false,mossHit=false;
+  for(const [k,cols] of adj){if(direct.has(k))continue;const r=k/N|0,c=k%N;
+    layerHit(r,c,true);const t=grid[r][c];if(!t)continue;
+    if(t.stone){t.hp--;score+=30;if(t.hp<=0){grid[r][c]=null;removed.push(t);goalAdd('s')}else renderTile(t);continue}
+    if(t.obj)objHit(t,r,c,{adj:cols},removed,hitBig);
+  }
   while(queue.length){
     const k=queue.shift();if(done.has(k))continue;done.add(k);
     const r=k/N|0,c=k%N;
-    if(moss[r][c]){moss[r][c]--;const me=mossEl[r][c];if(!moss[r][c]){me.classList.add('gone');goalAdd('m')}else{me.classList.remove('snow');me.classList.remove('melt');void me.offsetWidth;me.classList.add('melt')}score+=20}
+    if(moss[r][c]){mossHit=true;moss[r][c]--;const me=mossEl[r][c];if(!moss[r][c]){me.classList.add('gone');goalAdd('m')}else{me.classList.remove('snow');me.classList.remove('melt');void me.offsetWidth;me.classList.add('melt')}score+=20}
+    layerHit(r,c,false);if(strong.has(k))breakFences(r,c);
     const t=grid[r][c];if(!t)continue;
     if(spawnKeys.has(k)){if(t.lock){t.lock=false;goalAdd('l')}continue}
     if(t.parcel||t.hero)continue;
+    if(t.obj){if(strong.has(k))objHit(t,r,c,{strong:true},removed,hitBig);continue}
     if(t.stone){t.hp--;score+=30;if(t.hp<=0){grid[r][c]=null;removed.push(t);goalAdd('s')}else renderTile(t);continue}
     if(t.lock){t.lock=false;goalAdd('l');score+=20;renderTile(t);continue}
     grid[r][c]=null;removed.push(t);goalAdd('c',t.color);score+=10*mult;
-    if(t.sp){big=true;fx(t,r,c);for(const kk of area(t,r,c))queue.push(kk)}
+    if(t.frog){t.frog=false;goalAdd('r');score+=100;if(SPEED)floatNum(r,c,'Лягушка!')}
+    if(t.vine)breakVine(t.vine);
+    if(t.sp){big=true;fx(t,r,c);for(const kk of area(t,r,c)){queue.push(kk);strong.add(kk)}}
   }
+  if(mossHit)checkPics();
   for(const s of spawns){const t=grid[s.r][s.c];if(t){t.sp=s.sp;if(s.sp==='rb')t.color=-1;renderTile(t)}}
   removed.forEach(t=>{t.el.classList.add('pop');burst(t.r,t.c,t.stone?-1:t.color,removed.length>12?2:4)});
   if(removed.length){pop(mult);const m=removed[removed.length>>1];floatNum(m.r,m.c,'+'+(removed.length*10*mult))}
@@ -1333,24 +1933,8 @@ async function applyHits(list,spawns,fromMatch,mult){
   await sleep(big?280:210);
   removed.forEach(t=>t.el.remove());
 }
-async function gravity(){
-  let maxD=0;const fresh=[];
-  for(let c=0;c<N;c++){
-    let w=N-1;
-    for(let r=N-1;r>=0;r--){const t=grid[r][c];if(t){if(w!==r){grid[w][c]=t;grid[r][c]=null;t.r=w;const d=w-r;maxD=Math.max(maxD,d);place(t,110+d*55)}w--}}
-    const holes=w+1;
-    for(let r=w;r>=0;r--){
-      const t=mk({color:randColor()},r,c);grid[r][c]=t;
-      place(t,0,r-holes);fresh.push([t,holes]);
-      maxD=Math.max(maxD,holes);
-    }
-  }
-  if(fresh.length&&SPEED)void $('board').offsetWidth;
-  for(const [t,d] of fresh)place(t,110+d*55);
-  await sleep(130+maxD*55);
-  if(SPEED&&maxD)for(const row of grid)for(const t of row)if(t){t.el.classList.remove('land');void 0;t.el.classList.add('land');setTimeout(()=>t.el.classList.remove('land'),240)}
-}
 async function collectParcels(){
+  if(LV.wind)return false;
   const got=[];
   for(let c=0;c<N;c++){const t=grid[N-1][c];if(t&&t.parcel){grid[N-1][c]=null;got.push(t);goalAdd('p');score+=200}}
   let heroGot=null;
@@ -1373,7 +1957,7 @@ async function resolve(swapKeys){
   while(true){
     const runs=findRuns();if(!runs.length){if(await collectParcels()){await gravity();continue}break}
     cascade++;
-    const {hits,spawns}=planMatch(runs,cascade===1?swapKeys:null);
+    const {hits,spawns}=planMatch(runs,cascade===1?swapKeys:null);cloverRuns(runs);
     if(cascade===3&&SPEED)comboText('Здорово!');
     if(cascade===5&&SPEED)comboText('Невероятно!');
     await applyHits(hits,spawns,true,cascade);
@@ -1382,6 +1966,7 @@ async function resolve(swapKeys){
 }
 async function afterMove(){
   if(goalsDone()){await sleep(300);return win()}
+  if(OB.fail){const f=OB.fail;OB.fail=null;return lose(f)}
   if(moves<=0)return lose();
   if(!hasMoves()){toast('Ходов нет — перемешиваю');await shuffleBoard()}
   armHint();
@@ -1393,19 +1978,19 @@ async function trySwap(r1,c1,r2,c2){
   hideTut();
   const a=grid[r1][c1],b=grid[r2][c2];
   clearSel();clearHint();
-  if(!movable(a)||!movable(b)){if(SPEED)toast(a&&a.lock||b&&b.lock?'Фишка во льду: собери с ней ряд':'Камень не двигается');return}
+  if(!canSwap(r1,c1,r2,c2)){if(SPEED)toast(wall(r1,c1,r2,c2)?'Через заборчик фишки не поменять':fog(r1,c1)||fog(r2,c2)?'В тумане ничего не видно: собери ряд рядом':a&&a.vine||b&&b.vine?'Лоза держит фишку: собери с ней ряд':a&&a.lock||b&&b.lock?'Фишка во льду: собери с ней ряд':a&&a.obj||b&&b.obj?'Это не двигается':'Камень не двигается');return}
   busy=true;
   if((a.hero||b.hero)&&r1===r2){
     swapGrid(r1,c1,r2,c2);place(a,180);place(b,180);await sleep(190);
     moves--;updateHUD();if(SPEED)tick();
-    await resolve(null);busy=false;await afterMove();return;
+    await resolve(null);await turnEnd();busy=false;await afterMove();return;
   }
   swapGrid(r1,c1,r2,c2);place(a,150);place(b,150);await sleep(160);
   const combo=a.sp==='rb'||b.sp==='rb'||(a.sp&&b.sp);
   if(combo){moves--;updateHUD();await doCombo(a,b);await resolve(null)}
   else if(findRuns().length){moves--;updateHUD();swish();await resolve(new Set([r1*N+c1,r2*N+c2]))}
   else{swapGrid(r1,c1,r2,c2);place(a,150);place(b,150);if(SPEED)nope();await sleep(160);busy=false;armHint();return}
-  busy=false;await afterMove();
+  await turnEnd();busy=false;await afterMove();
 }
 async function doCombo(a,b){
   const hits=[];const rb=a.sp==='rb'?a:b.sp==='rb'?b:null;
@@ -1435,13 +2020,14 @@ async function hammerAt(r,c){
   if(busy||!grid[r][c])return;
   if(grid[r][c].parcel){toast('Посылку молотком не разбить: доведи её до низа');return}
   if(grid[r][c].hero){toast('Тишу молотком? Ни за что!');return}
+  if(grid[r][c].obj==='key'||grid[r][c].obj==='lock'||grid[r][c].obj==='lantern'){toast('Это молотком не взять');return}
   tool=null;P.hammers--;save();busy=true;clearHint();track('booster_use',{id:'hammer',level:LI+1});
   if(SPEED)fx({sp:'bomb'},r,c);
-  await applyHits([[r,c]],[],false,1);await gravity();await resolve(null);
+  await applyHits([[r,c]],[],false,1);await gravity();await resolve(null);updNight();
   busy=false;updateHUD();await afterMove();
 }
 async function shuffleBoard(){
-  const ts=[];for(const row of grid)for(const t of row)if(t&&!t.stone&&!t.sp&&!t.parcel&&!t.hero)ts.push(t);
+  const ts=[];for(const row of grid)for(const t of row)if(t&&!t.stone&&!t.sp&&!t.parcel&&!t.hero&&!t.obj)ts.push(t);
   for(let i=0;i<60;i++){
     const cols=ts.map(t=>t.color);for(let j=cols.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[cols[j],cols[k]]=[cols[k],cols[j]]}
     ts.forEach((t,j)=>t.color=i>30?randColor():cols[j]);
@@ -1493,7 +2079,7 @@ function showIntro(i){
   if(i<0)DAILY=makeDaily();
   const L=i<0?DAILY:LEVELS[i];window._GL=L;setTimeout(()=>{window._GL=null},0);
   const map=L.map||Array(N).fill('........');
-  const gs=L.goals.map(g=>{if(g[0]==='c')return {t:'c',color:g[1],need:g[2]};let need=0;for(const row of map)for(const ch of row){if(g[0]==='m'&&'mLxM'.includes(ch))need++;if(g[0]==='s'&&'sSx'.includes(ch))need++;if(g[0]==='l'&&'lL'.includes(ch))need++;if(g[0]==='p'&&ch==='p')need++;if(g[0]==='h'&&ch==='h')need++}return {t:g[0],need}});
+  const gs=L.goals.map(g=>g[0]==='c'?{t:'c',color:g[1],need:g[2]}:{t:g[0],need:needOf(L,g[0])});
   $('card').innerHTML=`<div class="stamp">${BICON.mailc}</div><div class="who">${petImg(L.pet,'petport')}<div><div class="to">${i<0?'Письмо дня · от':'Письмо '+(i+1)+' · кому'}</div><h2>${L.name}</h2></div></div><p>${fixTileText(L.text)}</p>${goalsHTML(gs)}${boostChips()}${i>=3||i<0?`<button class="btn adfree" id="bFreeBoost">${bi('ad')} Бесплатный бустер за рекламу</button>`:''}<p class="note">${L.moves} ходов. Собери 4 в ряд, получишь полосатую фишку; угол из 5 даёт бомбу; 5 в ряд — радужный конверт.</p>
     <div class="row"><button class="btn" id="bBack">Назад</button><button class="btn main" id="bGo">Доставить!</button></div>`;
   $('bBack').onclick=()=>{if($('level').hidden)closeOv();else renderHome()};
@@ -1532,18 +2118,18 @@ function rebindWin(){
   if($('bDX2'))$('bDX2').onclick=async()=>{const b=$('bDX2');b.disabled=true;if(await Platform.rewarded('daily_x2')){P.coins+=50;P.hammers++;save();b.innerHTML='Получено: +50 '+COIN+' и молоток';sfx('build',.7)}else b.disabled=false};
   if($('bCard'))$('bCard').onclick=()=>openPostcard(LV.pet||'bunny');
 }
-function lose(){
+function lose(reason){
   clearHint();track('level_lose',{level:LI<0?'daily':LI+1,goals_left:goals.filter(g=>g.have<g.need).map(g=>g.t+(g.need-g.have)).join(' ')});duck(2400);sad();
   if(!SPEED)return;
   const left=goals.filter(g=>g.have<g.need).map(g=>({...g,need:g.need-g.have}));
-  $('card').innerHTML=`<div class="who">${petImg(LV.pet,'petport sad')}<div><div class="to">Не доставлено · ${LV.to}</div><h2>Ходы кончились</h2></div></div><p>Осталось совсем немного:</p>${goalsHTML(left)}
+  $('card').innerHTML=`<div class="who">${petImg(LV.pet,'petport sad')}<div><div class="to">Не доставлено · ${LV.to}</div><h2>${reason||'Ходы кончились'}</h2></div></div><p>Осталось совсем немного:</p>${goalsHTML(left)}
     ${extraUsed?'':'<button class="btn main" id="bExtra">'+bi('ad')+' +5 ходов за рекламу</button><p class="note">Один раз за уровень.</p>'}
     ${(P.moves5||0)>0?`<button class="btn main" id="bUse5">Использовать +5 ходов <small>(есть ${P.moves5})</small></button>`:''}
     ${P.coins>=120?`<button class="btn buy5" id="bBuy5">+5 ходов за ${COIN} 120 <small>(у тебя ${P.coins})</small></button>`:`<p class="note">На +5 ходов за монеты не хватает: нужно ${COIN} 120, у тебя ${P.coins}. Можно купить ходы или начать письмо заново.</p>`}
     <button class="btn buy5 rub" id="bBuyRub">+5 ходов за ${Platform.price('moves5')}</button>
     <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn${P.coins<120&&!(P.moves5>0)?' main':''}" id="bRetry">Заново</button></div>`;
-  if($('bExtra'))$('bExtra').onclick=async()=>{if(await Platform.rewarded('lose_moves')){extraUsed=true;track('extra_moves',{how:'ad',level:LI+1});moves+=5;updateHUD();closeOv();armHint()}};
-  const add5=how=>{track('extra_moves',{how,level:LI+1});moves+=5;updateHUD();closeOv();armHint()};
+  if($('bExtra'))$('bExtra').onclick=async()=>{if(await Platform.rewarded('lose_moves')){extraUsed=true;track('extra_moves',{how:'ad',level:LI+1});if(reason)for(const row of grid)for(const t of row)if(t&&t.obj==='letter'){t.timer+=5;renderTile(t)}moves+=5;updateHUD();closeOv();armHint()}};
+  const add5=how=>{track('extra_moves',{how,level:LI+1});if(reason)for(const row of grid)for(const t of row)if(t&&t.obj==='letter'){t.timer+=5;renderTile(t)}moves+=5;updateHUD();closeOv();armHint()};
   if($('bBuy5'))$('bBuy5').onclick=()=>{if(spend(120))add5('coins')};
   if($('bUse5'))$('bUse5').onclick=()=>{P.moves5--;save();add5('stock')};
   $('bBuyRub').onclick=async()=>{const b=$('bBuyRub');b.disabled=true;if(await buyProduct('moves5')&&P.moves5>0){P.moves5--;save();add5('rub')}else if($('bBuyRub'))b.disabled=false};
@@ -1640,7 +2226,7 @@ const TUT={
 const HAND_SVG='<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M38 8c6 0 10 4 10 10v30l4-2c5-2 10 0 12 4l2-1c5-2 10 1 11 6l2-1c5-1 9 2 10 7v20c0 12-8 20-20 20H52c-8 0-14-4-18-10L16 64c-3-5-1-10 4-12 4-2 8 0 11 3l-3-3V18c0-6 4-10 10-10z" fill="#fff" stroke="#2b3a55" stroke-width="5" stroke-linejoin="round"/></svg>';
 function hideTut(){document.querySelectorAll('.tutb,.tuth').forEach(e=>e.remove())}
 function maybeTutorial(){
-  if(!SPEED||LI<0)return;const t=TUT[LI];if(!t||(P.tut||[]).includes(LI))return;
+  if(!SPEED||LI<0)return;const t=TUT[LI]||(LV.tut?{text:LV.tut}:null);if(!t||(P.tut||[]).includes(LI))return;
   P.tut=[...(P.tut||[]),LI];save();track('tutorial',{level:LI+1});
   const wrap=document.querySelector('.boardwrap');if(!wrap)return;
   const b=document.createElement('div');b.className='tutb';b.innerHTML=`${petImg('bunny','tutpet')}<p>${t.text}</p><button class="btn small" id="tutOk">Понятно</button>`;
