@@ -3157,7 +3157,6 @@ function achHTML(){const got=new Set(P.achGot||[]);
 const TOUR_URL='https://auequuxfcwdshblqrwbd.supabase.co/functions/v1/lp-tour',TOUR_KEY='sb_publishable_ZF67r4UX91_n180NPFQuvA_0D_-8Ya2';
 const tourWeek=()=>Math.floor((Math.floor((Date.now()+3*3600e3)/864e5)+3)/7);
 const tourOpen=()=>P.stars.filter(Boolean).length>=10;
-const TOUR_PRIZE=r=>r===1?500:r<=3?300:r<=10?150:r<=50?60:20;
 function tourPid(){if(!P.pid){P.pid='lp-'+Array.from({length:16},()=>'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)]).join('');save()}return P.pid}
 function tourName(){if(!P.tourName){P.tourName='Почтальон '+String(Math.floor(1000+Math.random()*9000));save()}return P.tourName}
 async function tourFetch(body){
@@ -3185,7 +3184,7 @@ async function showTour(){
   else{
     const rows=j.top.slice(0,10).map((r,k)=>`<li class="${r.me?'me':''}"><span class="tr">${k+1}</span><span class="tn">${esc(r.n)}</span><b>${r.s.toLocaleString('ru-RU')}</b></li>`).join('');
     const meRow=j.me&&j.me.rank>10?`<li class="me gap"><span class="tr">${j.me.rank}</span><span class="tn">${esc(tourName())}</span><b>${j.me.score.toLocaleString('ru-RU')}</b></li>`:'';
-    const last=j.last&&!(P.tourGot||[]).includes(j.last.week)?`<div class="tourlast">Прошлая неделя: <b>${j.last.rank}-е место из ${j.last.total}</b>. Награда: ${COIN} <b>${TOUR_PRIZE(j.last.rank)}</b> <button class="btn main small" id="tClaim">Забрать</button></div>`:'';
+    const last=j.last&&!j.last.claimed?`<div class="tourlast">Прошлая неделя: <b>${j.last.rank}-е место из ${j.last.total}</b>. Награда: ${COIN} <b>${j.last.prize}</b> <button class="btn main small" id="tClaim">Забрать</button></div>`:'';
     body=`${last}<p class="note">До конца: <b>${tourLeft(j.ends)}</b> · участников: <b>${j.total}</b>. В зачёт идёт лучший результат за неделю, играть можно сколько угодно.</p>
       <ol class="tourtop">${rows||'<li class="empty">Пока никто не сыграл — стань первым!</li>'}${meRow}</ol>
       <p class="note">Призы по итогам недели: 1 место — ${COIN} 500, 2–3 — 300, до 10 — 150, до 50 — 60, остальным — 20.</p>
@@ -3195,7 +3194,14 @@ async function showTour(){
   $('card').innerHTML=`<div class="to">Турнир недели</div><h2><img class="ttro" src="assets/ui/i-trophy.png" alt=""> ${j&&j.me?`Ты на ${j.me.rank}-м месте`:'Турнир недели'}</h2>${body}
     <div class="row"><button class="btn" id="tBack">Назад</button><button class="btn main" id="tPlay">Играть</button></div>`;
   const nm=$('tName');if(nm)nm.onchange=()=>{const v=nm.value.replace(/[<>"'`]/g,'').trim().slice(0,20);if(v.length>=2){P.tourName=v;save();toast('Имя сохранено, обновится после следующей игры')}};
-  if($('tClaim'))$('tClaim').onclick=()=>{const L=window._tourLast;if(!L)return;P.tourGot=[...(P.tourGot||[]),L.week].slice(-20);P.coins=(P.coins||0)+TOUR_PRIZE(L.rank);save();sfx('build',.8);toast('+'+TOUR_PRIZE(L.rank)+' монет за турнир');showTour()};
+  if($('tClaim'))$('tClaim').onclick=async()=>{const b=$('tClaim');b.disabled=true;
+    // приз выдаёт сервер: один раз на игрока за неделю, сумма — по месту в его таблице
+    const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),9000);let r=null;
+    try{const x=await fetch(TOUR_URL,{method:'POST',headers:{apikey:TOUR_KEY,'Content-Type':'application/json'},body:JSON.stringify({action:'claim',pid:tourPid()}),signal:ctl.signal});r=await x.json().catch(()=>null)}catch(e){r=null}finally{clearTimeout(tm)}
+    if(r&&r.prize>0){P.coins=(P.coins||0)+r.prize;save();sfx('build',.8);track('tour_prize',{week:r.week,prize:r.prize});toast('+'+r.prize+' монет за турнир')}
+    else if(r&&r.error==='already claimed')toast('Приз за эту неделю уже получен');
+    else{toast('Не получилось связаться с турниром, попробуй позже');b.disabled=false;return}
+    showTour()};
   $('tBack').onclick=()=>{$('card').classList.remove('wide');closeOv();renderHome()};
   $('tPlay').onclick=()=>{$('card').classList.remove('wide');showIntro(-2)};
 }

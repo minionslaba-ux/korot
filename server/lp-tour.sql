@@ -32,3 +32,29 @@ returns table(rank bigint, score int, total bigint) language sql security define
   from lp_tour_scores s where s.week=p_week and s.pid=p_pid;
 $$;
 revoke all on function public.lp_tour_rank(int,text) from public, anon, authenticated;
+
+-- учёт выданных призов (выдаёт только сервер, один раз на игрока за неделю)
+create table if not exists public.lp_tour_claims (
+  week int not null,
+  pid text not null,
+  rank int not null,
+  prize int not null,
+  claimed_at timestamptz not null default now(),
+  primary key (week, pid)
+);
+alter table public.lp_tour_claims enable row level security;
+
+create or replace function public.lp_tour_claim(p_week int, p_pid text)
+returns int language plpgsql security definer set search_path = public as $$
+declare r bigint; pz int; n int;
+begin
+  select (select count(*) from lp_tour_scores s2 where s2.week=p_week and s2.score > s.score) + 1 into r
+  from lp_tour_scores s where s.week=p_week and s.pid=p_pid;
+  if r is null then return 0; end if;
+  pz := case when r=1 then 500 when r<=3 then 300 when r<=10 then 150 when r<=50 then 60 else 20 end;
+  insert into lp_tour_claims(week,pid,rank,prize) values (p_week,p_pid,r,pz) on conflict (week,pid) do nothing;
+  get diagnostics n = row_count;
+  if n=0 then return -1; end if;
+  return pz;
+end $$;
+revoke all on function public.lp_tour_claim(int,text) from public, anon, authenticated;
