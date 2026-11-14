@@ -3272,7 +3272,7 @@ async function drawPostcard(pet,msg,frame){
   x.fillText('Привет',470,80);x.fillText('из Лесной почты!',470,124);
   x.font='700 25px "Nunito", sans-serif';x.fillStyle='#3d4f6e';
   wrapText(x,msg||('Тебе пишет '+(PET_NAMES[pet]||'житель леса')+'. Заходи в гости!'),470,214,390,34,5);
-  x.drawImage(st,470,H-96,36,34);x.font='700 19px "Nunito", sans-serif';x.fillStyle='#2f7fd6';x.fillText('Открой ссылку и получи подарок',516,H-72);
+  x.drawImage(st,470,H-96,36,34);x.font='700 19px "Nunito", sans-serif';x.fillStyle='#2f7fd6';x.fillText(PIKABU?'Заходи в «Лесную почту»!':'Открой ссылку и получи подарок',516,H-72);
   x.restore();
   if(frame==='gold'){const gg=x.createLinearGradient(0,0,W,H);gg.addColorStop(0,'#ffe27a');gg.addColorStop(.5,'#e8a700');gg.addColorStop(1,'#fff3b0');x.strokeStyle=gg;x.lineWidth=18;x.beginPath();x.roundRect(9,9,W-18,H-18,30);x.stroke();
     x.fillStyle='#fff6c2';for(const [a,b2] of [[30,30],[W-30,30],[30,H-30],[W-30,H-30]]){x.beginPath();for(let k=0;k<10;k++){const r=k%2?7:18,an=k*Math.PI/5-Math.PI/2;x.lineTo(a+Math.cos(an)*r,b2+Math.sin(an)*r)}x.closePath();x.fill()}}
