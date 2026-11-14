@@ -59,3 +59,14 @@ begin
   return pz;
 end $$;
 revoke all on function public.lp_tour_claim(int,text) from public, anon, authenticated;
+
+-- Покупки на Пикабу Играх, проверенные подписью (функция lp-pikabu)
+create table if not exists public.lp_pk_purchases (
+  purchase_id text primary key,
+  player_id text not null default '',
+  product_id text not null,
+  test boolean not null default false,
+  created_at timestamptz not null default now()
+);
+alter table public.lp_pk_purchases enable row level security;
+revoke all on table public.lp_pk_purchases from anon, authenticated;

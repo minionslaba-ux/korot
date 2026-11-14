@@ -418,7 +418,7 @@ open(R+'/privacy/index.html','w').write('<!doctype html><html lang="ru"><head><m
 
 xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join(f'  <url><loc>https://forestpost.games/{u}</loc><lastmod>2026-11-14</lastmod><changefreq>{f}</changefreq><priority>{pr}</priority></url>\n' for u,_,pr,f in PAGES)+'</urlset>\n'
 open(R+'/sitemap.xml','w').write(xml)
-open(R+'/robots.txt','w').write('User-agent: *\nAllow: /\nDisallow: /server/\nDisallow: /tools/\n\nSitemap: https://forestpost.games/sitemap.xml\n')
+open(R+'/robots.txt','w').write('User-agent: *\nAllow: /\nDisallow: /server/\nDisallow: /tools/\nDisallow: /pikabu/\n\nSitemap: https://forestpost.games/sitemap.xml\n')
 print('ok2')
 
 # страница 404 (вместо стандартной страницы хостинга); пути от корня, т.к. 404 отдаётся на любом адресе
@@ -431,3 +431,6 @@ page('404.html','Страница не найдена — Лесная почт�
 <p><a href="/">На главную</a> · <a href="/karta/">Карта сайта</a></p>
 </div>''',root='/')
 print('ok3')
+
+import subprocess,sys
+subprocess.run([sys.executable,os.path.join(R,'tools','build_pikabu.py')],check=True)

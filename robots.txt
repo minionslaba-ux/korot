@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /server/
 Disallow: /tools/
+Disallow: /pikabu/
 
 Sitemap: https://forestpost.games/sitemap.xml

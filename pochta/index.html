@@ -2848,10 +2848,22 @@ const Platform={name:PIKABU?'pikabu':'demo',ysdk:null,payments:null,pk:null,pric
     try{const ps=await st.getPurchases();for(const x of ps||[])await this.pkGrant(x,false)}catch(e){}
   },
   // начисление по покупке: разовые наборы (noads, starter) — один раз, расходуемые — по purchaseId, затем consumePurchase
+  // подпись покупки проверяет наш сервер (функция lp-pikabu, ключ игры LP_PIKABU_SECRET) — как в «Мутации» и «Ночном тарифе»
+  async pkVerify(pc){
+    try{const signedData=await pc.getSignedData();const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),12000);
+      const r=await fetch('https://auequuxfcwdshblqrwbd.supabase.co/functions/v1/lp-pikabu',{method:'POST',headers:{'Content-Type':'application/json',apikey:TOUR_KEY},body:JSON.stringify({signedData}),signal:ctl.signal}).finally(()=>clearTimeout(tm));
+      const j=await r.json().catch(()=>null);return j&&j.ok&&j.purchaseId===pc.purchaseId&&j.productId===pc.productId?'ok':(j&&j.error)||'net'}
+    catch(e){return 'net'}
+  },
   async pkGrant(pc,loud){
     const id=pc.productId,pid=pc.purchaseId,pr=PRODUCTS[id];if(!pr)return false;
     P.pkGot=P.pkGot||[];
     const done=P.pkGot.includes(pid)||(!pr.consumable&&P.pkGot.includes('own:'+id));
+    if(!done){const v=await this.pkVerify(pc);
+      if(v!=='ok'){track('purchase_verify_fail',{id,why:v});
+        // покупка не подтверждена: не начисляем и не списываем — она вернётся при следующем запуске (getPurchases)
+        if(loud||v==='net'||v==='not_configured')toast(v==='bad_signature'||v==='unknown_product'?'Покупку не удалось подтвердить. Напиши в поддержку Пикабу.':'Покупка проверяется — зачислится при следующем запуске игры');
+        return false}}
     if(!done){pr.grant();P.pkGot.push(pid);if(!pr.consumable)P.pkGot.push('own:'+id);P.pkGot=P.pkGot.slice(-80);save();
       track('purchase',{id,rub:pr.rub,platform:'pikabu'});if(loud){sfx('win',.7);toast(pr.name+': готово!')}else toast(pr.name+': покупка зачислена')}
     if(pr.consumable){try{await this.pk.store.consumePurchase(pid)}catch(e){}}
@@ -2899,7 +2911,7 @@ const Platform={name:PIKABU?'pikabu':'demo',ysdk:null,payments:null,pk:null,pric
         if(why==='NON_CONSUMABLE_ALREADY_OWNED'){toast('Уже куплено — возвращаю покупку');await this.pkStoreInit();return false}
         toast(why==='USER_CANCELLED'?'Покупка отменена':why==='USER_UNAUTHORIZED'?'Для покупки нужно войти в аккаунт Пикабу':'Покупка не прошла, попробуй ещё раз');
         track('purchase_cancel',{id,why:String(why||'')});return false}
-      await this.pkGrant(r.purchase,true);return 'granted';
+      return (await this.pkGrant(r.purchase,true))?'granted':false;
     }catch(e){toast('Покупка не прошла, попробуй ещё раз');return false}
     finally{this.buying=false}
   },
