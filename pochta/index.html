@@ -509,6 +509,21 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .confetti{position:fixed;inset:0;z-index:55000;pointer-events:none;overflow:hidden}
 .confetti i{position:absolute;top:0;border-radius:2px}
 .hm>*{animation:hmrise .5s cubic-bezier(.3,1.3,.5,1) backwards}
+/* UX-анимации: окно «выпрыгивает», фон плавно темнеет, кнопки пружинят, экраны сменяются мягко */
+#card.cin{animation:cardin .32s cubic-bezier(.2,1.4,.5,1)}
+@keyframes cardin{from{transform:translateY(26px) scale(.9);opacity:0}}
+#ov:not([hidden]){animation:ovin .22s ease-out}
+@keyframes ovin{from{background-color:transparent;backdrop-filter:none}}
+.btn,.rbtn,.pill,.tourchip,.tab,.vtab,.sitem .btn{transition:transform .14s cubic-bezier(.3,1.6,.5,1),filter .14s}
+@media (hover:hover){.btn:hover:not(:disabled),.rbtn:hover,.pill:hover,.tourchip:hover{transform:translateY(-2px);filter:brightness(1.05)}}
+.btn:active:not(:disabled),.rbtn:active,.pill:active,.tourchip:active,.tab:active,.vtab:active{transform:translateY(2px) scale(.95)!important;transition-duration:.06s}
+#level:not([hidden]){animation:scrin .3s ease-out}
+@keyframes scrin{from{opacity:0;transform:scale(.98)}}
+.pill.bump{animation:bump .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes bump{30%{transform:scale(1.18)}}
+.rbtn .badge{animation:badgein .4s cubic-bezier(.3,1.8,.5,1) backwards .3s}
+@keyframes badgein{from{transform:scale(0)}}
+@media (prefers-reduced-motion:reduce){#card.cin,#ov:not([hidden]),#level:not([hidden]),.pill.bump,.rbtn .badge{animation:none}}
 .hm>:nth-child(2){animation-delay:.05s}.hm>:nth-child(3){animation-delay:.1s}.hm>:nth-child(4){animation-delay:.15s}.hm>:nth-child(5){animation-delay:.2s}
 @keyframes hmrise{from{transform:translateY(24px);opacity:0}}
 @media (prefers-reduced-motion:reduce){.hm>*,.tuth,.tutb,.ldbun{animation:none}}
@@ -1715,6 +1730,7 @@ function renderHome(){
     </div>
     ${legalBar()}
   </div>`;
+  {const cs=P.coins,sv=avail;if(window._lastCoins!=null&&cs!==window._lastCoins&&$('pCoins'))$('pCoins').classList.add('bump');if(window._lastStars!=null&&sv!==window._lastStars&&$('pStars'))$('pStars').classList.add('bump');window._lastCoins=cs;window._lastStars=sv}
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
   if($('bTour'))$('bTour').onclick=()=>{ac();showTour()};
   if($('bEvent'))$('bEvent').onclick=()=>{ac();showEvent()};
@@ -2318,7 +2334,7 @@ function fx(t,r,c){
     }
     shake();
   }
-  boom();
+  spSound(t.sp);
 }
 function fxOld(t,r,c){
   const b=$('board');
@@ -2333,11 +2349,11 @@ async function applyHits(list,spawns,fromMatch,mult){
   const queue=list.map(([r,c])=>r*N+c);
   const direct=new Set(queue),strong=new Set(fromMatch?[]:queue),adj=new Map();
   if(fromMatch){for(const k of queue){const r=k/N|0,c=k%N;const t=grid[r][c];const col=t?t.color:-1;for(const [dr,dc] of D4){const y=r+dr,x=c+dc;if(!inb(y,x))continue;const kk=y*N+x;if(!adj.has(kk))adj.set(kk,new Set());adj.get(kk).add(col)}}}
-  const done=new Set(),removed=[],hitBig=new Set();let big=false,mossHit=false;
+  const done=new Set(),removed=[],hitBig=new Set();let big=false,mossHit=false,obsHit=false;
   for(const [k,cols] of adj){if(direct.has(k))continue;const r=k/N|0,c=k%N;
     const t=grid[r][c];if(t&&t.stone){queue.push(k);continue}
     layerHit(r,c,true);if(!t)continue;
-    if(t.obj)objHit(t,r,c,{adj:cols},removed,hitBig);
+    if(t.obj){obsHit=true;objHit(t,r,c,{adj:cols},removed,hitBig)}
   }
   while(queue.length){
     const k=queue.shift();if(done.has(k))continue;done.add(k);
@@ -2347,16 +2363,18 @@ async function applyHits(list,spawns,fromMatch,mult){
     const t=grid[r][c];if(!t)continue;
     if(spawnKeys.has(k)){if(t.lock){t.lock=false;goalAdd('l')}continue}
     if(t.parcel||t.hero)continue;
-    if(t.obj){if(strong.has(k))objHit(t,r,c,{strong:true},removed,hitBig);continue}
-    if(t.stone){t.hp--;score+=30;if(t.hp<=0){grid[r][c]=null;removed.push(t);goalAdd('s')}else renderTile(t);continue}
+    if(t.obj){if(strong.has(k)){obsHit=true;objHit(t,r,c,{strong:true},removed,hitBig)}continue}
+    if(t.stone){obsHit=true;t.hp--;score+=30;if(t.hp<=0){grid[r][c]=null;removed.push(t);goalAdd('s')}else renderTile(t);continue}
     if(t.lock){t.lock=false;goalAdd('l');score+=20;renderTile(t);continue}
     grid[r][c]=null;removed.push(t);goalAdd('c',t.color);score+=10*mult;if(SPEED)stat('tiles');
     if(t.frog){t.frog=false;goalAdd('r');score+=100;if(SPEED)floatNum(r,c,'Лягушка!')}
     if(t.vine)breakVine(t.vine);
     if(t.sp){big=true;fx(t,r,c);for(const kk of area(t,r,c)){queue.push(kk);strong.add(kk)}}
   }
+  if(SPEED&&(mossHit||obsHit))sfx('crack',.45);
   if(mossHit)checkPics();
   if(OB.defer&&OB.defer.length){const d=OB.defer;OB.defer=[];d.forEach(f=>f())}
+  if(spawns.length&&SPEED)sfx('spawn',.45);
   for(const s of spawns){const t=grid[s.r][s.c];if(t){t.sp=s.sp;if(s.sp==='rb')t.color=-1;renderTile(t);if(SPEED)stat(s.sp==='pg'?'pigeons':s.sp==='bomb'?'bombs':s.sp==='rb'?'rainbows':'stripes');if(s.sp==='pg'&&!P.pgSeen&&SPEED){P.pgSeen=true;save();setTimeout(()=>toast('Квадрат 2×2 даёт почтового голубя: он сам летит к цели!'),300)}}}
   removed.forEach(t=>{t.el.classList.add('pop');burst(t.r,t.c,t.stone?-1:t.color,removed.length>12?2:4)});
   if(removed.length){pop(mult);const m=removed[removed.length>>1];floatNum(m.r,m.c,'+'+(removed.length*10*mult))}
@@ -2519,7 +2537,7 @@ function clearHint(){clearTimeout(hintTimer);document.querySelectorAll('.t.hint'
 function armHint(){clearHint();if(!SPEED)return;hintTimer=setTimeout(()=>{if(busy||$('level').hidden)return;const m=findMove();if(m){grid[m[0]][m[1]].el.classList.add('hint');grid[m[2]][m[3]].el.classList.add('hint')}},5000)}
 
 /* ---------- экраны уровня ---------- */
-function openOv(){$('ov').hidden=false}
+function openOv(){const o=$('ov'),c=$('card');if(o.hidden&&c){c.classList.remove('cin');void c.offsetWidth;c.classList.add('cin')}o.hidden=false}
 function closeOv(){$('ov').hidden=true}
 function goalsHTML(gs){return `<div class="goals">${gs.map(g=>`<div class="goal"><span class="ic">${goalIcon(g)}</span>${g.need}</div>`).join('')}</div>`}
 function showIntro(i){
@@ -2590,10 +2608,10 @@ function lose(reason){
 }
 
 /* ---------- фоновая музыка: бесшовный повтор через Web Audio ---------- */
-const MUS_VOL={home:.5,village:.42,level1:.28,level2:.26,level3:.27,level4:.27};
+const MUS_VOL={home:.5,village:.42,hill:.4,level1:.28,level2:.26,level3:.27,level4:.27};
 const LTR=['level1','level2','level3','level4'];
-const levelTrack=i=>{const ch=chapterOfLevel(i<0?nextLevel():i);return LTR[(ch+(Math.abs(i)%2))%LTR.length]};
-const homeTrack=()=>curView()==='p'?'home':'village';
+const levelTrack=i=>{if(i===-3)return 'hill';const ch=chapterOfLevel(i<0?nextLevel():i);return LTR[(ch+(Math.abs(i)%2))%LTR.length]};
+const homeTrack=()=>curView()==='p'?'home':curView()==='h'?'hill':'village';
 const mus={buf:{},src:null,gain:null,cur:null,want:null};
 const musExt=(()=>{try{return new Audio().canPlayType('audio/ogg; codecs="vorbis"')?'ogg':'mp3'}catch(e){return 'mp3'}})();
 // трек скачивается заранее (сразу после загрузки игры), а раскодируется после первого касания — музыка начинается почти сразу
@@ -2621,7 +2639,8 @@ function duck(ms=2200){
   if(!mus.gain||!AC)return;const g=mus.gain,v=MUS_VOL[mus.cur]||.3,t=AC.currentTime;
   g.gain.cancelScheduledValues(t);g.gain.setTargetAtTime(v*.2,t,.08);g.gain.setTargetAtTime(v,t+ms/1000,.6);
 }
-document.addEventListener('pointerdown',()=>{ac();if(mus.want&&!mus.cur)playMusic(mus.want)},{passive:true});
+document.addEventListener('pointerdown',e=>{ac();if(mus.want&&!mus.cur)playMusic(mus.want);if(!window._sfxPre&&AC){window._sfxPre=1;SFX_PRE.forEach(n=>sfxBuf(n))}
+  const b=e.target.closest&&e.target.closest('button,.btn,.rbtn,.pill,.tab,.vtab');if(b&&!b.disabled&&!b.closest('#board'))sfx('btn',.35)},{passive:true});
 document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden)AC.suspend();else AC.resume()});
 // одна кнопка звука на главном экране и в письме: выключает и музыку, и звуки (требование площадок)
 const soundOn=()=>!(P.musicOff&&P.sfxOff);
@@ -2637,12 +2656,19 @@ function comboText(t){sfx('combo',.7);const e=document.createElement('div');e.cl
 let AC=null;
 function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume()}
 function tone(f,d=.1,type='sine',v=.06,delay=0){if(!AC||!SPEED||P.sfxOff)return;const t0=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(v,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+d+.02)}
-const pop=m=>tone(520+Math.min(m,8)*90,.12,'triangle',.07);
-const SFX={};function sfx(n,vol=.6){if(!SPEED||P.sfxOff)return;try{const a=(SFX[n]=SFX[n]||new Audio('assets/sfx/'+n+'.mp3'));a.currentTime=0;a.volume=vol;a.play().catch(()=>{})}catch(e){}}
+const pop=m=>{const k=Math.min(Math.max(m,1),5);sfx('pop'+k,.55,1+Math.max(0,m-5)*.06)};
+// игровые звуки (Kenney, CC0): через Web Audio — без задержки и с наложением; без него — обычный Audio
+const SFX={},SFXB={};
+function sfxBuf(n){if(!SFXB[n]&&AC)SFXB[n]=fetch('assets/sfx/'+n+'.mp3').then(r=>r.arrayBuffer()).then(b=>new Promise((ok,no)=>AC.decodeAudioData(b,ok,no))).catch(()=>{delete SFXB[n];return null});return SFXB[n]}
+function sfx(n,vol=.6,rate=1){if(!SPEED||P.sfxOff)return;
+  if(AC&&AC.state==='running'){const t=AC.currentTime;sfxBuf(n).then(buf=>{if(!buf||P.sfxOff)return;const s=AC.createBufferSource(),g=AC.createGain();s.buffer=buf;s.playbackRate.value=rate;g.gain.value=vol;s.connect(g);g.connect(AC.destination);s.start(Math.max(t,AC.currentTime))});return}
+  try{const a=(SFX[n]=SFX[n]||new Audio('assets/sfx/'+n+'.mp3'));a.currentTime=0;a.volume=Math.min(1,vol);a.play().catch(()=>{})}catch(e){}}
+const SFX_PRE=['swap','nope','pop1','pop2','pop3','pop4','pop5','spawn','zap','boom','rainbow','pigeon','crack','coin','btn','tap','win','build'];
 const tick=()=>{sfx('tap');tone(700,.04,'sine',.02)};
-const swish=()=>{sfx('click');tone(380,.08,'sine',.03)};
-const nope=()=>{tone(220,.1,'square',.03);tone(180,.12,'square',.03,.08)};
-const boom=()=>{tone(110,.25,'sawtooth',.05);tone(660,.15,'triangle',.05,.05)};
+const swish=()=>sfx('swap',.6);
+const nope=()=>sfx('nope',.6);
+const boom=()=>sfx('boom',.7);
+const spSound=sp=>sp==='h'||sp==='v'?sfx('zap',.45):sp==='rb'?sfx('rainbow',.6):sp==='pg'?sfx('pigeon',.7):boom();
 const chime=()=>sfx('build',.8);
 const fanfare=()=>sfx('win',.85);
 const sad=()=>sfx('lose',.8);
@@ -3045,7 +3071,7 @@ const owns=k=>(P.owned||[]).includes(k);
 const tishaFilter=()=>(SHOP.tisha.find(t=>t.id===P.tisha)||SHOP.tisha[0]).filter;
 function applyTisha(){document.documentElement.style.setProperty('--tisha',tishaFilter())}
 function dealOfDay(){const it=SHOP.boosters[dayNum(new Date())%SHOP.boosters.length];return {...it,old:it.price,price:Math.round(it.price*.7/5)*5}}
-function addCoins(n,why){P.coins=(P.coins||0)+n;save();if(why&&SPEED)toast(`+${n} монет ${why}`)}
+function addCoins(n,why){P.coins=(P.coins||0)+n;save();sfx('coin',.5);if(why&&SPEED)toast(`+${n} монет ${why}`)}
 function spend(price){if((P.coins||0)<price){toast('Не хватает монет');track('coins_short',{price});return false}P.coins-=price;track('coins_spend',{price});save();sfx('build',.6);return true}
 let shopTab='boosters',shopBack=null;
 function showShop(tab,back){

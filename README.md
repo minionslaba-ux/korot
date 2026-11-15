@@ -72,7 +72,8 @@
 - Зверята: Kenney Cube Pets, отрендерены из 3D-моделей.
 - Диорама почты: Kenney Mini Forest, отрендерена слоями.
 - Джинглы: Kenney Music Jingles (пиццикато).
-- Фоновая музыка: треки «Primordial Soup», «Vacation Day», «Lift You Up», «Workshop», «Alley Cat» и «Seaside». Скорее всего, они из Tallbeard Music Loop Bundle (CC0); перед релизом стоит сверить лицензию с источником.
+- Игровые звуки (обмен, совпадения по нарастающей, ракета, бомба, радуга, голубь, треск препятствий, монеты, кнопки): Kenney Interface Sounds, Impact Sounds, Digital Audio, Casino Audio (CC0), `pochta/assets/sfx`.
+- Фоновая музыка: треки «Primordial Soup», «Vacation Day», «Lift You Up», «Workshop», «Alley Cat», «Seaside» и «Distant Skyline» (звёздный холм и сезонные события). Скорее всего, они из Tallbeard Music Loop Bundle (CC0); перед релизом стоит сверить лицензию с источником.
 
 Ассеты Kenney распространяются по лицензии CC0, см. `pochta/assets/LICENSE-kenney.txt`.
 
