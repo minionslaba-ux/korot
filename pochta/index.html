@@ -321,6 +321,9 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .floatnum{position:absolute;pointer-events:none;font-family:var(--display);font-weight:900;color:#fff;-webkit-text-stroke:2px #2b3a55;paint-order:stroke;font-size:calc(var(--cell) * .38);transform:translate(-50%,-50%)}
 .combo{font-family:var(--display);font-weight:900;color:#ffd23f;-webkit-text-stroke:3px #c2410c;paint-order:stroke;text-shadow:0 4px 0 #7a2e0a}
 .ov{background:#0b3a7a88;backdrop-filter:blur(4px)}
+/* окно выше экрана: верх не уходит за край, окно прокручивается (центр — только когда помещается) */
+.ov{align-items:flex-start!important}.ov>.card{margin:auto}
+@media (max-height:520px){.card{padding:14px!important;gap:8px!important}.card h2{font-size:22px}.giftcal{gap:5px;margin:4px 0}.giftcal .gc{min-height:52px;padding:4px 2px}.giftcal+p{font-size:13px;margin:0}}
 .card{background:#fff;color:var(--ink);border-radius:24px;box-shadow:0 8px 0 #c9d8ea,0 24px 50px -10px #0b3a7a;background-image:none}
 .card h2{color:var(--ink);font-size:26px}
 .card .to{color:#2f7fd6}
@@ -610,6 +613,21 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .streakwin{background:#fff4e0;border-radius:12px;padding:6px 10px;font-size:14px;color:#8a4a10;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:6px 0}
 .streakwin .bi,.streakwin svg{width:20px;height:20px}
 .playbtn,.playbtn .pt{min-width:0}.playbtn small{max-width:100%}
+/* низкое окно в портрете (телефон во фрейме Пикабу ~360×475): компактная главная, всё видно без прокрутки */
+@media (orientation:portrait) and (max-height:600px){
+  .hm{gap:6px!important;min-height:0!important;padding-top:6px!important}
+  .hm .logo{font-size:30px!important}.hm .rankline{display:none}
+  .hm .scene{width:min(100%,calc((100dvh - 330px) * 1.6))!important;min-width:min(100%,220px)!important}
+  .hm .actions{gap:8px;margin-bottom:4px}.hm .actions .rbtn{width:48px;height:48px}.hm .actions .lbl{font-size:11px}
+  .hm .playrow{margin-bottom:4px}.hm .playbtn{min-height:58px;font-size:22px!important}.hm .playrow .rbtn.big{width:56px;height:56px}
+  .hm .chiprow{margin:0 0 4px}.hm .topbar .rbtn.small,.hm .pill{transform:scale(.9)}
+}
+@media (orientation:portrait) and (max-height:520px){.hm .logo{display:none}}
+@media (orientation:portrait) and (max-height:600px){
+  #game.portrait .hud{gap:6px!important}#game.portrait .hud .box{padding:6px 10px!important}#game.portrait .hud .moves{font-size:30px!important}
+  #game.portrait .tools .rbtn.hb{width:46px;height:46px}#level{padding-top:8px!important;padding-bottom:8px!important}
+  .ghero{width:min(20vh,96px)!important}#intro .igate h1{font-size:34px!important}.igate .gsub{font-size:13px!important;margin:0!important}.igate{gap:8px!important}
+}
 @media (max-width:360px){.playrow{gap:8px}.playbtn{font-size:22px!important;gap:8px}.playbtn small{font-size:11px}.playbtn .playpet{width:44px;height:44px}}
 @media (orientation:landscape) and (max-height:480px),(orientation:landscape) and (max-height:640px) and (min-aspect-ratio:13/10){
   .hm{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"top top" "scene act" "scene play";column-gap:16px;row-gap:6px;align-items:center;justify-items:center;padding-top:4px!important}
@@ -1942,7 +1960,8 @@ function layout(){
   const portrait=vw<760||vh>vw*1.05;
   const g=$('game');if(g)g.classList.toggle('portrait',portrait);
   const avW=portrait?vw-32-16:vw-32-16-220-18;
-  const avH=(portrait?vh-28-16-170:vh-28-16-12)-(LV&&LV.house!=null?CELL_H:0);
+  const hudEl=portrait&&g?g.querySelector('.hud'):null,hudH=hudEl&&hudEl.offsetHeight?Math.max(120,hudEl.offsetHeight+40):170;
+  const avH=(portrait?vh-28-16-hudH:vh-28-16-12)-(LV&&LV.house!=null?CELL_H:0);
   CELL=Math.max(24,Math.floor(Math.min(avW/N,avH/N,72)));
   document.documentElement.style.setProperty('--cell',CELL+'px');
 }
@@ -2900,11 +2919,13 @@ const Platform={name:PIKABU?'pikabu':'demo',ysdk:null,payments:null,pk:null,pric
     clearTimeout(this.pkT);this.pkT=setTimeout(()=>{try{this.pk.storage.set('lp',{v:1,t:Date.now(),p:P})}catch(e){}},now?0:2500);
   },
   async pkAd(kind){   // 'rewarded' | 'fullscreen' → {reward} или null, если показать нечего
-    const sdk=this.pk||await this.pkReady;const ad=sdk&&sdk.ads&&sdk.ads[kind];
+    // тайм-ауты, чтобы игра не зависла на паузе, если SDK не ответил (урок «Мутации»)
+    const to=(pr,ms,def)=>Promise.race([pr,new Promise(r=>setTimeout(()=>r(def),ms))]);
+    const sdk=this.pk||await to(this.pkReady,5000,null);const ad=sdk&&sdk.ads&&sdk.ads[kind];
     if(!ad||!ad.isSupported)return null;
-    try{if(!(await ad.canShow()))return null}catch(e){return null}
+    try{if(!(await to(ad.canShow(),4000,false)))return null}catch(e){return null}
     adPause(true);
-    try{const r=await ad.show();return r&&r.rendered?{reward:!!r.reward}:null}
+    try{const r=await to(ad.show(),90000,null);return r&&r.rendered?{reward:!!r.reward}:null}
     catch(e){return null}
     finally{adPause(false)}
   },
