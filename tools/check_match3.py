@@ -13,6 +13,7 @@ for r in rows: ch.setdefault(r[0], []).append(r)
 err = 0
 for k, ms in ch.items():
     if only and k not in only: continue
+    if k == '1': print('гл.1: обучающая глава — исключение (см. правила)'); continue
     v = [m[3] for m in ms]; cnt = collections.Counter(v); prob = []
     if len(cnt) < 5: prob.append(f'целей {len(cnt)} (<5)')
     for g, n in cnt.items():
