@@ -334,7 +334,11 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .bigstars img{width:72px;height:auto;animation:starin .5s cubic-bezier(.3,1.7,.5,1) backwards;filter:drop-shadow(0 4px 0 #0002)}
 .bigstars img:nth-child(2){width:88px;margin-top:-14px;animation-delay:.25s}
 .bigstars img:nth-child(3){animation-delay:.5s}
+.btn.nextbig{width:100%;font-size:20px;min-height:54px}
+@media (max-height:640px){.bigstars img{width:52px}.bigstars img:nth-child(2){width:64px;margin-top:-10px}.card .who .petport{width:64px;height:64px}.card .stamp{transform:scale(.75)}}
+@media (max-width:360px){.card .row .btn{font-size:14px;padding-left:6px;padding-right:6px}}
 @keyframes starin{from{transform:scale(0) rotate(-40deg);opacity:0}}
+.toast{white-space:normal!important;max-width:min(92vw,460px);width:max-content;text-align:center;line-height:1.3}
 .toast{background:#fff;color:var(--ink);border-radius:14px;box-shadow:0 4px 0 #c9d8ea,0 10px 24px -8px #0b3a7a99;font-family:var(--display)}
 
 
@@ -595,6 +599,8 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .t.big-log{width:calc(var(--cell)*2)}.t.big-chest{width:calc(var(--cell)*2);height:calc(var(--cell)*2)}
 .t.flip .g{transform:scaleX(-1)}
 .obadge{position:absolute;right:2%;bottom:2%;min-width:calc(var(--cell)*.3);height:calc(var(--cell)*.3);border-radius:99px;background:#fff;color:#2b3a55;font:900 calc(var(--cell)*.2)/calc(var(--cell)*.3) var(--display);text-align:center;box-shadow:0 2px 0 #0003;padding:0 3px;box-sizing:border-box}
+.noflash .bolt,.noflash .obadge.hot,.noflash .gglow,.noflash .lglow{animation:none!important}.noflash .combo{animation-duration:1.2s}
+.lite .ov,.lite .gchips span{backdrop-filter:none!important}.lite .gbg{filter:none;animation:none}.lite .hm>*{animation:none}
 .obadge.timer{background:#ffe14a}.obadge.hot{background:#ff5a5a;color:#fff;animation:boltw .4s infinite alternate}.obadge.lit{background:#ffd23f}
 .bask{position:absolute;left:28%;top:22%;width:44%;height:44%}.bask img{width:100%;height:100%;object-fit:contain}
 .petals{position:absolute;left:0;right:0;bottom:-2%;display:flex;justify-content:center;gap:1px}.petals i{width:30%;height:calc(var(--cell)*.28);opacity:.35;filter:grayscale(.6)}.petals i.ok{opacity:1;filter:none}.petals img{width:100%;height:100%;object-fit:contain}
@@ -627,6 +633,7 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
   #game.portrait .tools .rbtn.hb{width:46px;height:46px}#level{padding-top:8px!important;padding-bottom:8px!important}
   .ghero{width:min(20vh,96px)!important}#intro .igate h1{font-size:34px!important}.igate .gsub{font-size:13px!important;margin:0!important}.igate{gap:8px!important}
 }
+@media (max-width:360px){.playbtn small .pn{display:none}}
 @media (max-width:360px){.playrow{gap:8px}.playbtn{font-size:22px!important;gap:8px}.playbtn small{font-size:11px}.playbtn .playpet{width:44px;height:44px}}
 @media (orientation:landscape) and (max-height:480px),(orientation:landscape) and (max-height:640px) and (min-aspect-ratio:13/10){
   .hm{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"top top" "scene act" "scene play";column-gap:16px;row-gap:6px;align-items:center;justify-items:center;padding-top:4px!important}
@@ -669,6 +676,8 @@ h1,h2{font-family:var(--display);font-weight:900;letter-spacing:.01em}
 .ach .am{width:34px;height:34px;flex:none;display:flex}.ach .am svg,.ach .am img{width:100%;height:100%;object-fit:contain}.ach .am.off{filter:grayscale(1);opacity:.4}.ach .ad{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}.ach .ad span{font-size:12px;color:var(--ink-dim)}.ach .ad small{font-size:11px;color:var(--ink-dim)}
 .ach .arw{font-size:12px;color:var(--ink-dim);white-space:nowrap}.ach .btn.small{padding:6px 10px;font-size:13px;white-space:nowrap}
 @media (orientation:landscape) and (max-height:480px){.rankline{display:none}}
+.btn.anext{position:relative}.btn .cd{display:inline-grid;place-items:center;min-width:1.6em;height:1.6em;margin-left:6px;border-radius:999px;background:#0002;font-size:.8em}
+.note.tmr{background:#eef8ff;border-radius:12px;padding:8px 10px;color:#1f4f8a}.note.tmr .coin{width:16px;height:16px;vertical-align:-3px}
 .evchip{background:linear-gradient(90deg,#e0701f,#d9a21c)!important;box-shadow:0 4px 0 #8a4a0a66!important}.evchip .evi{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff3;font-size:14px}
 .giftcal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
 .giftcal .gc{position:relative;background:#f3f6fb;border:2px solid #dbe5f2;border-radius:14px;padding:6px 4px;text-align:center;min-height:68px}
@@ -1738,16 +1747,17 @@ function renderHome(){
       ${rbtn('bRepair','yellow',ICO('wrench'),'Ремонт',canBuild||'')}
       ${rbtn('bDaily','red',SVG.mail,'Письмо дня',st.done?'':'!')}
       ${rbtn('bAlbum','blue',SVG.album,'Альбом',achReady().length||'')}
-      ${rbtn('bShop','green',ICO('shoppingCart'),'Магазин','')}
+      ${rbtn('bShop','green',ICO('shoppingCart'),'Магазин',P.starterNew&&!P.starterBought?'!':'')}
     </div>
     ${eventChip()||tourChip()?`<div class="chiprow">${eventChip()}${tourChip()}</div>`:''}
     <div class="playrow">
       ${rbtn('bMap','blue big',SVG.map,'Карта','')}
-      <button class="btn main playbtn" id="bPlay">${petImg(NL.pet,'playpet')}<span class="pt"><small>${done?'Все письма доставлены!':'Письмо '+(nl+1)+' · '+NL.name}</small>Играть</span></button>
+      <button class="btn main playbtn" id="bPlay">${petImg(NL.pet,'playpet')}<span class="pt"><small>${done?'Все письма доставлены!':'Письмо '+(nl+1)+'<span class="pn"> · '+NL.name+'</span>'}</small>Играть</span></button>
     </div>
     ${legalBar()}
   </div>`;
   {const cs=P.coins,sv=avail;if(window._lastCoins!=null&&cs!==window._lastCoins&&$('pCoins'))$('pCoins').classList.add('bump');if(window._lastStars!=null&&sv!==window._lastStars&&$('pStars'))$('pStars').classList.add('bump');window._lastCoins=cs;window._lastStars=sv}
+  if(P.playDay===todayKey()&&(P.playN||0)>=1)setTimeout(()=>{try{maybeGift()}catch(e){}},700);
   $('bPlay').onclick=()=>{ac();showIntro(nl)};
   if($('bTour'))$('bTour').onclick=()=>{ac();showTour()};
   if($('bEvent'))$('bEvent').onclick=()=>{ac();showEvent()};
@@ -1759,7 +1769,7 @@ function renderHome(){
   $('pChest').onclick=()=>{ac();openChest()};
   $('bDaily').onclick=()=>{ac();if(dailyState().done)toast('Письмо дня уже доставлено. Завтра придёт новое!');else showIntro(-1)};
   $('bAlbum').onclick=()=>{ac();showAlbum()};
-  $('bShop').onclick=()=>{ac();showShop('boosters',null)};
+  $('bShop').onclick=()=>{ac();if(P.starterNew){P.starterNew=false;save();showShop('coins',null)}else showShop('boosters',null)};
   $('bSettings').onclick=()=>{ac();showSettings(false)};
   $('bSound').onclick=()=>{ac();toggleSound()};
   passDaily();showStarterOffer();
@@ -1850,10 +1860,19 @@ function toggleRow(id,label,on){return `<div class="setrow"><span>${label}</span
 function bindToggles(){
   $('sMusic').onclick=()=>{setMusic(!!P.musicOff);updSoundBtns();$('sMusic').classList.toggle('on',!P.musicOff);$('sMusic').setAttribute('aria-checked',!P.musicOff)};
   $('sSfx').onclick=()=>{setSfx(!!P.sfxOff);updSoundBtns();$('sSfx').classList.toggle('on',!P.sfxOff);$('sSfx').setAttribute('aria-checked',!P.sfxOff)};
+  const tg=(id,get,set)=>{const b=$(id);if(b)b.onclick=()=>{set(!get());save();applyFx();b.classList.toggle('on',get());b.setAttribute('aria-checked',get())}};
+  tg('sQuiet',quietOn,v=>P.quiet=v);tg('sFlash',noFlash,v=>P.noFlash=v);tg('sLite',liteOn,v=>P.lite=v);
 }
+// «меньше окон» (по умолчанию включено), «без вспышек» (по умолчанию — как в системе), «лёгкая графика» (сама на слабых устройствах)
+const quietOn=()=>P.quiet!==false;
+const noFlash=()=>P.noFlash!=null?P.noFlash:matchMedia('(prefers-reduced-motion: reduce)').matches;
+const weakDev=()=>(navigator.deviceMemory||8)<=3||(navigator.hardwareConcurrency||8)<=4;
+const liteOn=()=>P.lite!=null?P.lite:weakDev();
+function applyFx(){const h=document.documentElement;h.classList.toggle('noflash',noFlash());h.classList.toggle('lite',liteOn())}
 function showSettings(){
   $('card').innerHTML=`<div class="to">Настройки</div><h2>Настройки</h2>
     ${toggleRow('sMusic','Музыка',!P.musicOff)}${toggleRow('sSfx','Звуки',!P.sfxOff)}
+    ${toggleRow('sQuiet','Меньше окон',quietOn())}${toggleRow('sFlash','Без вспышек и тряски',noFlash())}${toggleRow('sLite','Лёгкая графика',liteOn())}
     <button class="btn" id="sIntro">${ICO('movie')} Посмотреть ролик</button>
     <button class="btn" id="sAn">${ICO('information')} События аналитики</button>
     <button class="btn danger" id="sReset">${ICO('trashcan')} Сбросить прогресс</button>
@@ -1876,7 +1895,7 @@ function showPause(){
   $('card').innerHTML=`<div class="to">Пауза</div><h2>Письмо ждёт</h2>
     ${toggleRow('sMusic','Музыка',!P.musicOff)}${toggleRow('sSfx','Звуки',!P.sfxOff)}
     <button class="btn main" id="pzGo">Продолжить</button>
-    <div class="row"><button class="btn" id="pzRetry">${ICO('return')} Заново</button><button class="btn" id="pzHome">${ICO('home')} На почту</button></div>`;
+    <div class="row"><button class="btn" id="pzRetry">${ICO('return')} Заново</button><button class="btn" id="pzHome">${ICO('home')} На почту</button></div>${tomorrowNote()}`;
   openOv();bindToggles();
   $('pzGo').onclick=()=>{closeOv();armHint()};
   $('pzRetry').onclick=()=>{if(moves<LV.moves)levelFailed();startLevel(LI)};
@@ -1902,6 +1921,7 @@ const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
   reveal();hideTut();applyTileSet(tileSetFor(i));
+  if(P.playDay!==todayKey()){P.playDay=todayKey();P.playN=0}P.playN=(P.playN||0)+1;
   LI=i;LV=i===-3?EVLV:i===-2?WEEKLY:i<0?DAILY:LEVELS[i];hammerState='none';track('level_start',{level:i===-3?'event':i===-2?'tour':i<0?'daily':i+1});playMusic(levelTrack(i));moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
   $('home').hidden=true;$('map').hidden=true;$('level').hidden=false;closeOv();try{scrollTo(0,0)}catch(e){}
   $('level').innerHTML=`<div class="game" id="game">
@@ -2320,7 +2340,7 @@ function area(t,r,c){
 }
 function sprite(cls,css,src){const e=document.createElement(src?'img':'div');e.className=cls;if(src){e.src=src;e.alt=''}Object.assign(e.style,css);$('board').appendChild(e);return e}
 function burst(r,c,color,n){
-  if(!SPEED)return;
+  if(!SPEED)return;if(liteOn())n=Math.min(n,2);
   const cx=(c+.5)*CELL,cy=(r+.5)*CELL,col=GEM_COL[color]||'#ffffff';
   const fl=sprite('fxl',{width:CELL*1.6+'px',height:CELL*1.6+'px',mixBlendMode:'screen'},'assets/light.png');
   fl.animate([{transform:`translate(${cx-CELL*.8}px,${cy-CELL*.8}px) scale(.3)`,opacity:1},{transform:`translate(${cx-CELL*.8}px,${cy-CELL*.8}px) scale(1)`,opacity:0}],{duration:320,easing:'ease-out'}).onfinish=()=>fl.remove();
@@ -2337,9 +2357,9 @@ function floatNum(r,c,txt){
   const e=sprite('floatnum',{left:(c+.5)*CELL+'px',top:(r+.5)*CELL+'px'});e.textContent=txt;
   e.animate([{transform:'translate(-50%,-50%) scale(.5)',opacity:0},{transform:'translate(-50%,-80%) scale(1.15)',opacity:1,offset:.25},{transform:'translate(-50%,-180%) scale(1)',opacity:0}],{duration:800,easing:'ease-out'}).onfinish=()=>e.remove();
 }
-function shake(){if(!SPEED)return;const w=document.querySelector('.boardwrap');if(!w)return;w.classList.remove('shake');void w.offsetWidth;w.classList.add('shake')}
+function shake(){if(!SPEED||noFlash())return;const w=document.querySelector('.boardwrap');if(!w)return;w.classList.remove('shake');void w.offsetWidth;w.classList.add('shake')}
 function fx(t,r,c){
-  if(SPEED){
+  if(SPEED&&!noFlash()){
     if(t.sp==='h'||t.sp==='v'){
       const h=t.sp==='h';const L=N*CELL;
       const e=sprite('fxl',{width:(h?L:CELL*1.2)+'px',height:(h?CELL*1.2:L)+'px',left:(h?0:c*CELL-CELL*.1)+'px',top:(h?r*CELL-CELL*.1:0)+'px',
@@ -2592,16 +2612,22 @@ function win(){
     <div class="bigstars">${[1,2,3].map(s=>`<img src="assets/${s<=stars?'star':'star_off'}.png" alt="${s<=stars?'★':'☆'}">`).join('')}</div>
     <p>Очки: <b data-roll="${score}">0</b>. Осталось ходов: ${moves}.${gained?` На ремонт почты: <b>+${gained} ${STAR_IMG}</b>.`:''}${stars===3?' За три звезды: <b>+1 перемешивание</b>.':''} Монеты: <b>+<span data-roll="${coinGain}" data-tick="1">0</span> ${COIN}</b>.${!before?' Новая марка в альбоме!':''}${moved?` <b>${LV.name}</b> переезжает поближе к почте!`:''}</p>
     ${P.winStreak>=2?`<p class="streakwin">${bi('flame')} Серия побед: <b>${P.winStreak}</b>${streakBonus(P.winStreak).length?' · на старте следующего письма: '+streakBonus(P.winStreak).map(x=>x[1]).join(', '):' · ещё '+(3-P.winStreak)+' — и ракета на старте'}</p>`:''}
-    ${newStampsNote()}
-    <div class="row"><button class="btn adx2" id="bX2" data-gain="${coinGain}">${bi('ad')} ×2 монеты: ещё +${coinGain}</button></div>
-    <div class="row"><button class="btn pcbtn" id="bCard">${bi("postcard")} Открытка другу</button></div>
-    <div class="row"><button class="btn" id="bHome">На почту</button>${LI<LEVELS.length-1?'<button class="btn main" id="bNext">Следующее письмо</button>':''}</div>`;
+    ${newStampsNote()}${tomorrowNote()}
+    ${LI<LEVELS.length-1?'<button class="btn main nextbig" id="bNext">Следующее письмо ▶</button>':''}
+    <div class="row"><button class="btn adx2" id="bX2" data-gain="${coinGain}">${bi('ad')} ×2: +${coinGain}</button><button class="btn pcbtn" id="bCard">${bi("postcard")} Открытка</button></div>
+    <div class="row"><button class="btn" id="bHome">На почту</button></div>`;
   rebindWin();confetti();rollNumbers($('card'));
   openOv();
 }
+// автопереход: кнопка «Следующее письмо» сама нажмётся через 10 с; любое другое нажатие в окне отменяет
+function autoNext(id){const b=$(id);if(!b)return;clearInterval(window._anT);let k=10;const base=b.textContent;b.classList.add('anext');
+  const tick=()=>{if(!$(id)||$('ov').hidden){clearInterval(window._anT);return}b.innerHTML=`${base} <span class="cd">${k}</span>`;if(k--<=0){clearInterval(window._anT);b.click()}};
+  tick();window._anT=setInterval(tick,1000);
+  const stop=e=>{if(e.target.closest('#'+id))return;clearInterval(window._anT);b.textContent=base;b.classList.remove('anext');$('card').removeEventListener('pointerdown',stop,true)};
+  $('card').addEventListener('pointerdown',stop,true)}
 function rebindWin(){
   if($('bHome'))$('bHome').onclick=()=>maybeInter('win_home',renderHome);
-  if($('bNext'))$('bNext').onclick=()=>maybeInter('win_next',()=>showIntro(LI+1));
+  if($('bNext')){$('bNext').onclick=()=>{clearInterval(window._anT);maybeInter('win_next',()=>showIntro(LI+1))};autoNext('bNext')}
   if($('bX2'))$('bX2').onclick=async()=>{const b=$('bX2');b.disabled=true;const g=+b.dataset.gain;if(await Platform.rewarded('win_x2')){P.coins+=g;save();b.innerHTML=`Получено +${g} ${COIN}`;sfx('build',.7)}else b.disabled=false};
   if($('bDX2'))$('bDX2').onclick=async()=>{const b=$('bDX2');b.disabled=true;if(await Platform.rewarded('daily_x2')){P.coins+=50;P.shuffles++;save();b.innerHTML='Получено: +50 '+COIN+' и перемешивание';sfx('build',.7)}else b.disabled=false};
   if($('bCard'))$('bCard').onclick=()=>openPostcard(LV.pet||'bunny');
@@ -2615,7 +2641,7 @@ function lose(reason){
     ${(P.moves5||0)>0?`<button class="btn main" id="bUse5">Использовать +5 ходов <small>(есть ${P.moves5})</small></button>`:''}
     ${P.coins>=120?`<button class="btn buy5" id="bBuy5">+5 ходов за ${COIN} 120 <small>(у тебя ${P.coins})</small></button>`:`<p class="note">На +5 ходов за монеты не хватает: нужно ${COIN} 120, у тебя ${P.coins}. Можно купить ходы или начать письмо заново.</p>`}
     <button class="btn buy5 rub" id="bBuyRub">+5 ходов за ${Platform.price('moves5')}</button>
-    <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn${P.coins<120&&!(P.moves5>0)?' main':''}" id="bRetry">Заново</button></div>`;
+    <div class="row"><button class="btn" id="bHome">На почту</button><button class="btn${P.coins<120&&!(P.moves5>0)?' main':''}" id="bRetry">Заново</button></div>${tomorrowNote()}`;
   if($('bExtra'))$('bExtra').onclick=async()=>{if(await Platform.rewarded('lose_moves')){extraUsed=true;track('extra_moves',{how:'ad',level:LI+1});if(reason)for(const row of grid)for(const t of row)if(t&&t.obj==='letter'){t.timer+=5;renderTile(t)}moves+=5;updateHUD();closeOv();armHint()}};
   const add5=how=>{track('extra_moves',{how,level:LI+1});if(reason)for(const row of grid)for(const t of row)if(t&&t.obj==='letter'){t.timer+=5;renderTile(t)}moves+=5;updateHUD();closeOv();armHint()};
   if($('bBuy5'))$('bBuy5').onclick=()=>{if(spend(120))add5('coins')};
@@ -2702,7 +2728,7 @@ const SEASON=(()=>{const m=/season-(winter|spring|summer|autumn)/.exec(location.
 const SEASON_LAYERS=['pines','plants','garden'];
 const seasonBase=()=>SEASON==='summer'?'assets/scene/base.jpg':`assets/scene/base-${SEASON}.jpg`;
 const layerSrc=id=>HLAYERS[id]?`assets/hill/${id}.png`:VLAYERS[id]?`assets/village/${id}.png`:SEASON!=='summer'&&SEASON_LAYERS.includes(id)?`assets/scene/${id}-${SEASON}.png`:`assets/scene/${id}.png`;
-function seasonFx(host,n,inScene){
+function seasonFx(host,n,inScene){if(liteOn())n=Math.min(n,6);
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce)return;
   const box=document.createElement('div');box.className='sfx'+(inScene?' inscene':'');
   for(let i=0;i<n;i++){const e=document.createElement('i');e.className='p-'+SEASON;
@@ -2749,7 +2775,7 @@ function maybeTutorial(){
 }
 
 /* ---------- праздник победы ---------- */
-function confetti(n=90){
+function confetti(n=90){if(noFlash())return;if(liteOn())n=Math.min(n,25);
   if(!SPEED||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const box=document.createElement('div');box.className='confetti';document.body.appendChild(box);
   const cols=['#ff5a5a','#ffd23f','#4aa8ff','#7ed957','#ff8fd0','#ffffff','#ff9a3d'];
@@ -3032,7 +3058,8 @@ function passDaily(){
 }
 function showStarterOffer(){
   if(P.starterBought||P.starterOffered||!P.stars[9])return;
-  P.starterOffered=true;save();track('offer_show',{id:'starter'});
+  P.starterOffered=true;save();track('offer_show',{id:'starter',quiet:quietOn()});
+  if(quietOn()){P.starterNew=true;save();return}
   setTimeout(()=>{if(!$('ov').hidden)return;
     $('card').innerHTML=`<div class="to">Только один раз</div><h2>${bi('bag')} Стартовый набор</h2>
       <div class="offerlist"><span>${COIN} 1000 монет</span><span><span class="ib">${BICON.rocket}</span> 3 ракеты</span><span><span class="ib">${BICON.bomb}</span> 3 бомбы</span><span><span class="ib">${BICON.moves3}</span> 3 × «+3 хода»</span><span><span class="ib">${BICON.postcard}</span> золотая рамка открыток</span></div>
@@ -3389,6 +3416,9 @@ function giftState(){const g=P.gift||{};const t=todayKey();
 function giftHTML(gf,small){const parts=[];if(gf.coins)parts.push(`${COIN}<b>${gf.coins}</b>`);if(gf.shuffle)parts.push(`<span class="gi">${BICON.shuffle}</span>`);
   if(gf.rocket)parts.push(`<span class="gi">${BICON.rocket}</span>`);if(gf.bomb)parts.push(`<span class="gi">${BICON.bomb}</span>`);if(gf.moves3)parts.push(`<span class="gi">${BICON.moves3}</span>`);return parts.join('')}
 function grantGift(gf,k=1){P.coins=(P.coins||0)+(gf.coins||0)*k;if(gf.shuffle)P.shuffles+=gf.shuffle*k;for(const b of ['rocket','bomb','moves3'])if(gf[b])invAdd(b,gf[b]*k)}
+function tomorrowNote(){if(!P.stars.some(Boolean))return '';const g=P.gift||{},st=giftState();
+  if(st.ready)return `<p class="note tmr">Сегодня тебя ждёт подарок дня ${st.day} — загляни на почту!</p>`;
+  const n=((g.streak||0)%7)+1;return `<p class="note tmr">Завтра: подарок дня ${n} — ${giftHTML(GIFTS[n-1])}${n===7?' (сундук!)':''}</p>`}
 function maybeGift(){
   const st=giftState();if(!st.ready||!P.stars.some(Boolean)||!$('level').hidden||!$('ov').hidden||!$('intro').hidden)return false;
   const gf=GIFTS[st.day-1];P.gift={last:todayKey(),streak:st.day};grantGift(gf);save();track('daily_gift',{day:st.day});
@@ -3450,7 +3480,7 @@ function eventWin(){
     <div class="row"><button class="btn" id="bHome">На почту</button>${pr.done<EV_N?`<button class="btn main" id="eNext">Следующее письмо</button>`:''}</div>`;
   openOv();confetti(prize?90:50);
   $('bHome').onclick=()=>maybeInter('event_home',renderHome);
-  if($('eNext'))$('eNext').onclick=()=>maybeInter('event_next',()=>showIntro(-3))}
+  if($('eNext')){$('eNext').onclick=()=>{clearInterval(window._anT);maybeInter('event_next',()=>showIntro(-3))};autoNext('eNext')}}
 
 /* ---------- открытки друзьям ---------- */
 const GAME_URL='https://forestpost.games/pochta/';
@@ -3608,7 +3638,7 @@ async function playIntro(){
   const st=$('iStage'),q=sel=>st.querySelector(sel),cap=$('iCap');
   const say=async t=>{cap.classList.add('off');await wait(450);if(!alive())return;cap.textContent=t;cap.classList.remove('off')};
   const anim=(e,kf,o)=>e&&e.animate(kf,{fill:'forwards',easing:'ease-in-out',...o});
-  const flash=()=>{anim(q('.iflash'),[{opacity:0},{opacity:.95,offset:.1},{opacity:0,offset:.3},{opacity:.7,offset:.4},{opacity:0}],{duration:700});thunder();st.classList.remove('shake');void st.offsetWidth;st.classList.add('shake')};
+  const flash=()=>{if(noFlash()){thunder();return}anim(q('.iflash'),[{opacity:0},{opacity:.95,offset:.1},{opacity:0,offset:.3},{opacity:.7,offset:.4},{opacity:0}],{duration:700});thunder();st.classList.remove('shake');void st.offsetWidth;st.classList.add('shake')};
   playMusic('home');
   // 1. день
   anim(st,[{opacity:0,transform:'scale(1.06)'},{opacity:1,transform:'none'}],{duration:1400});
@@ -3662,7 +3692,7 @@ async function playIntro(){
 /* ---------- старт ---------- */
 addEventListener('resize',()=>{if($('level').hidden||!grid)return;layout();
   for(let r=0;r<N;r++)for(let c=0;c<N;c++){mossEl[r][c].style.transform=`translate(${c*CELL}px,${r*CELL}px)`;if(grid[r][c])place(grid[r][c],0)}relayoutObs()});
-load();if(!P.stat){P.stat={wins:P.stars.filter(Boolean).length,three:P.stars.filter(x=>x===3).length}}if(P.chests==null){P.chests=Math.max(0,Math.floor(P.stars.reduce((a,b)=>a+(b||0),0)/20)-1);save()}applyTisha();
+load();applyFx();if(!P.stat){P.stat={wins:P.stars.filter(Boolean).length,three:P.stars.filter(x=>x===3).length}}if(P.chests==null){P.chests=Math.max(0,Math.floor(P.stars.reduce((a,b)=>a+(b||0),0)/20)-1);save()}applyTisha();
 Platform.init();
 preload().then(()=>{
 seasonFx(document.body,SEASON==='summer'?14:30,false);renderHome();
@@ -3671,7 +3701,6 @@ if(_hash.startsWith('card-')){try{history.replaceState(null,'',location.pathname
 else if(!P.introSeen){
   // Пикабу: у площадки своя кнопка «Играть», поэтому новичок сразу попадает в первое письмо с подсказкой (как в «Мутации»); ролик — в настройках
   if(PIKABU&&!P.stars.some(Boolean)){P.introSeen=true;save();track('fast_start',{});startLevel(0)}else showIntroGate()}
-setTimeout(()=>{try{maybeGift()}catch(e){}},900);
 track('session_start',{w:innerWidth,h:innerHeight,boot:Math.round(performance.now()),stars:P.stars.filter(Boolean).length,mob:matchMedia('(pointer:coarse)').matches});
 window.BOOTED=true;setTimeout(()=>{if(SPEED&&!P.musicOff){const w=mus.want||homeTrack();fetchMus(w).catch(()=>{});if(w!==homeTrack())setTimeout(()=>fetchMus(homeTrack()).catch(()=>{}),2500)}},300);Platform.started();setTimeout(prefetchRest,1200);
 if(PIKABU&&Platform.pkReady)Platform.pkReady.then(()=>Platform.started());
