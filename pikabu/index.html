@@ -3344,7 +3344,7 @@ async function tourFetch(body){
     const j=await r.json().catch(()=>null);if(j&&!j.error){P.tourCache={week:j.week,rank:j.me&&j.me.rank,best:j.me&&j.me.score,total:j.total};save()}return j}
   catch(e){return null}finally{clearTimeout(tm)}}
 function makeWeekly(){
-  const w=tourWeek(),bosses=LEVELS.map((L,i)=>[L,i]).filter(([L,i])=>L.tier==='boss'&&i>=40);
+  const w=tourWeek(),bosses=LEVELS.map((L,i)=>[L,i]).filter(([L,i])=>L.tier==='boss'&&i>=40&&i<130&&!L.big);
   const [B]=bosses[w%bosses.length],rnd=seeded(w*104729+7);
   const pets=[...new Set(LEVELS.filter(L=>L.pet).map(L=>L.pet))],pet=pets[Math.floor(rnd()*pets.length)];
   return {...JSON.parse(JSON.stringify(B)),pet,name:PET_NAMES[pet],to:'турнира · '+PET_NAMES[pet],moves:(B.moves||25)+6,tut:null,weekly:true,week:w,
@@ -3456,8 +3456,12 @@ const evProg=e=>(P.ev&&P.ev[e.id])||{done:0,got:false};
 const evOpen=()=>P.stars.filter(Boolean).length>=EV_OPEN;
 let EVLV=null;
 function makeEventLevel(e,k){
-  const pool=LEVELS.map((L,i)=>[L,i]).filter(([L,i])=>i>=60&&i<300&&L.tier!=='boss');const rnd=seeded(e.seed*131+k*7);
-  const [B]=pool[Math.floor(rnd()*pool.length)];const pet=e.pets[k%e.pets.length];
+  // только письма из уже пройденных глав (без незнакомых механик), без боссов и обучения; 10 разных писем по перестановке
+  const top=Math.max(24,Math.min(nextLevel(),300));
+  const pool=LEVELS.map((L,i)=>[L,i]).filter(([L,i])=>i>=8&&i<top&&L.tier!=='boss'&&!L.tut&&!TUT[i]);
+  const rnd=seeded(e.seed*7919+97);for(let w=0;w<5;w++)rnd();
+  const perm=pool.map((_,j)=>j);for(let j=perm.length-1;j>0;j--){const t=Math.floor(rnd()*(j+1));[perm[j],perm[t]]=[perm[t],perm[j]]}
+  const [B]=pool[perm[k%perm.length]];const pet=e.pets[k%e.pets.length];
   return {...JSON.parse(JSON.stringify(B)),pet,name:PET_NAMES[pet],to:e.name+' · '+PET_NAMES[pet],moves:(B.moves||25)+(k<3?6:4),tut:null,event:e.id,evk:k,
     text:'«'+e.lines[k]+'» — '+PET_NAMES[pet]+'.'}}
 function eventChip(){const e=curEvent();if(!e||!evOpen())return '';const pr=evProg(e);const left=Math.max(1,Math.ceil((evDate(e.to)-Date.now())/864e5));
