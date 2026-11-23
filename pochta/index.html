@@ -1922,7 +1922,7 @@ const goalsDone=()=>goals.every(g=>g.have>=g.need);
 
 function startLevel(i){
   reveal();hideTut();applyTileSet(tileSetFor(i));
-  if(P.playDay!==todayKey()){P.playDay=todayKey();P.playN=0}P.playN=(P.playN||0)+1;
+  LEVEL_RUN++;if(P.playDay!==todayKey()){P.playDay=todayKey();P.playN=0}P.playN=(P.playN||0)+1;
   LI=i;LV=i===-3?EVLV:i===-2?WEEKLY:i<0?DAILY:LEVELS[i];hammerState='none';track('level_start',{level:i===-3?'event':i===-2?'tour':i<0?'daily':i+1});playMusic(levelTrack(i));moves=LV.moves;score=0;extraUsed=false;tool=null;sel=null;busy=false;
   $('home').hidden=true;$('map').hidden=true;$('level').hidden=false;closeOv();try{scrollTo(0,0)}catch(e){}
   $('level').innerHTML=`<div class="game" id="game">
@@ -2455,16 +2455,16 @@ async function resolve(swapKeys){
 
 /* ---------- праздничный финал: оставшиеся ходы становятся спецфишками ---------- */
 async function finale(){
-  busy=true;clearHint();const keep=moves,n=Math.min(moves,12);comboText('Праздничный салют!');
-  for(let k=0;k<n;k++){const cand=[];for(const row of grid)for(const t of row)if(t&&isNormal(t)&&!t.sp&&!t.lock&&!t.vine)cand.push(t);if(!cand.length)break;
+  busy=true;clearHint();const keep=moves,n=Math.min(moves,12),run=LEVEL_RUN;comboText('Праздничный салют!');
+  for(let k=0;k<n;k++){if(run!==LEVEL_RUN)return;const cand=[];for(const row of grid)for(const t of row)if(t&&isNormal(t)&&!t.sp&&!t.lock&&!t.vine)cand.push(t);if(!cand.length)break;
     const t=cand[Math.floor(Math.random()*cand.length)];t.sp=Math.random()<.5?'h':'v';renderTile(t);t.el.classList.remove('pop-in');void t.el.offsetWidth;t.el.classList.add('pop-in');burst(t.r,t.c,t.color,6);
     const mv=$('mv');if(mv)mv.textContent=keep-k-1;tone(600+k*60,.08,'triangle',.05);await sleep(110)}
-  for(let round=0;round<4;round++){const sps=[];for(const row of grid)for(const t of row)if(t&&t.sp&&!t.obj)sps.push([t.r,t.c]);if(!sps.length)break;
+  for(let round=0;round<4;round++){if(run!==LEVEL_RUN)return;const sps=[];for(const row of grid)for(const t of row)if(t&&t.sp&&!t.obj)sps.push([t.r,t.c]);if(!sps.length)break;
     await applyHits(sps,[],false,2);await gravity();await resolve(null)}
-  moves=keep;busy=false;await sleep(250);
+  if(run!==LEVEL_RUN)return;moves=keep;busy=false;await sleep(250);
 }
 async function afterMove(){
-  if(goalsDone()){await sleep(300);if(SPEED&&(LI>=0||LI<=-2)&&moves>0)await finale();return win()}
+  if(goalsDone()){const run=LEVEL_RUN;await sleep(300);if(run!==LEVEL_RUN)return;if(SPEED&&(LI>=0||LI<=-2)&&moves>0)await finale();if(run!==LEVEL_RUN)return;return win()}
   if(OB.fail){const f=OB.fail;OB.fail=null;return lose(f)}
   if(moves<=0)return lose();
   if(!hasMoves()){toast('Ходов нет — перемешиваю');await shuffleBoard()}
@@ -3217,7 +3217,7 @@ function applyBoosts(){
 }
 
 /* ---------- письмо дня ---------- */
-let DAILY=null,WEEKLY=null;
+let DAILY=null,WEEKLY=null,LEVEL_RUN=0;
 const dayNum=d=>Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
 function seeded(seed){let x=seed%2147483647;if(x<=0)x+=2147483646;return()=>(x=x*16807%2147483647)/2147483647}
 function makeDaily(){
